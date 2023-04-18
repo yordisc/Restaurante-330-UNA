@@ -66,20 +66,43 @@ WORKING-STORAGE SECTION.
        01 fecha-pedido PIC X(10).
 
 PROCEDURE DIVISION.
-       INICIO.
-       DISPLAY "Bienvenido al sistema del Restaurante".
-       DISPLAY "Seleccione una opción del menú:".
-       DISPLAY "1. Carta del restaurante".
-       DISPLAY "2. Platillos por tipos".
-       DISPLAY "3. Registro de Meseros".
-       DISPLAY "4. Registro de Mesas numeradas".
-       DISPLAY "5. Registro de Pedidos".
-       DISPLAY "6. Consultas".
-       DISPLAY "7. Salir".
-       ACCEPT opcion-menu.
-       PERFORM MENU-OPCIONES UNTIL opcion-menu = "7".
 
-       MENU-OPCIONES.
-       IF opcion-menu = "1" THEN
-        DISPLAY "Ha seleccionado Carta del
+       MAIN-LOOP.
+          DISPLAY "RESTAURANTE".
+          DISPLAY "1. Carta del restaurante".
+          DISPLAY "2. Platillos por tipos".
+          DISPLAY "3. Registro de Meseros".
+          DISPLAY "4. Registro de Mesas numeradas".
+          DISPLAY "5. Registro de Pedidos".
+          DISPLAY "6. Consultas".
+          DISPLAY "0. Salir".
+          ACCEPT WS-OPTION.
 
+          EVALUATE WS-OPTION
+             WHEN "1"
+                PERFORM MENU-1
+             WHEN "2"
+                PERFORM MENU-2
+             WHEN "3"
+                PERFORM MENU-3
+             WHEN "4"
+                PERFORM MENU-4
+             WHEN "5"
+                PERFORM MENU-5
+             WHEN "6"
+                PERFORM MENU-6
+             WHEN "0"
+                MOVE 'Y' TO WS-EXIT
+             WHEN OTHER
+                DISPLAY "Opción inválida."
+          END-EVALUATE.
+
+          IF WS-EXIT = 'Y'
+             GO TO END-PROGRAM
+          END-IF.
+
+          GO TO MAIN-LOOP.
+
+END-PROGRAM.
+          DISPLAY "Fin del programa."
+          STOP RUN.
