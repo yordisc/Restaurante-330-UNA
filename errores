@@ -1,0 +1,19 @@
+restaurante.cbl:225: error: continuation character expected
+restaurante.cbl:238: error: continuation character expected
+restaurante.cbl:251: error: continuation character expected
+restaurante.cbl:264: error: continuation character expected
+restaurante.cbl:277: error: continuation character expected
+restaurante.cbl:293: error: continuation character expected
+restaurante.cbl:5: error: 'cliente-db' is not defined
+restaurante.cbl:5: error: 'cliente-db' is not a file name
+restaurante.cbl:13: error: 'mesa-db' is not defined
+restaurante.cbl:13: error: 'mesa-db' is not a file name
+restaurante.cbl:20: error: 'pedido-db' is not defined
+restaurante.cbl:20: error: 'pedido-db' is not a file name
+restaurante.cbl:29: error: 'platillo-db' is not defined
+restaurante.cbl:29: error: 'platillo-db' is not a file name
+restaurante.cbl:114: error: syntax error, unexpected $undefined
+restaurante.cbl:114: error: invalid literal: ' USING BY REFERENCE MYSQL-HANDLE.
+
+...'
+restaurante.cbl:114: error: literal length exceeds 8191 characters
