@@ -1,48 +1,10 @@
        IDENTIFICATION DIVISION.
        PROGRAM-ID. Restaurante.
        AUTHOR. github.com/yordisc;
+
        ENVIRONMENT DIVISION.
        CONFIGURATION SECTION.
        SPECIAL-NAMES.
-       DATA DIVISION.
-       FILE SECTION.
-       FD CLIENTES-FILE.
-       01 CLIENTES-REC.
-          05 CLIENTES-NOMBRE PIC X(50).
-          05 CLIENTES-TELEFONO PIC X(15).
-          05 CLIENTES-DIRECCION PIC X(100).
-
-       FD MESAS-FILE.
-       01 MESAS-REC.
-          05 MESAS-NUMERO PIC X(2).
-          05 MESAS-CAPACIDAD PIC X(2).
-
-       FD PEDIDOS-FILE.
-       01 PEDIDOS-REC.
-          05 PEDIDOS-NUMERO PIC X(5).
-          05 PEDIDOS-MESA PIC X(2).
-          05 PEDIDOS-CLIENTE PIC X(50).
-          05 PEDIDOS-TOTAL PIC X(6).
-
-       FD PLATILLOS-FILE.
-       01 PLATILLOS-REC.
-          05 PLATILLOS-NOMBRE PIC X(50).
-          05 PLATILLOS-DESCRIPCION PIC X(100).
-          05 PLATILLOS-PRECIO PIC X(6).
-          05 PLATILLOS-CATEGORIA PIC X(15).
-       FILE-CONTROL.
-           SELECT CLIENTES-FILE ASSIGN TO "clientes.csv"
-               FILE STATUS IS FS-CLIENTES
-               ORGANIZATION IS LINE SEQUENTIAL.
-           SELECT MESAS-FILE ASSIGN TO "mesas.csv"
-               FILE STATUS IS FS-MESAS
-               ORGANIZATION IS LINE SEQUENTIAL.
-           SELECT PEDIDOS-FILE ASSIGN TO "pedidos.csv"
-               FILE STATUS IS FS-PEDIDOS
-               ORGANIZATION IS LINE SEQUENTIAL.
-           SELECT PLATILLOS-FILE ASSIGN TO "platillos.csv"
-               FILE STATUS IS FS-PLATILLOS
-               ORGANIZATION IS LINE SEQUENTIAL.
 
        WORKING-STORAGE SECTION.
        01 OPCIONES-MENU.
@@ -165,7 +127,7 @@
            Opción 6: Salir
            OPCION6.
            DISPLAY '*** GRACIAS POR UTILIZAR EL '
-           - 'SISTEMA DE PEDIDOS DEL RESTAURANTE ***'.
+       CONTINUE 'SISTEMA DE PEDIDOS DEL RESTAURANTE ***'.
            STOP RUN.
       *Subrutina para manejar las opciones del menú de la Carta del restaurante
            OPCIONES-CARTA.
