@@ -1,47 +1,48 @@
        IDENTIFICATION DIVISION.
-       SQLIMS.
        PROGRAM-ID. Restaurante.
        AUTHOR. github.com/yordisc;
-
        ENVIRONMENT DIVISION.
        CONFIGURATION SECTION.
        SPECIAL-NAMES.
-
        DATA DIVISION.
        FILE SECTION.
-       FD cliente-db
-       LABEL RECORDS ARE STANDARD
-       VALUE OF FILE-ID IS "cliente_db.dat"
-       DATA RECORD IS cliente-registro.
-       01 cliente-registro.
-          05 cliente-nombre PIC X(50).
-          05 cliente-telefono PIC X(15).
-          05 cliente-direccion PIC X(100).
-       FD mesa-db
-       LABEL RECORDS ARE STANDARD
-       VALUE OF FILE-ID IS "mesa_db.dat"
-       DATA RECORD IS mesa-registro.
-       01 mesa-registro.
-          05 mesa-numero PIC X(2).
-          05 mesa-capacidad PIC X(2).
-       FD pedido-db
-       LABEL RECORDS ARE STANDARD
-       VALUE OF FILE-ID IS "pedido_db.dat"
-       DATA RECORD IS pedido-registro.
-       01 pedido-registro.
-          05 pedido-numero PIC X(5).
-          05 pedido-mesa PIC X(2).
-          05 pedido-cliente PIC X(50).
-          05 pedido-total PIC X(6).
-       FD platillo-db
-       LABEL RECORDS ARE STANDARD
-       VALUE OF FILE-ID IS "platillo_db.dat"
-       DATA RECORD IS platillo-registro.
-       01 platillo-registro.
-          05 platillo-nombre PIC X(50).
-          05 platillo-descripcion PIC X(100).
-          05 platillo-precio PIC X(6).
-          05 platillo-categoria PIC X(15).
+       FD CLIENTES-FILE.
+       01 CLIENTES-REC.
+          05 CLIENTES-NOMBRE PIC X(50).
+          05 CLIENTES-TELEFONO PIC X(15).
+          05 CLIENTES-DIRECCION PIC X(100).
+
+       FD MESAS-FILE.
+       01 MESAS-REC.
+          05 MESAS-NUMERO PIC X(2).
+          05 MESAS-CAPACIDAD PIC X(2).
+
+       FD PEDIDOS-FILE.
+       01 PEDIDOS-REC.
+          05 PEDIDOS-NUMERO PIC X(5).
+          05 PEDIDOS-MESA PIC X(2).
+          05 PEDIDOS-CLIENTE PIC X(50).
+          05 PEDIDOS-TOTAL PIC X(6).
+
+       FD PLATILLOS-FILE.
+       01 PLATILLOS-REC.
+          05 PLATILLOS-NOMBRE PIC X(50).
+          05 PLATILLOS-DESCRIPCION PIC X(100).
+          05 PLATILLOS-PRECIO PIC X(6).
+          05 PLATILLOS-CATEGORIA PIC X(15).
+       FILE-CONTROL.
+           SELECT CLIENTES-FILE ASSIGN TO "clientes.csv"
+               FILE STATUS IS FS-CLIENTES
+               ORGANIZATION IS LINE SEQUENTIAL.
+           SELECT MESAS-FILE ASSIGN TO "mesas.csv"
+               FILE STATUS IS FS-MESAS
+               ORGANIZATION IS LINE SEQUENTIAL.
+           SELECT PEDIDOS-FILE ASSIGN TO "pedidos.csv"
+               FILE STATUS IS FS-PEDIDOS
+               ORGANIZATION IS LINE SEQUENTIAL.
+           SELECT PLATILLOS-FILE ASSIGN TO "platillos.csv"
+               FILE STATUS IS FS-PLATILLOS
+               ORGANIZATION IS LINE SEQUENTIAL.
 
        WORKING-STORAGE SECTION.
        01 OPCIONES-MENU.
@@ -90,64 +91,8 @@
        01 FECHA-SELECCIONADA.
           05 ANIO PIC X(4).
           05 MES PIC X(2).
-      *Base de datos MySQL
-       01 MYSQL-HOST PIC X(15) VALUE "localhost".
-       01 MYSQL-USER PIC X(15) VALUE "usuario".
-       01 MYSQL-PASSWORD PIC X(15) VALUE "contraseña".
-       01 MYSQL-DATABASE PIC X(15) VALUE "restaurante_db".
-       01 MYSQL-PORT PIC 9(4) VALUE 3306.
-       01 MYSQL-CONNECTION.
-          05 MYSQL-HANDLE POINTER.
-          05 MYSQL-ERROR-MSG PIC X(100).
-       01 SQL-QUERY PIC X(1000).
 
        PROCEDURE DIVISION.
-       MAIN-PROCEDURE.
-       EXEC SQL
-          CONNECT TO :restaurante_db USER :admin USING :admin
-      *Inicializar la conexión a la base de datos
-       INITIALIZE MYSQL-HANDLE
-       CALL "mysql_init" USING BY REFERENCE MYSQL-HANDLE,
-       IF MYSQL-HANDLE = NULL
-          DISPLAY "Ocurrió un error al inicializar".
-          DISPLAY " la conexión con la base de datos.".
-       GOBACK
-      *Conectar a la base de datos
-       CALL "mysql_real_connect"  USING BY REFERENCE MYSQL-HANDLE,
-         MYSQL-HOST,
-         MYSQL-USER,
-         MYSQL-PASSWORD,
-         MYSQL-DATABASE,
-         MYSQL-PORT,
-         NULL,
-         0,
-       IF MYSQL-HANDLE = NULL,
-        MOVE FUNCTION "mysql_error" (MYSQL-HANDLE),
-            TO MYSQL-ERROR-MSG.
-         DISPLAY "Ocurrió un error al conectar "
-         DISPLAY "a la base de datos: ", MYSQL-ERROR-MSG
-         GOBACK
-       END-IF.
-      *Realizar operaciones en la base de datos aquí, por ejemplo:
-       MOVE "SELECT * FROM cliente" TO SQL-QUERY
-       CALL "mysql_query" USING BY REFERENCE MYSQL-HANDLE, SQL-QUERY
-       IF MYSQL-HANDLE = NULL
-       MOVE FUNCTION "mysql_error"(MYSQL-HANDLE) TO MYSQL-ERROR-MSG
-       DISPLAY "Ocurrió un error al "
-       CONTINUE "realizar la consulta: ", MYSQL-ERROR-MSG
-       GOBACK
-       END-IF.
-      *Procesar los resultados de la consulta aquí, por ejemplo:
-       MOVE "cliente" TO SQL-QUERY
-       CALL "mysql_store_result" USING BY REFERENCE MYSQL-HANDLE
-       IF MYSQL-HANDLE = NULL
-       MOVE FUNCTION "mysql_error"(MYSQL-HANDLE) TO MYSQL-ERROR-MSG
-       DISPLAY "Ocurrió un error al almacenar"
-       CONTINUE " los resultados: ", MYSQL-ERROR-MSG
-       GOBACK
-       END-IF.
-      *Cerrar la conexión a la base de datos
-       CALL "mysql_close" USING BY REFERENCE MYSQL-HANDLE.
       *Menú principal del programa
            INICIO.
            DISPLAY '*** BIENVENIDO AL SISTEMA***'.

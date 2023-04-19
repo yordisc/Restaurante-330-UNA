@@ -1,7 +1,138 @@
-restaurante.cbl:235: error: continuation character expected
-restaurante.cbl:248: error: continuation character expected
-restaurante.cbl:261: error: continuation character expected
-restaurante.cbl:274: error: continuation character expected
-restaurante.cbl:287: error: continuation character expected
-restaurante.cbl:303: error: continuation character expected
-restaurante.cbl:2: error: syntax error, unexpected Identifier, expecting FUNCTION-ID or PROGRAM-ID
+restaurante.cbl:181: error: continuation character expected
+restaurante.cbl:194: error: continuation character expected
+restaurante.cbl:207: error: continuation character expected
+restaurante.cbl:220: error: continuation character expected
+restaurante.cbl:233: error: continuation character expected
+restaurante.cbl:249: error: continuation character expected
+restaurante.cbl:9: error: 'CLIENTES-FILE' is not defined
+restaurante.cbl:9: error: 'CLIENTES-FILE' is not a file name
+restaurante.cbl:15: error: 'MESAS-FILE' is not defined
+restaurante.cbl:15: error: 'MESAS-FILE' is not a file name
+restaurante.cbl:20: error: 'PEDIDOS-FILE' is not defined
+restaurante.cbl:20: error: 'PEDIDOS-FILE' is not a file name
+restaurante.cbl:27: error: 'PLATILLOS-FILE' is not defined
+restaurante.cbl:27: error: 'PLATILLOS-FILE' is not a file name
+restaurante.cbl:33: error: PROCEDURE DIVISION header missing
+restaurante.cbl:33: error: syntax error, unexpected FILE-CONTROL
+restaurante.cbl:34: error: syntax error, unexpected SELECT
+restaurante.cbl:37: error: syntax error, unexpected SELECT
+restaurante.cbl:40: error: syntax error, unexpected SELECT
+restaurante.cbl:43: error: syntax error, unexpected SELECT
+restaurante.cbl:47: error: syntax error, unexpected WORKING-STORAGE
+restaurante.cbl:48: error: unknown statement '01'
+restaurante.cbl:49: error: unknown statement '05'
+restaurante.cbl:50: error: unknown statement '05'
+restaurante.cbl:51: error: unknown statement '05'
+restaurante.cbl:52: error: unknown statement '05'
+restaurante.cbl:53: error: unknown statement '05'
+restaurante.cbl:54: error: unknown statement '01'
+restaurante.cbl:55: error: unknown statement '01'
+restaurante.cbl:56: error: unknown statement '05'
+restaurante.cbl:57: error: unknown statement '05'
+restaurante.cbl:58: error: unknown statement '05'
+restaurante.cbl:59: error: unknown statement '01'
+restaurante.cbl:60: error: unknown statement '05'
+restaurante.cbl:61: error: unknown statement '05'
+restaurante.cbl:62: error: unknown statement '01'
+restaurante.cbl:63: error: unknown statement '05'
+restaurante.cbl:64: error: unknown statement '05'
+restaurante.cbl:65: error: unknown statement '05'
+restaurante.cbl:66: error: unknown statement '05'
+restaurante.cbl:67: error: unknown statement '01'
+restaurante.cbl:68: error: unknown statement '05'
+restaurante.cbl:69: error: unknown statement '05'
+restaurante.cbl:70: error: unknown statement '05'
+restaurante.cbl:71: error: unknown statement '05'
+restaurante.cbl:72: error: unknown statement '01'
+restaurante.cbl:73: error: unknown statement '05'
+restaurante.cbl:74: error: unknown statement '05'
+restaurante.cbl:75: error: unknown statement '05'
+restaurante.cbl:76: error: unknown statement '01'
+restaurante.cbl:77: error: unknown statement '05'
+restaurante.cbl:78: error: unknown statement '05'
+restaurante.cbl:79: error: unknown statement '05'
+restaurante.cbl:80: error: unknown statement '01'
+restaurante.cbl:81: error: unknown statement '05'
+restaurante.cbl:82: error: unknown statement '05'
+restaurante.cbl:83: error: unknown statement '05'
+restaurante.cbl:84: error: unknown statement '05'
+restaurante.cbl:85: error: unknown statement '05'
+restaurante.cbl:86: error: unknown statement '01'
+restaurante.cbl:87: error: unknown statement '05'
+restaurante.cbl:88: error: unknown statement '05'
+restaurante.cbl:89: error: unknown statement '05'
+restaurante.cbl:90: error: unknown statement '05'
+restaurante.cbl:91: error: unknown statement '01'
+restaurante.cbl:92: error: unknown statement '05'
+restaurante.cbl:93: error: unknown statement '05'
+restaurante.cbl:95: error: syntax error, unexpected PROCEDURE
+restaurante.cbl: in paragraph 'INICIO':
+restaurante.cbl:107: error: 'OPCION-SELECCIONADA' is not defined
+restaurante.cbl:110: error: unknown statement 'Opción'
+restaurante.cbl:118: error: 'OPCION-SELECCIONADA' is not defined
+restaurante.cbl:121: error: unknown statement 'Opción'
+restaurante.cbl:129: error: 'OPCION-SELECCIONADA' is not defined
+restaurante.cbl:132: error: unknown statement 'Opción'
+restaurante.cbl:140: error: 'OPCION-SELECCIONADA' is not defined
+restaurante.cbl:143: error: unknown statement 'Opción'
+restaurante.cbl:151: error: 'OPCION-SELECCIONADA' is not defined
+restaurante.cbl:154: error: unknown statement 'Opción'
+restaurante.cbl:162: error: 'OPCION-SELECCIONADA' is not defined
+restaurante.cbl:165: error: unknown statement 'Opción'
+restaurante.cbl:168: error: syntax error, unexpected -
+restaurante.cbl: in paragraph 'OPCIONES-CARTA':
+restaurante.cbl:172: error: 'OPCION-SELECCIONADA' is not defined
+restaurante.cbl:174: error: 'OPCION-SELECCIONADA' is not defined
+restaurante.cbl:176: error: 'OPCION-SELECCIONADA' is not defined
+restaurante.cbl:178: error: 'OPCION-SELECCIONADA' is not defined
+restaurante.cbl:180: error: syntax error, unexpected ELSE
+restaurante.cbl:180: error: 'Opción' is not defined
+restaurante.cbl:180: error: 'inválida' is not defined
+restaurante.cbl:180: error: unknown statement 'Seleccione'
+restaurante.cbl:182: error: syntax error, unexpected END-IF
+restaurante.cbl: in paragraph 'OPCIONES-MESEROS':
+restaurante.cbl:185: error: 'OPCION-SELECCIONADA' is not defined
+restaurante.cbl:187: error: 'OPCION-SELECCIONADA' is not defined
+restaurante.cbl:189: error: 'OPCION-SELECCIONADA' is not defined
+restaurante.cbl:191: error: 'OPCION-SELECCIONADA' is not defined
+restaurante.cbl:193: error: syntax error, unexpected ELSE
+restaurante.cbl:193: error: 'Opción' is not defined
+restaurante.cbl:193: error: 'inválida' is not defined
+restaurante.cbl:193: error: unknown statement 'Seleccione'
+restaurante.cbl:195: error: syntax error, unexpected END-IF
+restaurante.cbl: in paragraph 'OPCIONES-PEDIDOS':
+restaurante.cbl:198: error: 'OPCION-SELECCIONADA' is not defined
+restaurante.cbl:200: error: 'OPCION-SELECCIONADA' is not defined
+restaurante.cbl:202: error: 'OPCION-SELECCIONADA' is not defined
+restaurante.cbl:204: error: 'OPCION-SELECCIONADA' is not defined
+restaurante.cbl:206: error: syntax error, unexpected ELSE
+restaurante.cbl:206: error: 'Ingrese' is not defined
+restaurante.cbl:206: error: 'el' is not defined
+restaurante.cbl:206: error: 'nombre' is not defined
+restaurante.cbl:206: error: 'del' is not defined
+restaurante.cbl:206: error: 'tipo' is not defined
+restaurante.cbl:206: error: syntax error, unexpected DE
+restaurante.cbl:206: error: syntax error, unexpected Literal
+restaurante.cbl:206: error: syntax error, unexpected Literal
+restaurante.cbl:207: error: 'NUMERO-TIPO-PLATILLO' is not defined
+restaurante.cbl:208: error: 'NUMERO-TIPO-PLATILLO' is not defined
+restaurante.cbl:208: error: 'NUMERO-TIPO-PLATILLO' is not defined
+restaurante.cbl:204: error: invalid expression
+restaurante.cbl:209: error: syntax error, unexpected <
+restaurante.cbl:211: error: syntax error, unexpected Literal
+restaurante.cbl:212: error: syntax error, unexpected ELSE
+restaurante.cbl:213: error: 'NOMBRE-TIPO-PLATILLO' is not defined
+restaurante.cbl:214: error: 'NOMBRE-TIPO-PLATILLO' is not defined
+restaurante.cbl:214: warning: alphanumeric literal has zero length; a SPACE will be assumed
+restaurante.cbl:215: error: 'NUMERO-TIPO-PLATILLO' is not defined
+restaurante.cbl:215: error: 'TIPOS-PLATILLOS' is not defined
+restaurante.cbl:216: error: syntax error, unexpected CONTINUE
+restaurante.cbl:216: error: syntax error, unexpected TO
+restaurante.cbl:218: error: syntax error, unexpected ELSE
+restaurante.cbl:219: error: syntax error, unexpected -
+restaurante.cbl: in paragraph 'ELIMINAR-TIPO-PLATILLO':
+restaurante.cbl:223: error: 'NUMERO-TIPO-PLATILLO' is not defined
+restaurante.cbl:224: error: 'NUMERO-TIPO-PLATILLO' is not defined
+cobc: too many errors
+
+cobc: aborting compile of restaurante.cbl at line 224 (PROGRAM-ID: Restaurante)
