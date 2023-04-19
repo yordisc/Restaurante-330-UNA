@@ -1,0 +1,7 @@
+restaurante.cbl:235: error: continuation character expected
+restaurante.cbl:248: error: continuation character expected
+restaurante.cbl:261: error: continuation character expected
+restaurante.cbl:274: error: continuation character expected
+restaurante.cbl:287: error: continuation character expected
+restaurante.cbl:303: error: continuation character expected
+restaurante.cbl:2: error: syntax error, unexpected Identifier, expecting FUNCTION-ID or PROGRAM-ID

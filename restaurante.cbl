@@ -1,5 +1,12 @@
        IDENTIFICATION DIVISION.
+       SQLIMS.
        PROGRAM-ID. Restaurante.
+       AUTHOR. github.com/yordisc;
+
+       ENVIRONMENT DIVISION.
+       CONFIGURATION SECTION.
+       SPECIAL-NAMES.
+
        DATA DIVISION.
        FILE SECTION.
        FD cliente-db
@@ -94,6 +101,9 @@
           05 MYSQL-ERROR-MSG PIC X(100).
        01 SQL-QUERY PIC X(1000).
        PROCEDURE DIVISION.
+       MAIN-PROCEDURE.
+       EXEC SQL
+          CONNECT TO :restaurante_db USER :admin USING :admin
       *Inicializar la conexión a la base de datos
        INITIALIZE MYSQL-HANDLE
        CALL "mysql_init" USING BY REFERENCE MYSQL-HANDLE,
