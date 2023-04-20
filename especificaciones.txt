@@ -1,5 +1,5 @@
 ESPECIFICACIONES
-Un nuevo restaurant está a punto de ser inaugurado. En este momento se le está dando los últimos toques para su apertura. El gerente a cargo del proyecto, se ha planteado la necesidad de un sistema automatizado, para llevar el servicio de pedido del cliente
+Un nuevo restaurante está a punto de ser inaugurado. En este momento se le está dando los últimos toques para su apertura. El gerente a cargo del proyecto, se ha planteado la necesidad de un sistema automatizado, para llevar el servicio de pedido del cliente
 dentro del local. Para satisfacer los requerimientos propuestos por el gerente, el software debe contar con las siguientes prestancias:
 
 Carta del restaurante: Datos correspondientes a los diferentes

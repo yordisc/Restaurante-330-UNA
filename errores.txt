@@ -1,18 +1,23 @@
-restaurante.cbl:180: error: continuation character expected
-restaurante.cbl:193: error: continuation character expected
-restaurante.cbl:206: error: continuation character expected
-restaurante.cbl:219: error: continuation character expected
-restaurante.cbl:232: error: continuation character expected
-restaurante.cbl:248: error: continuation character expected
-restaurante.cbl:10: error: 'CLIENTES' is not defined
-restaurante.cbl:10: error: 'CLIENTES' is not a file name
-restaurante.cbl:17: error: 'MESAS' is not defined
-restaurante.cbl:17: error: 'MESAS' is not a file name
-restaurante.cbl:23: error: 'PLATILLOS' is not defined
-restaurante.cbl:23: error: 'PLATILLOS' is not a file name
-restaurante.cbl:31: error: 'PEDIDOS' is not defined
-restaurante.cbl:31: error: 'PEDIDOS' is not a file name
-restaurante.cbl:39: error: 'PLATILLOS-PEDIDOS' is not defined
-restaurante.cbl:39: error: 'PLATILLOS-PEDIDOS' is not a file name
-restaurante.cbl: in paragraph 'INICIO':
-restaurante.cbl:109: error: unknown statement 'Opción'
+restaurante.cbl:187: error: continuation character expected
+restaurante.cbl:97: error: syntax error, unexpected CONTINUE
+restaurante.cbl:101: error: syntax error, unexpected CONTINUE
+restaurante.cbl:103: error: syntax error, unexpected CONTINUE
+restaurante.cbl: in paragraph 'DISPLAY-MENU':
+restaurante.cbl:152: error: syntax error, unexpected END-EVALUATE
+restaurante.cbl: in paragraph 'DISPLAY-CARTA':
+restaurante.cbl:156: error: syntax error, unexpected Literal
+restaurante.cbl:162: error: 'EOF' is not defined
+restaurante.cbl:164: error: syntax error, unexpected Literal
+restaurante.cbl:165: error: syntax error, unexpected Literal
+restaurante.cbl:168: error: 'EOF' is not defined
+restaurante.cbl:162: error: PERFORM statement not terminated by END-PERFORM
+restaurante.cbl:170: error: syntax error, unexpected END-PERFORM
+restaurante.cbl: in paragraph 'DISPLAY-PLATILLOS':
+restaurante.cbl:175: error: syntax error, unexpected Literal
+restaurante.cbl:184: error: 'EOF' is not defined
+restaurante.cbl:186: error: syntax error, unexpected NO
+restaurante.cbl:184: error: PERFORM statement not terminated by END-PERFORM
+restaurante.cbl:186: error: syntax error, unexpected Literal
+restaurante.cbl:186: error: syntax error, unexpected Literal
+restaurante.cbl:186: error: syntax error, unexpected Literal
+restaurante.cbl:186: error: syntax error, unexpected Literal

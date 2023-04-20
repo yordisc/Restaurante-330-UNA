@@ -1,393 +1,246 @@
        IDENTIFICATION DIVISION.
        PROGRAM-ID. Restaurante.
-       AUTHOR. github.com/yordisc;
-
        ENVIRONMENT DIVISION.
-       CONFIGURATION SECTION.
-       SPECIAL-NAMES.
-       DATA DIVISION.
+       INPUT-OUTPUT SECTION.
        
-          FILE SECTION.
-          FD CLIENTES.
-          01 CLIENTES-REGISTRO.
-             05 CLIENTE-ID        PIC X(10).
-             05 CLIENTE-NOMBRE    PIC X(50).
-             05 CLIENTE-TELEFONO  PIC X(20).
-             05 CLIENTE-DIRECCION PIC X(50).
-
-          FD MESAS.
-          01 MESAS-REGISTRO.
-             05 MESA-ID          PIC X(10).
-             05 MESA-NUMERO      PIC X(10).
-             05 MESA-CAPACIDAD   PIC 9(2).
-
-          FD PLATILLOS.
-          01 PLATILLOS-REGISTRO.
-             05 PLATILLO-ID      PIC X(10).
-             05 PLATILLO-NOMBRE  PIC X(50).
-             05 PLATILLO-DESCRIP PIC X(200).
-             05 PLATILLO-PRECIO  PIC 9(5)V99.
-             05 PLATILLO-CATEG   PIC X(50).
-
-          FD PEDIDOS.
-          01 PEDIDOS-REGISTRO.
-             05 PEDIDO-ID        PIC X(10).
-             05 PEDIDO-NUMERO    PIC X(10).
-             05 PEDIDO-MESA-ID   PIC X(10).
-             05 PEDIDO-CLIENTE-ID PIC X(10).
-             05 PEDIDO-TOTAL     PIC 9(5)V99.
-
-          FD PLATILLOS-PEDIDOS.
-          01 PLATILLOS-PEDIDOS-REGISTRO.
-             05 PLATILLO-PEDIDO-ID  PIC X(10).
-             05 PLATILLO-ID         PIC X(10).
-             05 PEDIDO-ID           PIC X(10).
-             05 CANTIDAD            PIC 9(2).
-
+       FILE-CONTROL.
+       SELECT Carta-File ASSIGN TO "carta.csv"
+       ORGANIZATION IS LINE SEQUENTIAL.
+       SELECT Platillos-File ASSIGN TO "platillos.csv"
+       ORGANIZATION IS LINE SEQUENTIAL.
+       SELECT Meseros-File ASSIGN TO "meseros.csv"
+       ORGANIZATION IS LINE SEQUENTIAL.
+       SELECT Mesas-File ASSIGN TO "mesas.csv"
+       ORGANIZATION IS LINE SEQUENTIAL.
+       SELECT Pedidos-File ASSIGN TO "pedidos.csv"
+       ORGANIZATION IS LINE SEQUENTIAL.
+       
+       DATA DIVISION.
+       FILE SECTION.
+       FD Carta-File.
+       01 Carta-Record.
+         05 Carta-Codigo PIC X(6).
+         05 Carta-Desayunos PIC X(20).
+         05 Carta-Entradas PIC X(20).
+         05 Carta-Ensaladas PIC X(20).
+         05 Carta-Contornos PIC X(20).
+         05 Carta-Carnes PIC X(20).
+         05 Carta-Pescados PIC X(20).
+         05 Carta-Bebidas PIC X(20).
+       FD Platillos-File.
+       01 Platillos-Record.
+         05 Platillos-Codigo PIC X(6).
+         05 Platillos-Descripcion PIC X(30).
+         05 Platillos-Tipo PIC X(10).
+       FD Meseros-File.
+       01 Meseros-Record.
+         05 Meseros-Cedula PIC X(9).
+         05 Meseros-Nombre PIC X(20).
+         05 Meseros-Apellido PIC X(20).
+       FD Mesas-File.
+       01 Mesas-Record.
+         05 Mesas-Numero PIC 9(2).
+         05 Mesas-Mesero PIC X(9).
+         05 Mesas-Cantidad PIC 9(2).
+       FD Pedidos-File.
+       01 Pedidos-Record.
+         05 Pedidos-Numero PIC X(6).
+         05 Pedidos-Mesa PIC 9(2).
+         05 Pedidos-Cedula PIC X(9).
+         05 Pedidos-Descripcion PIC X(30).
+         05 Pedidos-Cantidad PIC 9(2).
+         05 Pedidos-Precio PIC 9(5)V99.
+         05 Pedidos-Tipo PIC X(10).
+         05 Pedidos-Importe PIC 9(5)V99.
+         05 Pedidos-Propina PIC 9(3)V99.
+         05 Pedidos-Enviado PIC X(1).
+       
        WORKING-STORAGE SECTION.
-       01 OPCIONES-MENU.
-          05 OPCION1 PIC X(30) VALUE 'Carta del restaurante'.
-          05 OPCION2 PIC X(30) VALUE 'Platillos por tipos'.
-          05 OPCION3 PIC X(30) VALUE 'Registro de Meseros'.
-          05 OPCION4 PIC X(30) VALUE 'Registro de Mesas numeradas'.
-          05 OPCION5 PIC X(30) VALUE 'Registro de Pedidos'.
-       01 OPCION-SELECCIONADA PIC 99.
-       01 CLIENTE-REGISTRO-TEMP.
-          05 CLIENTE-NOMBRE-TEMP PIC X(50).
-          05 CLIENTE-TELEFONO-TEMP PIC X(15).
-          05 CLIENTE-DIRECCION-TEMP PIC X(100).
-       01 MESA-REGISTRO-TEMP.
-          05 MESA-NUMERO-TEMP PIC X(2).
-          05 MESA-CAPACIDAD-TEMP PIC X(2).
-       01 PEDIDO-REGISTRO-TEMP.
-          05 PEDIDO-NUMERO-TEMP PIC X(5).
-          05 PEDIDO-MESA-TEMP PIC X(2).
-          05 PEDIDO-CLIENTE-TEMP PIC X(50).
-          05 PEDIDO-TOTAL-TEMP PIC X(6).
-       01 PLATILLO-REGISTRO-TEMP.
-          05 PLATILLO-NOMBRE-TEMP PIC X(50).
-          05 PLATILLO-DESCRIPCION-TEMP PIC X(100).
-          05 PLATILLO-PRECIO-TEMP PIC X(6).
-          05 PLATILLO-CATEGORIA-TEMP PIC X(15).
-       01 CLIENTE-DB-REGISTRO.
-          05 CLIENTE-NOMBRE PIC X(50).
-          05 CLIENTE-TELEFONO PIC X(15).
-          05 CLIENTE-DIRECCION PIC X(100).
-       01 MESA-DB-REGISTRO.
-          05 MESA-NUMERO PIC X(2).
-          05 MESA-CAPACIDAD PIC X(2).
-          05 MESA-MESERO-ASIGNADO PIC X(15).
-       01 PEDIDO-DB-REGISTRO.
-          05 PEDIDO-NUMERO PIC X(5).
-          05 PEDIDO-MESA PIC X(2).
-          05 PEDIDO-CLIENTE PIC X(50).
-          05 PEDIDO-TOTAL PIC X(6).
-          05 PEDIDO-ESTADO PIC X(10) VALUE 'PENDIENTE'.
-       01 PLATILLO-DB-REGISTRO.
-          05 PLATILLO-NOMBRE PIC X(50).
-          05 PLATILLO-DESCRIPCION PIC X(100).
-          05 PLATILLO-PRECIO PIC X(6).
-          05 PLATILLO-CATEGORIA PIC X(15).
-       01 FECHA-SELECCIONADA.
-          05 ANIO PIC X(4).
-          05 MES PIC X(2).
-
+       01 Menu-Option PIC X.
+       01 Valid-Option PIC X VALUE 'Y'.
+       01 Valid-Date PIC X VALUE 'Y'.
+       01 Valid-Mesero PIC X VALUE 'Y'.
+       01 Valid-Mesa PIC X VALUE 'Y'.
+       01 Valid-Pedido PIC X VALUE 'Y'.
+       01 Valid-Plato PIC X VALUE 'Y'.
+       01 Valid-Codigo PIC X VALUE 'Y'.
+       01 Valid-Cedula PIC X VALUE 'Y'.
+       01 Valid-Number PIC X VALUE 'Y'.
+       01 Valid-Price PIC X VALUE 'Y'.
+       01 Valid-Qty PIC X VALUE 'Y'.
+       01 Platillo-Tipo PIC X(10).
+       01 Mesero-Cedula PIC X(9).
+       01 Mesa-Number PIC 9(2).
+       01 Pedido-Number PIC X(6).
+       01 Pedido-Mesa PIC 9(2).
+       01 Pedido-Cedula PIC X(9).
+       01 Pedido-Plato PIC X(30).
+       01 Pedido-Qty PIC 9(2).
+       01 Pedido-Price PIC 9(5)V99.
+       01 Pedido-Type PIC X(10).
+       01 Pedido-Amount PIC 9(5)V99.
+       01 Pedido-Tip PIC 9(3)V99.
+       01 Pedido-Sent PIC X(1).
+       01 WS-Date PIC 9(8).
+       01 WS-Day PIC 9(2).
+       01 WS-Month PIC 9(2).
+       01 WS-Year PIC 9(4).
+       01 WS-Current PIC X(10) VALUE "CURRENT".
+       01 WS-Blank-Line PIC X(80) VALUE SPACES.
+       01 WS-Menu-Header.
+         05 WS-Header-1 PIC X(36) VALUE "RESTAURANTE MENU PRINCIPAL".
+       01 WS-Menu-Options.
+         05 WS-Option-1 PIC X(30) VALUE "1 - CARTA DEL RESTAURANTE".
+         05 WS-Option-2 PIC X(30) VALUE "2 - PLATILLOS POR TIPOS".
+         05 WS-Option-3 PIC X(30) VALUE "3 - REGISTRO DE MESEROS".
+         05 WS-Option-4 PIC X(30) 
+       CONTINUE VALUE "4 - REGISTRO DE MESAS ENUMERADAS".
+         05 WS-Option-5 PIC X(30) VALUE "5 - REGISTRO DE PEDIDOS".
+         05 WS-Option-6 PIC X(30) VALUE "6 - PLATILLOS DISPONIBLES".
+         05 WS-Option-7 PIC X(30) 
+       CONTINUE VALUE "7 - PEDIDOS REALIZADOS POR FECHA".
+         05 WS-Option-8 PIC X(30) 
+       CONTINUE VALUE "8 - MESEROS CON PEDIDOS POR Nº DE PEDIDO".
+         05 WS-Option-9 PIC X(30) VALUE "9 - MESEROS AUSENTES".
+         05 WS-Option-10 PIC X(30) VALUE "10 - SALIR".
+       01 WS-Menu-Selection PIC 9.
+       01 WS-Menu-Error PIC X.
+       01 WS-Platillo-Codigo PIC X(6).
+       01 WS-Pedido-Importe PIC 9(5)V99.
+       01 WS-Pedido-Total PIC 9(5)V99.
+       01 WS-Platillo-Found PIC X VALUE 'N'.
+       01 WS-Pedido-Found PIC X VALUE 'N'.
+       01 WS-Mesero-Found PIC X VALUE 'N'.
+       01 WS-Mesa-Found PIC X VALUE 'N'.
+       01 WS-Plato-Found PIC X VALUE 'N'.
+       
        PROCEDURE DIVISION.
-      *Menú principal del programa
-           INICIO.
-           DISPLAY '*** BIENVENIDO AL SISTEMA***'.
-           DISPLAY '*** DE PEDIDOS DEL RESTAURANTE ***'.
-           DISPLAY 'Seleccione una opción del menú:'.
-           DISPLAY '1. Carta del restaurante'.
-           DISPLAY '2. Platillos por tipos'.
-           DISPLAY '3. Registro de Meseros'.
-           DISPLAY '4. Registro de Mesas numeradas'.
-           DISPLAY '5. Registro de Pedidos'.
-           DISPLAY '6. Salir'.
-           ACCEPT OPCION-SELECCIONADA.
-           PERFORM OPCIONES-MENU.
-           GO TO INICIO.
-           Opción 1: Carta del restaurante
-           OPCION1.
-           DISPLAY '*** CARTA DEL RESTAURANTE ***'.
-           DISPLAY 'Seleccione una opción:'.
-           DISPLAY '1. Agregar tipo de platillo'.
-           DISPLAY '2. Modificar tipo de platillo'.
-           DISPLAY '3. Eliminar tipo de platillo'.
-           DISPLAY '4. Regresar al menú principal'.
-           ACCEPT OPCION-SELECCIONADA.
-           PERFORM OPCIONES-CARTA.
-           GO TO OPCION1.
-           Opción 2: Platillos por tipos
-           OPCION2.
-           DISPLAY '*** PLATILLOS POR TIPOS ***'.
-           DISPLAY 'Seleccione una opción:'.
-           DISPLAY '1. Agregar platillo'.
-           DISPLAY '2. Modificar platillo'.
-           DISPLAY '3. Eliminar platillo'.
-           DISPLAY '4. Regresar al menú principal'.
-           ACCEPT OPCION-SELECCIONADA.
-           PERFORM OPCIONES-PLATILLOS.
-           GO TO OPCION2.
-           Opción 3: Registro de Meseros
-           OPCION3.
-           DISPLAY '*** REGISTRO DE MESEROS ***'.
-           DISPLAY 'Seleccione una opción:'.
-           DISPLAY '1. Agregar mesero'.
-           DISPLAY '2. Modificar mesero'.
-           DISPLAY '3. Eliminar mesero'.
-           DISPLAY '4. Regresar al menú principal'.
-           ACCEPT OPCION-SELECCIONADA.
-           PERFORM OPCIONES-MESEROS.
-           GO TO OPCION3.
-           Opción 4: Registro de Mesas numeradas
-           OPCION4.
-           DISPLAY '*** REGISTRO DE MESAS NUMERADAS ***'.
-           DISPLAY 'Seleccione una opción:'.
-           DISPLAY '1. Agregar mesa'.
-           DISPLAY '2. Modificar mesa'.
-           DISPLAY '3. Eliminar mesa'.
-           DISPLAY '4. Regresar al menú principal'.
-           ACCEPT OPCION-SELECCIONADA.
-           PERFORM OPCIONES-MESAS.
-           GO TO OPCION4.
-           Opción 5: Registro de Pedidos
-           OPCION5.
-           DISPLAY '*** REGISTRO DE PEDIDOS ***'.
-           DISPLAY 'Seleccione una opción:'.
-           DISPLAY '1. Agregar pedido'.
-           DISPLAY '2. Modificar pedido'.
-           DISPLAY '3. Eliminar pedido'.
-           DISPLAY '4. Regresar al menú principal'.
-           ACCEPT OPCION-SELECCIONADA.
-           PERFORM OPCIONES-PEDIDOS.
-           GO TO OPCION5.
-           Opción 6: Salir
-           OPCION6.
-           DISPLAY '*** GRACIAS POR UTILIZAR EL '
-       CONTINUE 'SISTEMA DE PEDIDOS DEL RESTAURANTE ***'.
-           STOP RUN.
-      *Subrutina para manejar las opciones del menú de la Carta del restaurante
-           OPCIONES-CARTA.
-           IF OPCION-SELECCIONADA = 1 THEN
-           PERFORM AGREGAR-TIPO-PLATILLO
-           ELSE IF OPCION-SELECCIONADA = 2 THEN
-           PERFORM MODIFICAR-TIPO-PLATILLO
-           ELSE IF OPCION-SELECCIONADA = 3 THEN
-           PERFORM ELIMINAR-TIPO-PLATILLO
-           ELSE IF OPCION-SELECCIONADA = 4 THEN
-           EXIT.
-           ELSE DISPLAY 'Opción inválida. Seleccione una opción válida.'.
-           GO TO OPCIONES-CARTA.
-           END-IF.
-      *Subrutina para manejar las opciones del menú de Platillos por tipos
-           OPCIONES-PLATILLOS.
-           IF OPCION-SELECCIONADA = 1 THEN
-           PERFORM AGREGAR-PLATILLO
-           ELSE IF OPCION-SELECCIONADA = 2 THEN
-           PERFORM MODIFICAR-PLATILLO
-           ELSE IF OPCION-SELECCIONADA = 3 THEN
-           PERFORM ELIMINAR-PLATILLO
-           ELSE IF OPCION-SELECCIONADA = 4 THEN
-           EXIT.
-           ELSE DISPLAY 'Opción inválida. Seleccione una opción válida.'.
-           GO TO OPCIONES-PLATILLOS.
-           END-IF.
-      *Subrutina para manejar las opciones del menú de Registro de Meseros
-           OPCIONES-MESEROS.
-           IF OPCION-SELECCIONADA = 1 THEN
-           PERFORM AGREGAR-MESERO
-           ELSE IF OPCION-SELECCIONADA = 2 THEN
-           PERFORM MODIFICAR-MESERO
-           ELSE IF OPCION-SELECCIONADA = 3 THEN
-           PERFORM ELIMINAR-MESERO
-           ELSE IF OPCION-SELECCIONADA = 4 THEN
-           EXIT.
-           ELSE DISPLAY 'Opción inválida. Seleccione una opción válida.'.
-           GO TO OPCIONES-MESEROS.
-           END-IF.
-      *Subrutina para manejar las opciones del menú de Registro de Mesas numeradas
-           OPCIONES-MESAS.
-           IF OPCION-SELECCIONADA = 1 THEN
-           PERFORM AGREGAR-MESA
-           ELSE IF OPCION-SELECCIONADA = 2 THEN
-           PERFORM MODIFICAR-MESA
-           ELSE IF OPCION-SELECCIONADA = 3 THEN
-           PERFORM ELIMINAR-MESA
-           ELSE IF OPCION-SELECCIONADA = 4 THEN
-           EXIT.
-           ELSE DISPLAY 'Opción inválida. Seleccione una opción válida.'.
-           GO TO OPCIONES-MESAS.
-           END-IF.
-      *Subrutina para manejar las opciones del menú de Registro de Pedidos
-           OPCIONES-PEDIDOS.
-           IF OPCION-SELECCIONADA = 1 THEN
-           PERFORM AGREGAR-PEDIDO
-           ELSE IF OPCION-SELECCIONADA = 2 THEN
-           PERFORM MODIFICAR-PEDIDO
-           ELSE IF OPCION-SELECCIONADA = 3 THEN
-           PERFORM ELIMINAR-PEDIDO
-           ELSE IF OPCION-SELECCIONADA = 4 THEN
-           EXIT.
-           ELSE DISPLAY 'Opción inválida. Seleccione una opción válida.'.
-           GO TO OPCIONES-PEDIDOS.
-           END-IF.
-      *Subrutina para agregar un tipo de platillo
-           AGREGAR-TIPO-PLATILLO.
-           DISPLAY 'Ingrese el nombre del tipo de platillo:'.
-           ACCEPT NOMBRE-TIPO-PLATILLO.
-           IF NOMBRE-TIPO-PLATILLO NOT = '' THEN
-           ADD 1 TO NUMERO-TIPOS-PLATILLOS.
-           SET TIPOS-PLATILLOS(NUMERO-TIPOS-PLATILLOS) 
-       CONTINUE TO NOMBRE-TIPO-PLATILLO.
-           DISPLAY 'Tipo de platillo agregado correctamente.'.
-           ELSE DISPLAY 'El nombre del tipo de platillo'
-       CONTINUE ' no puede estar vacío.'.
-      *Subrutina para modificar un tipo de platillo
-           MODIFICAR-TIPO-PLATILLO.
-           DISPLAY 'Ingrese el número del tipo de platillo a modificar:'.
-           ACCEPT NUMERO-TIPO-PLATILLO.
-           IF NUMERO-TIPO-PLATILLO NOT NUMERIC OR NUMERO-TIPO-PLATILLO 
-       CONTINUE < 1 OR NUMERO-TIPO-PLATILLO > NUMERO-TIPOS-PLATILLOS THEN
-       DISPLAY 'Número de tipo de platillo inválido.'
-       CONTINUE ' Ingrese un número válido.'.
-           ELSE DISPLAY 'Ingrese el nuevo nombre del tipo de platillo:'.
-           ACCEPT NOMBRE-TIPO-PLATILLO.
-           IF NOMBRE-TIPO-PLATILLO NOT = '' THEN
-           SET TIPOS-PLATILLOS(NUMERO-TIPO-PLATILLO) 
-       CONTINUE TO NOMBRE-TIPO-PLATILLO.
-           DISPLAY 'Tipo de platillo modificado correctamente.'.
-           ELSE DISPLAY 'El nombre del tipo de platillo '
-           - 'no puede estar vacío.'.
-      *Subrutina para eliminar un tipo de platillo
-           ELIMINAR-TIPO-PLATILLO.
-           DISPLAY 'Ingrese el número del tipo de platillo a eliminar:'.
-           ACCEPT NUMERO-TIPO-PLATILLO.
-           IF NUMERO-TIPO-PLATILLO NOT NUMERIC OR NUMERO-TIPO-PLATILLO 
-       CONTINUE < 1 OR NUMERO-TIPO-PLATILLO > NUMERO-TIPOS-PLATILLOS THEN
-           DISPLAY 'Número de tipo de platillo inválido.'
-           - ' Ingrese un número válido.'.
-       ELSE
-       SET TIPOS-PLATILLOS(NUMERO-TIPO-PLATILLO) TO SPACES.
-       MOVE TIPOS-PLATILLOS(NUMERO-TIPO-PLATILLO + 1: )
-       CONTINUE TO TIPOS-PLATILLOS(NUMERO-TIPO-PLATILLO: ).
-       SUBTRACT 1 FROM NUMERO-TIPOS-PLATILLOS.
-       DISPLAY 'Tipo de platillo eliminado correctamente.'.
-      *Subrutina para agregar un platillo
-           AGREGAR-PLATILLO.
-           DISPLAY 'Ingrese el número del tipo de platillo '
-       CONTINUE 'al que pertenece el platillo:'.
-           DISPLAY 'Las opciones son:'.
-           PERFORM MOSTRAR-TIPOS-PLATILLOS.
-           ACCEPT NUMERO-TIPO-PLATILLO.
-           IF NUMERO-TIPO-PLATILLO NOT NUMERIC OR NUMERO-TIPO-PLATILLO 
-       CONTINUE < 1 OR NUMERO-TIPO-PLATILLO > NUMERO-TIPOS-PLATILLOS THEN
-           DISPLAY 'Número de tipo de platillo inválido.'
-       CONTINUE ' Ingrese un número válido.'.
-           ELSE
-           DISPLAY 'Ingrese el nombre del platillo:'.
-           ACCEPT NOMBRE-PLATILLO.
-           DISPLAY 'Ingrese el precio del platillo:'.
-           ACCEPT PRECIO-PLATILLO.
-           IF PRECIO-PLATILLO NOT NUMERIC OR PRECIO-PLATILLO < 0 THEN
-           DISPLAY 'Precio inválido. Ingrese un precio válido.'.
-           ELSE
-           ADD 1 TO NUMERO-PLATILLOS.
-           SET PLATILLOS(NUMERO-PLATILLOS) TO NUMERO-TIPO-PLATILLO 
-       CONTINUE '-' NOMBRE-PLATILLO '-' PRECIO-PLATILLO.
-           DISPLAY 'Platillo agregado correctamente.'.
-      *Subrutina para modificar un platillo
-           MODIFICAR-PLATILLO.
-           DISPLAY 'Ingrese el número del platillo a modificar:'.
-           ACCEPT NUMERO-PLATILLO.
-           IF NUMERO-PLATILLO NOT NUMERIC OR NUMERO-PLATILLO 
-       CONTINUE < 1 OR NUMERO-PLATILLO > NUMERO-PLATILLOS THEN
-           DISPLAY 'Número de platillo inválido.'
-       CONTINUE ' Ingrese un número válido.'.
-           ELSE
-           SET TIPO-PLATILLO TO FUNCTION SUBSTRING(PLATILLOS
-       CONTINUE (NUMERO-PLATILLO: ), 1, 
-       CONTINUE INDEX(PLATILLOS(NUMERO-PLATILLO: ), '-') - 1).
-           DISPLAY 'Tipo de platillo: ' TIPOS-PLATILLOS(TIPO-PLATILLO).
-           DISPLAY 'Ingrese el nuevo nombre del platillo:'.
-           ACCEPT NOMBRE-PLATILLO.
-           DISPLAY 'Ingrese el nuevo precio del platillo:'.
-           ACCEPT PRECIO-PLATILLO.
-           IF PRECIO-PLATILLO NOT NUMERIC OR PRECIO-PLATILLO < 0 THEN
-           DISPLAY 'Precio inválido. Ingrese un precio válido.'.
-           ELSE
-           SET PLATILLOS(NUMERO-PLATILLO) TO TIPO-PLATILLO 
-       CONTINUE '-' NOMBRE-PLATILLO '-' PRECIO-PLATILLO.
-           DISPLAY 'Platillo modificado correctamente.'.
-      *Subrutina para eliminar un platillo
-           ELIMINAR-PLATILLO.
-           DISPLAY 'Ingrese el número del platillo a eliminar:'.
-           ACCEPT NUMERO-PLATILLO.
-           IF NUMERO-PLATILLO NOT NUMERIC OR NUMERO-PLATILLO 
-       CONTINUE < 1 OR NUMERO-PLATILLO > NUMERO-PLATILLOS THEN
-           DISPLAY 'Número de platillo inválido.'
-           - ' Ingrese un número válido.'.
-           ELSE
-           SET PLATILLOS(NUMERO-PLATILLO) TO SPACES.
-           MOVE PLATILLOS(NUMERO-PLATILLO + 1: ) 
-       CONTINUE TO PLATILLOS(NUMERO-PLATILLO: ).
-           SUBTRACT 1 FROM NUMERO-PLATILLOS.
-           DISPLAY 'Platillo eliminado correctamente.'.
-      *Subrutina para mostrar los platillos
-           MOSTRAR-PLATILLOS.
-           IF NUMERO-PLATILLOS = 0 THEN
-           DISPLAY 'No hay platillos registrados.'.
-           ELSE
-           DISPLAY 'Los platillos registrados son:'.
-           PERFORM VARYING I FROM 1 BY 1 UNTIL I > NUMERO-PLATILLOS
-           DISPLAY I ': ' TIPOS-PLATILLOS(FUNCTION SUBSTRING(PLATILLOS
-       CONTINUE (I: ), 1, INDEX(PLATILLOS(I: ), '-') - 
-       CONTINUE 1)) ' - ' FUNCTION SUBSTRING(PLATILLOS(I: ), 
-       CONTINUE INDEX(PLATILLOS(I: ), '-') + 
-       CONTINUE 1) ' - ' FUNCTION SUBSTRING(PLATILLOS(I: ), 
-       CONTINUE INDEX(PLATILLOS(I: ), '-', 2) + 1)
-           END-PERFORM
-           END-IF.
-      *Subrutina para mostrar las opciones del menú
-           MOSTRAR-OPCIONES.
-           DISPLAY 'Las opciones son:'.
-           DISPLAY '1. Agregar tipo de platillo'.
-           DISPLAY '2. Modificar tipo de platillo'.
-           DISPLAY '3. Eliminar tipo de platillo'.
-           DISPLAY '4. Agregar platillo'.
-           DISPLAY '5. Modificar platillo'.
-           DISPLAY '6. Eliminar platillo'.
-           DISPLAY '7. Mostrar tipos de platillos'.
-           DISPLAY '8. Mostrar platillos'.
-           DISPLAY '9. Salir'.
-       Programa principal
-       MAIN.
-       INITIALIZE TIPOS-PLATILLOS PLATILLOS.
-       PERFORM MOSTRAR-OPCIONES.
-       ACCEPT OPCION.
-       PERFORM UNTIL OPCION = 9
-       EVALUATE OPCION
-       WHEN 1
-       PERFORM AGREGAR-TIPO-PLATILLO
-       WHEN 2
-       PERFORM MODIFICAR-TIPO-PLATILLO
-       WHEN 3
-       PERFORM ELIMINAR-TIPO-PLATILLO
-       WHEN 4
-       PERFORM AGREGAR-PLATILLO
-       WHEN 5
-       PERFORM MODIFICAR-PLATILLO
-       WHEN 6
-       PERFORM ELIMINAR-PLATILLO
-       WHEN 7
-       PERFORM MOSTRAR-TIPOS-PLATILLOS
-       WHEN 8
-       PERFORM MOSTRAR-PLATILLOS
-       WHEN OTHER
-       DISPLAY 'Opción inválida. Ingrese una opción válida.'
-       END-EVALUATE
-       PERFORM MOSTRAR-OPCIONES
-       ACCEPT OPCION
-       END-PERFORM
-       DISPLAY 'Gracias por utilizar nuestro programa.'.
+       MAIN-PARAGRAPH.
+       PERFORM DISPLAY-MENU UNTIL WS-Menu-Selection = 10.
        STOP RUN.
+       DISPLAY-MENU.
+       DISPLAY WS-Blank-Line.
+       DISPLAY WS-Menu-Header.
+       DISPLAY WS-Blank-Line.
+       DISPLAY WS-Menu-Options.
+       DISPLAY WS-Blank-Line.
+       DISPLAY "SELECCIONE UNA OPCION: " WITH NO ADVANCING.
+       ACCEPT WS-Menu-Selection.
+       EVALUATE WS-Menu-Selection
+       WHEN 1
+       PERFORM DISPLAY-CARTA
+       WHEN 2
+       PERFORM DISPLAY-PLATILLOS
+       WHEN 3
+       PERFORM REGISTER-MESERO
+       WHEN 4
+       PERFORM REGISTER-MESA
+       WHEN 5
+       PERFORM REGISTER-PEDIDO
+       WHEN 6
+       PERFORM DISPLAY-PLATILLOS-DISPONIBLES
+       WHEN 7
+       PERFORM DISPLAY-PEDIDOS-POR-FECHA
+       WHEN 8
+       PERFORM DISPLAY-MESEROS-CON-PEDIDOS
+       WHEN 9
+       PERFORM DISPLAY-MESEROS-AUSENTES
+       WHEN 10
+       CONTINUE
+       WHEN OTHER
+       DISPLAY "OPCION INVALIDA. INGRESE UNA OPCION VALIDA.".
+       END-EVALUATE.
+       DISPLAY-CARTA.
+       OPEN INPUT Carta-File.
+       DISPLAY "CODIGO DESAYUNOS ENTRADAS ENSALADAS "
+       CONTINUE "CONTORNOS CARNES PESCADOS Y MARISCOS BEBIDAS".
+       DISPLAY WS-Blank-Line.
+       READ Carta-File INTO Carta-Record
+       AT END
+       DISPLAY "NO HAY DATOS EN EL ARCHIVO."
+       END-READ.
+       PERFORM UNTIL EOF
+       DISPLAY Carta-Codigo " " Carta-Desayunos " " Carta-Entradas
+       CONTINUE " " Carta-Ensaladas " " Carta-Contornos " " Carta-Carnes
+       CONTINUE " " Carta-Pescados " " Carta-Bebidas
+       READ Carta-File INTO Carta-Record
+       AT END
+       SET EOF TO TRUE
+       END-READ.
+       END-PERFORM.
+       CLOSE Carta-File.
+       DISPLAY-PLATILLOS.
+       DISPLAY "INGRESE EL TIPO DE PLATILLO"
+       DISPLAY " (DESAYUNOS, ENTRADAS, ENSALADAS, CONTORNOS,"
+       CONTINUE "CARNES, PESCADOS O BEBIDAS): " WITH NO ADVANCING.
+       ACCEPT Platillo-Tipo.
+       OPEN INPUT Platillos-File.
+       DISPLAY "CODIGO DESCRIPCION TIPO".
+       DISPLAY WS-Blank-Line.
+       READ Platillos-File INTO Platillos-Record
+       AT END
+       DISPLAY "NO HAY DATOS EN EL ARCHIVO."
+       END-READ.
+       PERFORM UNTIL EOF
+       IF Platillos-Tipo = Platillos-Tipo
+       DISPLAY Platillos-Codigo " Platillos-Descripcion " "
+       CONTINUE Platillos-Tipo
+       SET WS-Platillo-Found TO 'Y'
+       END-IF
+       READ Platillos-File INTO Platillos-Record
+       AT END
+       SET EOF TO TRUE
+       END-READ.
+       END-PERFORM.
+       IF WS-Platillo-Found = 'N'
+       DISPLAY "NO HAY PLATILLOS DISPONIBLES "
+       CONTINUE "PARA EL TIPO DE PLATILLO INGRESADO."
+       END-IF
+       CLOSE Platillos-File.
+       REGISTER-MESERO.
+       DISPLAY "INGRESE LA CEDULA DEL MESERO: " WITH NO ADVANCING.
+       ACCEPT Mesero-Cedula.
+       DISPLAY "INGRESE EL NOMBRE DEL MESERO: " WITH NO ADVANCING.
+       ACCEPT Meseros-Nombre.
+       DISPLAY "INGRESE EL APELLIDO DEL MESERO: " WITH NO ADVANCING.
+       ACCEPT Meseros-Apellido.
+       OPEN OUTPUT Meseros-File.
+       WRITE Meseros-Record.
+       CLOSE Meseros-File.
+       DISPLAY "MESERO REGISTRADO CON EXITO.".
+       REGISTER-MESA.
+       DISPLAY "INGRESE EL NUMERO DE LA MESA: " WITH NO ADVANCING.
+       ACCEPT Mesa-Number.
+       DISPLAY "INGRESE LA CEDULA DEL MESERO "
+       CONTINUE "ASIGNADO A LA MESA: " WITH NO ADVANCING.
+       ACCEPT Mesas-Mesero.
+       DISPLAY "INGRESE EL NUMERO DE PERSONAS "
+       CONTINUE "EN LA MESA: " WITH NO ADVANCING.
+       ACCEPT Mesas-Cantidad.
+       OPEN OUTPUT Mesas-File.
+       WRITE Mesas-Record.
+       CLOSE Mesas-File.
+       DISPLAY "MESA REGISTRADA CON EXITO.".
+       REGISTER-PEDIDO.
+       DISPLAY "INGRESE EL NUMERO DEL PEDIDO: " WITH NO ADVANCING.
+       ACCEPT Pedido-Number.
+       DISPLAY "INGRESE EL NUMERO DE LA MESA: " WITH NO ADVANCING.
+       ACCEPT Pedido-Mesa.
+       DISPLAY "INGRESE LA CEDULA DEL CLIENTE: " WITH NO ADVANCING.
+       ACCEPT Pedido-Cedula.
+       DISPLAY "INGRESE LA DESCRIPCION DEL PLATO: " WITH NO ADVANCING.
+       ACCEPT Pedido-Plato.
+       DISPLAY "INGRESE LA CANTIDAD DEL PLATO: " WITH NO ADVANCING.
+       ACCEPT Pedido-Qty.
+       DISPLAY "INGRESE EL PRECIO DEL PLATO: " WITH NO ADVANCING.
+       ACCEPT Pedido-Price.
+       DISPLAY "INGRESE EL TIPO DE PEDIDO "
+       DISPLAY "(PARA LLEVAR O EN EL RESTAURANTE): " WITH NO ADVANCING.
+       ACCEPT Pedido-Type.
+       COMPUTE Pedido-Amount = Pedido-Qty * Pedido-Price.
+       DISPLAY "EL IMPORTE DEL PEDIDO ES: ", Pedido-Amount.
+       OPEN OUTPUT Pedidos-File.
+       WRITE Pedidos-Record.
+       CLOSE Pedidos-File.
+       DISPLAY "PEDIDO REGISTRADO CON EXITO.".
+       END PROGRAM.
