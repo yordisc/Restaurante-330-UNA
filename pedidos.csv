@@ -1,4 +1,2 @@
-Numero,Mesa,Cedula,Plato,Cantidad,Precio,Tipo,Importe
-1,1,123456789,Hamburguesa,2,10.50,Restaurante,21.00
-2,2,234567890,Pizza,1,15.75,Para llevar,15.75
-3,3,345678901,Ensalada,3,8.25,Restaurante,24.75
+id_pedido,id_cliente,id_mesa,id_mesero,id_platillo_pedido,id_pago,Propina,Importe,Enviado(s/n),fecha,hora
+1,6,6,1,1,1,2.00,7.00,s,2023-04-20,14:30:00

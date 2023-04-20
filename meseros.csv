@@ -1,4 +1,7 @@
-Cedula,Nombre,Apellido
-123456789,John,Doe
-234567890,Jane,Smith
-345678901,Mark,Johnson
+id_mesero,cedula,nombre,apellido
+1,23456789,John,Doe
+2,34567890,Jane,Smith
+3,45678901,Mark,Johnson
+4,65678901,Pepe,Mujica
+5,5652437,Fulanito,Fulano
+6,45678901,Tareck,Elaisammi
