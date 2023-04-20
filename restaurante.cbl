@@ -1,6 +1,13 @@
        IDENTIFICATION DIVISION.
        PROGRAM-ID. Restaurante.
+       AUTHOR. github.com/yordisc.
+       DATE-WRITTEN. 20/04/2023.
+       DATE-COMPILED.
        ENVIRONMENT DIVISION.
+       CONFIGURATION SECTION.
+       SOURCE-COMPUTER. PC.
+       OBJECT-COMPUTER. PC.
+
        INPUT-OUTPUT SECTION.
        
        FILE-CONTROL.
@@ -56,6 +63,7 @@
          05 Pedidos-Enviado PIC X(1).
        
        WORKING-STORAGE SECTION.
+       01 EOF PIC S9(4) VALUE -1.
        01 Menu-Option PIC X.
        01 Valid-Option PIC X VALUE 'Y'.
        01 Valid-Date PIC X VALUE 'Y'.
@@ -93,15 +101,15 @@
          05 WS-Option-1 PIC X(30) VALUE "1 - CARTA DEL RESTAURANTE".
          05 WS-Option-2 PIC X(30) VALUE "2 - PLATILLOS POR TIPOS".
          05 WS-Option-3 PIC X(30) VALUE "3 - REGISTRO DE MESEROS".
-         05 WS-Option-4 PIC X(30) 
-       CONTINUE VALUE "4 - REGISTRO DE MESAS ENUMERADAS".
+         05 WS-Option-4 PIC X(30) VALUE "4 - REGISTRO DE MESAS Nº".
          05 WS-Option-5 PIC X(30) VALUE "5 - REGISTRO DE PEDIDOS".
          05 WS-Option-6 PIC X(30) VALUE "6 - PLATILLOS DISPONIBLES".
-         05 WS-Option-7 PIC X(30) 
-       CONTINUE VALUE "7 - PEDIDOS REALIZADOS POR FECHA".
-         05 WS-Option-8 PIC X(30) 
-       CONTINUE VALUE "8 - MESEROS CON PEDIDOS POR Nº DE PEDIDO".
-         05 WS-Option-9 PIC X(30) VALUE "9 - MESEROS AUSENTES".
+         05 WS-Option-7 PIC X(30) VALUE "7 - PEDIDOS R. POR FECHA".
+       05 WS-Option-8-Values PIC 9 VALUE 8.
+         88 WS-Option-8-Meseros-Numero-Pedidos VALUE 
+          "8 - MESEROS CON PEDIDOS " 
+          -"POR NUMERO DE PEDIDOS".
+         05 WS-Option-9 PIC X(30) VALUE "9 - MESER. AUSENTES".
          05 WS-Option-10 PIC X(30) VALUE "10 - SALIR".
        01 WS-Menu-Selection PIC 9.
        01 WS-Menu-Error PIC X.
@@ -148,21 +156,33 @@
        WHEN 10
        CONTINUE
        WHEN OTHER
-       DISPLAY "OPCION INVALIDA. INGRESE UNA OPCION VALIDA.".
+       DISPLAY "OPCION INVALIDA. ",
+         "INGRESE UNA OPCION VALIDA.".
        END-EVALUATE.
        DISPLAY-CARTA.
        OPEN INPUT Carta-File.
-       DISPLAY "CODIGO DESAYUNOS ENTRADAS ENSALADAS "
-       CONTINUE "CONTORNOS CARNES PESCADOS Y MARISCOS BEBIDAS".
+       DISPLAY "CÓDIGO ", 
+        "DESAYUNOS ", 
+        "ENTRADAS ", 
+        "ENSALADAS ", 
+        "CONTORNOS ", 
+        "CARNES ", 
+        "PESCADOS Y MARISCOS ", 
+        "BEBIDAS".
        DISPLAY WS-Blank-Line.
        READ Carta-File INTO Carta-Record
        AT END
        DISPLAY "NO HAY DATOS EN EL ARCHIVO."
        END-READ.
        PERFORM UNTIL EOF
-       DISPLAY Carta-Codigo " " Carta-Desayunos " " Carta-Entradas
-       CONTINUE " " Carta-Ensaladas " " Carta-Contornos " " Carta-Carnes
-       CONTINUE " " Carta-Pescados " " Carta-Bebidas
+       DISPLAY Carta-Codigo " ",
+        Carta-Desayunos " ",
+        Carta-Entradas " ",
+        Carta-Ensaladas " ",
+        Carta-Contornos " ",
+        Carta-Carnes " ",
+        Carta-Pescados " ",
+        Carta-Bebidas.
        READ Carta-File INTO Carta-Record
        AT END
        SET EOF TO TRUE
@@ -171,11 +191,19 @@
        CLOSE Carta-File.
        DISPLAY-PLATILLOS.
        DISPLAY "INGRESE EL TIPO DE PLATILLO"
-       DISPLAY " (DESAYUNOS, ENTRADAS, ENSALADAS, CONTORNOS,"
-       CONTINUE "CARNES, PESCADOS O BEBIDAS): " WITH NO ADVANCING.
+       DISPLAY " (DESAYUNOS,",
+         " ENTRADAS,",
+         " ENSALADAS,",
+         " CONTORNOS,",
+         " CARNES,",
+         " PESCADOS",
+         " O",
+         " BEBIDAS): " WITH NO ADVANCING.
        ACCEPT Platillo-Tipo.
        OPEN INPUT Platillos-File.
-       DISPLAY "CODIGO DESCRIPCION TIPO".
+       DISPLAY "CODIGO ",
+          "DESCRIPCION ",
+          "TIPO".
        DISPLAY WS-Blank-Line.
        READ Platillos-File INTO Platillos-Record
        AT END
@@ -183,8 +211,9 @@
        END-READ.
        PERFORM UNTIL EOF
        IF Platillos-Tipo = Platillos-Tipo
-       DISPLAY Platillos-Codigo " Platillos-Descripcion " "
-       CONTINUE Platillos-Tipo
+       DISPLAY Platillos-Codigo ,
+         " Platillos-Descripcion ",
+         Platillos-Tipo.
        SET WS-Platillo-Found TO 'Y'
        END-IF
        READ Platillos-File INTO Platillos-Record
@@ -193,8 +222,8 @@
        END-READ.
        END-PERFORM.
        IF WS-Platillo-Found = 'N'
-       DISPLAY "NO HAY PLATILLOS DISPONIBLES "
-       CONTINUE "PARA EL TIPO DE PLATILLO INGRESADO."
+       DISPLAY "NO HAY PLATILLOS DISPONIBLES ",
+         "PARA EL TIPO DE PLATILLO INGRESADO."
        END-IF
        CLOSE Platillos-File.
        REGISTER-MESERO.
@@ -211,11 +240,11 @@
        REGISTER-MESA.
        DISPLAY "INGRESE EL NUMERO DE LA MESA: " WITH NO ADVANCING.
        ACCEPT Mesa-Number.
-       DISPLAY "INGRESE LA CEDULA DEL MESERO "
-       CONTINUE "ASIGNADO A LA MESA: " WITH NO ADVANCING.
+       DISPLAY "INGRESE LA CEDULA DEL MESERO ",
+       "ASIGNADO A LA MESA: " WITH NO ADVANCING.
        ACCEPT Mesas-Mesero.
-       DISPLAY "INGRESE EL NUMERO DE PERSONAS "
-       CONTINUE "EN LA MESA: " WITH NO ADVANCING.
+       DISPLAY "INGRESE EL NUMERO DE PERSONAS ",
+       "EN LA MESA: " WITH NO ADVANCING.
        ACCEPT Mesas-Cantidad.
        OPEN OUTPUT Mesas-File.
        WRITE Mesas-Record.
@@ -234,8 +263,8 @@
        ACCEPT Pedido-Qty.
        DISPLAY "INGRESE EL PRECIO DEL PLATO: " WITH NO ADVANCING.
        ACCEPT Pedido-Price.
-       DISPLAY "INGRESE EL TIPO DE PEDIDO "
-       DISPLAY "(PARA LLEVAR O EN EL RESTAURANTE): " WITH NO ADVANCING.
+       DISPLAY "INGRESE EL TIPO DE PEDIDO ",
+       "(PARA LLEVAR O EN EL RESTAURANTE): " WITH NO ADVANCING.
        ACCEPT Pedido-Type.
        COMPUTE Pedido-Amount = Pedido-Qty * Pedido-Price.
        DISPLAY "EL IMPORTE DEL PEDIDO ES: ", Pedido-Amount.

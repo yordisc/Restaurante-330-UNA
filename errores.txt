@@ -1,23 +1,16 @@
-restaurante.cbl:187: error: continuation character expected
-restaurante.cbl:97: error: syntax error, unexpected CONTINUE
-restaurante.cbl:101: error: syntax error, unexpected CONTINUE
-restaurante.cbl:103: error: syntax error, unexpected CONTINUE
 restaurante.cbl: in paragraph 'DISPLAY-MENU':
-restaurante.cbl:152: error: syntax error, unexpected END-EVALUATE
+restaurante.cbl:161: error: syntax error, unexpected END-EVALUATE
 restaurante.cbl: in paragraph 'DISPLAY-CARTA':
-restaurante.cbl:156: error: syntax error, unexpected Literal
-restaurante.cbl:162: error: 'EOF' is not defined
-restaurante.cbl:164: error: syntax error, unexpected Literal
-restaurante.cbl:165: error: syntax error, unexpected Literal
-restaurante.cbl:168: error: 'EOF' is not defined
-restaurante.cbl:162: error: PERFORM statement not terminated by END-PERFORM
-restaurante.cbl:170: error: syntax error, unexpected END-PERFORM
+restaurante.cbl:177: error: invalid expression
+restaurante.cbl:177: error: PERFORM statement not terminated by END-PERFORM
+restaurante.cbl:188: error: invalid SET statement
+restaurante.cbl:190: error: syntax error, unexpected END-PERFORM
 restaurante.cbl: in paragraph 'DISPLAY-PLATILLOS':
-restaurante.cbl:175: error: syntax error, unexpected Literal
-restaurante.cbl:184: error: 'EOF' is not defined
-restaurante.cbl:186: error: syntax error, unexpected NO
-restaurante.cbl:184: error: PERFORM statement not terminated by END-PERFORM
-restaurante.cbl:186: error: syntax error, unexpected Literal
-restaurante.cbl:186: error: syntax error, unexpected Literal
-restaurante.cbl:186: error: syntax error, unexpected Literal
-restaurante.cbl:186: error: syntax error, unexpected Literal
+restaurante.cbl:212: error: invalid expression
+restaurante.cbl:212: error: PERFORM statement not terminated by END-PERFORM
+restaurante.cbl:217: error: SET target 'WS-Platillo-Found' is not numeric, an INDEX or a POINTER
+restaurante.cbl:218: error: syntax error, unexpected END-IF
+restaurante.cbl:221: error: invalid SET statement
+restaurante.cbl:223: error: syntax error, unexpected END-PERFORM
+restaurante.cbl: in paragraph 'REGISTER-PEDIDO':
+restaurante.cbl:275: error: syntax error, unexpected ., expecting Literal or program name
