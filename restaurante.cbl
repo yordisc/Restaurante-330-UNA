@@ -5,6 +5,44 @@
        ENVIRONMENT DIVISION.
        CONFIGURATION SECTION.
        SPECIAL-NAMES.
+       DATA DIVISION.
+       
+          FILE SECTION.
+          FD CLIENTES.
+          01 CLIENTES-REGISTRO.
+             05 CLIENTE-ID        PIC X(10).
+             05 CLIENTE-NOMBRE    PIC X(50).
+             05 CLIENTE-TELEFONO  PIC X(20).
+             05 CLIENTE-DIRECCION PIC X(50).
+
+          FD MESAS.
+          01 MESAS-REGISTRO.
+             05 MESA-ID          PIC X(10).
+             05 MESA-NUMERO      PIC X(10).
+             05 MESA-CAPACIDAD   PIC 9(2).
+
+          FD PLATILLOS.
+          01 PLATILLOS-REGISTRO.
+             05 PLATILLO-ID      PIC X(10).
+             05 PLATILLO-NOMBRE  PIC X(50).
+             05 PLATILLO-DESCRIP PIC X(200).
+             05 PLATILLO-PRECIO  PIC 9(5)V99.
+             05 PLATILLO-CATEG   PIC X(50).
+
+          FD PEDIDOS.
+          01 PEDIDOS-REGISTRO.
+             05 PEDIDO-ID        PIC X(10).
+             05 PEDIDO-NUMERO    PIC X(10).
+             05 PEDIDO-MESA-ID   PIC X(10).
+             05 PEDIDO-CLIENTE-ID PIC X(10).
+             05 PEDIDO-TOTAL     PIC 9(5)V99.
+
+          FD PLATILLOS-PEDIDOS.
+          01 PLATILLOS-PEDIDOS-REGISTRO.
+             05 PLATILLO-PEDIDO-ID  PIC X(10).
+             05 PLATILLO-ID         PIC X(10).
+             05 PEDIDO-ID           PIC X(10).
+             05 CANTIDAD            PIC 9(2).
 
        WORKING-STORAGE SECTION.
        01 OPCIONES-MENU.
