@@ -9,21 +9,23 @@
 
 <hr>
 
-# Trabajo Practico
-Lo siguiente es un Trabajo practico realizado para La Universidad Nacional Abierta de Venezuela para la materia Procesamiento de datos (330) asesorada por la profesora Clemencia Caldera el cual 
+# :blue_book: Trabajo Practico
+El siguiente repositorio es un Trabajo práctico realizado para La Universidad Nacional Abierta de Venezuela para la materia Procesamiento de datos (330) asesorada por la profesora Clemencia Caldera el cual evalúa el Objetivo 5 del plan de estudio.
 
 <details>
 <summary><b>Situación:</b></summary>
-</details>
-Un nuevo restaurante está a punto de ser inaugurado. En este momento se le está dando los últimos toques para su apertura. El gerente a cargo del proyecto, se ha planteado la necesidad de un sistema automatizado, para llevar el servicio de pedido del cliente dentro del local.
 
+Un nuevo restaurante está a punto de ser inaugurado. En este momento se le está dando los últimos toques para su apertura. El gerente a cargo del proyecto, se ha planteado la necesidad de un sistema automatizado, para llevar el servicio de pedido del cliente dentro del local.
+---
 Para satisfacer los requerimientos propuestos por el gerente, el software debe contar con las siguientes especificaciones:
+</details>
 
 <details>
 <summary><b>Especificaciones:</b></summary>
 
 ### Carta del restaurante: 
 Datos correspondientes a los diferentes tipos de platillos:
+---
 - Código
 - Desayunos
 - Entradas
@@ -35,6 +37,7 @@ Datos correspondientes a los diferentes tipos de platillos:
 
 ### Platillos por tipos: 
 Datos sobre cada plato por tipo
+---
 - Código del platillo
 - Descripción del platillo
 
@@ -61,6 +64,7 @@ Datos sobre cada plato por tipo
 
 ### El programa debe permitir realizar lo siguiente:
 Registro y modificación de datos de:
+---
 - Meseros
 - Pedidos
 - Platillos
@@ -73,7 +77,7 @@ Registro y modificación de datos de:
 - Meseros ausentes
 
 ## ESPECIFICACIONES GENERALES PARA LA IMPLEMENTACIÓN:
-El programa a realizar debe presentar un Menú con las opciones, descritas a continuación.
+El programa a realizar debe presentar un Menú con las opciones descritas a continuación.
 
 ### 1) Carta del restaurante: 
 Esta opción permite ingresar o modificar los datos de los tipos de platillos que se encuentran en la carta. La clave es el código asignado por tipo.
@@ -109,13 +113,13 @@ Esta opción permite ingresar, modificar o eliminar un pedido. Su clave será el
 <summary><b>Requisitos:</b></summary>
 
 El programa deberá controlar la integridad de los datos, realizando validaciones como:
-
+---
 - No permitirá registrar el mismo pedido por dos meseros
 diferentes.
 - No permitirá que una mesa sea atendida por un mesero diferente al asignado. Sin embargo, en caso de su ausencia deberá la gerencia tener la opción de reasignar la mesa. (Validación especial).
-
+---
 De acuerdo a las especificaciones dadas, aplique los conocimientos sobre la organización de archivos y elabore un programa en COBOL que satisfaga los requerimientos planteados y a su vez entregue un informe que contenga lo siguiente:
-
+---
 * Algoritmo del programa en pseudolenguaje Listado documentado del programa (FUENTE): en el encabezado de cada procedimiento, función o sección debe incluir un breve comentario del proceso que se realiza.
 * Definición de las estructuras de datos utilizadas.
 * Listado de los reportes (código fuente y salida de cada reporte).
@@ -124,14 +128,46 @@ De acuerdo a las especificaciones dadas, aplique los conocimientos sobre la orga
 <details>
 <summary><b>Realización:</b></summary>
 
-Dadas la situación, se planeo la realización del proyecto estructurandolo en SQL en un principio pero se considero la realización usando archivos CSV considerando que un establecimiento de restaurante necesitaria mantener un registro mas comodo y que fuera de mas facil uso, dado que CSV puede ser facilmente manipulado en Excel o alguna otra herramienta de calculo se eligio esta opción, siendo mas realista y si se llega a presisar, se puede migrar a SQL dependiendo la necesidad del establecimiento.
+### Planteamiento
+Dadas la situación, se planeó la realización del proyecto estructurando en SQL en un principio pero se consideró la realización usando archivos CSV considerando que un establecimiento de restaurante necesita mantener un registro más cómodo y que fuera de más fácil uso, dado que CSV puede ser fácilmente manipulado en Excel o alguna otra herramienta de cálculo se eligió esta opción, siendo más realista y si se llega a precisar, se puede migrar a SQL dependiendo la necesidad del establecimiento.
+
+### Entorno
+Se realizó el programa en un entorno linux Debian - Sid usando de compilador GNUCobol4.
+  ![entorno](https://raw.githubusercontent.com/yordisc/Restaurante-330-UNA/main/imagenes/entorno.png)
+
+### Creación
+Se crearon 8 archivos CSV para poder guardar la información de la misma, todos estos fueron pensados para ser usados para CRUD y para ser trabajados en hoja de cálculo si fuese necesario:
+---
+* _clientes.csv_: guarda los datos de los clientes.
+* _carta.csv_: guarda los datos del menú.
+* _mesas.csv_: guarda los datos de mas mesas a usar.
+* _meseros.csv_: guarda los datos de los meseros.
+* _pedidos.csv_: guarda los pedidos realizados.
+* _platillo_pedido.csv_: guarda los platillos pedidos mencionados en __pedidos.csv__.
+* _platillos.csv_: guarda la lista tipos de platillos(lista).
+* _pago.csv_: guarda la lista de tipos de pagos que se pueden realizar(lista).
+---
+Para el programa se creo el archivo __restaurante.cbl__ el cual tiene las definiciones y lógica para hacer funcional el programa.
+---
+Este contiene 6 Rutinas las cuales cuentan con multiples sub-rutinas necesarias para completar el sistema programado.
 </details>
 
-## Descarga el proyecto
+## :triangular_flag_on_post: Descarga el proyecto
 ```bash
 git clone https://github.com/yordisc/Restaurante-330-UNA.git
 cd Restaurante-330-UNA
 ls
+```
+
+### Compilación
+_para Windows:_
+```bash
+cobc -x restaurante.cbl -o restaurante.exe
+```
+
+_Universal:_
+```bash
+cobc -x restaurante.cbl -o restaurante.o
 ```
 
 ## :100: Resources used / Credits 
@@ -142,10 +178,10 @@ ls
   * [Correo](mailto:clemenciacaldera@gmail.com)
   * [Web - Clemencia Caldera](https://asesoria-unidad-de-computacion.blogspot.com/)
   
-  ![clc](https://raw.githubusercontent.com/yordisc/Restaurante-330-UNA/main/clc.png)
+  ![clc](https://raw.githubusercontent.com/yordisc/Restaurante-330-UNA/main/imagenes/clc.png)
 </details>
 
-* [Documentacion](https://devdocs.io/gnu_cobol/)
+* [Documentación](https://devdocs.io/gnu_cobol/)
 * [Plan del curso - Procesamiento de Datos (330)](https://drive.google.com/file/d/1OO0qHJNdiKzNCs7qwBzIwBOGP2s_emLJ/view?usp=sharing)
 * [Material instrucional - Procesamiento de Datos (330)](https://drive.google.com/file/d/1CQYs_G7ihq21iYfH8th7Z5KnG_EBsCjD/view?usp=share_link)
 * [Foro de Cobol](cobolforo.es/)
