@@ -16,51 +16,50 @@ Para satisfacer los requerimientos propuestos por el gerente, el software debe c
 
 <details>
 <summary><b>Especificaciones</b></summary>
-## Especificaciones:
 
 ### Carta del restaurante: 
 Datos correspondientes a los diferentes tipos de platillos:
-o Código
-o Desayunos
-o Entradas
-o Ensaladas
-o Contornos
-o Carnes
-o Pescados y Mariscos
-o Bebidas
+- Código
+- Desayunos
+- Entradas
+- Ensaladas
+- Contornos
+- Carnes
+- Pescados y Mariscos
+- Bebidas
 
 ### Platillos por tipos: 
 Datos sobre cada plato por tipo
-o Código del platillo
-o Descripción del platillo
+- Código del platillo
+- Descripción del platillo
 
 ### Meseros: Datos sobre los meseros que atienden.
-o Nombre y Apellido
-o Cédula
+- Nombre y Apellido
+- Cédula
 
 ### Mesas numeradas: Datos sobre las mesas
-o No. Mesa
-o Mesero Asignado
-o Cantidad de Mesas
+- No. Mesa
+- Mesero Asignado
+- Cantidad de Mesas
 
 ### Pedidos: Datos de los pedidos realizados durante el día.
-o Nº de pedido pre impreso en talonario
-o Nº de mesa
-o Nº de cédula del mesero
-o Descripción del pedido
-o Cantidad
-o Precio Unitario
-o Tipo de pago
-o Importe
-o Propina
-o Enviado (s/n)
+- Nº de pedido pre impreso en talonario
+- Nº de mesa
+- Nº de cédula del mesero
+- Descripción del pedido
+- Cantidad
+- Precio Unitario
+- Tipo de pago
+- Importe
+- Propina
+- Enviado (s/n)
 
 ### El programa debe permitir realizar lo siguiente:
-- Registro y modificación de datos de:
-• Meseros
-• Pedidos
-• Platillos
-• Mesas
+Registro y modificación de datos de:
+- Meseros
+- Pedidos
+- Platillos
+- Mesas
 
 ### Las siguientes consultas:
 - Platillos disponibles
@@ -94,16 +93,15 @@ Esta opción permite ingresar, modificar o eliminar un pedido. Su clave será el
 - Importe por pedidos y total por fecha
 
 ## Para la implementación se deberán diseñar los archivos para almacenar los datos de:
-o CARTA DEL RESTAURANTE
-o PLATILLOS POR TIPOS
-o MESEROS
-o MESAS
-o PEDIDOS
+- CARTA DEL RESTAURANTE
+- PLATILLOS POR TIPOS
+- MESEROS
+- MESAS
+- PEDIDOS
 </details>
 
 <details>
 <summary><b>Requisitos</b></summary>
-## Requisitos
 
 El programa deberá controlar la integridad de los datos, realizando validaciones como:
 
@@ -113,9 +111,9 @@ diferentes.
 
 De acuerdo a las especificaciones dadas, aplique los conocimientos sobre la organización de archivos y elabore un programa en COBOL que satisfaga los requerimientos planteados y a su vez entregue un informe que contenga lo siguiente:
 
-Algoritmo del programa en pseudolenguaje Listado documentado del programa (FUENTE): en el encabezado de cada procedimiento, función o sección debe incluir un breve comentario del proceso que se realiza.
-Igualmente, en la definición de las estructuras de datos utilizadas.
-Listado de los reportes (código fuente y salida de cada reporte).
+* Algoritmo del programa en pseudolenguaje Listado documentado del programa (FUENTE): en el encabezado de cada procedimiento, función o sección debe incluir un breve comentario del proceso que se realiza.
+* Definición de las estructuras de datos utilizadas.
+* Listado de los reportes (código fuente y salida de cada reporte).
 </details>
 
 ## Descarga el proyecto
