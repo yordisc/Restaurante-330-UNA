@@ -124,9 +124,6 @@ ls
 ```
 
 ## :100: Resources used / Credits 
-* [Foro de Cobol](cobolforo.es/)
-* [Repositorio aprendiendo COBOL](https://github.com/HiroNakamura/aprendiendo-cobol/tree/master/temario)
-* [Documentacion](https://devdocs.io/gnu_cobol/)
 
 <details>
   <summary><b>Profesora Clemencia Caldera</b></summary>
@@ -134,8 +131,12 @@ ls
   * [Correo](mailto:clemenciacaldera@gmail.com)
   * [Web - Clemencia Caldera](https://asesoria-unidad-de-computacion.blogspot.com/)
   
-  ![clc](https://raw.githubusercontent.com/yordisc/Restaurante-330-UNA.git/master/clc.png)
+  ![clc](https://raw.githubusercontent.com/yordisc/Restaurante-330-UNA/main/clc.png)
 </details>
+
+* [Foro de Cobol](cobolforo.es/)
+* [Repositorio aprendiendo COBOL](https://github.com/HiroNakamura/aprendiendo-cobol/tree/master/temario)
+* [Documentacion](https://devdocs.io/gnu_cobol/)
 
 ## :venezuela: Social Media 
 * [Stackoverflow](https://stackoverflow.com/users/19875787/yordisc)
