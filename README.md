@@ -2,7 +2,6 @@
  
 [//]: <> (site para ícones: https://shields.io/ )
  
-<img alt="Maintained" src="https://img.shields.io/badge/Maintained%3F-Yes-green">
 <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/yordisc/Restaurante-330-UNA">
 <img alt="GitHub repo size" src="https://img.shields.io/github/repo-size/yordisc/Restaurante-330-UNA">
 <img alt="GitHub commit activity (branch)" src="https://img.shields.io/github/commit-activity/y/yordisc/Restaurante-330-UNA">
@@ -16,7 +15,7 @@ El siguiente repositorio es un Trabajo práctico realizado para La Universidad N
 <summary><b>Situación:</b></summary>
 
 Un nuevo restaurante está a punto de ser inaugurado. En este momento se le está dando los últimos toques para su apertura. El gerente a cargo del proyecto, se ha planteado la necesidad de un sistema automatizado, para llevar el servicio de pedido del cliente dentro del local.
----
+
 Para satisfacer los requerimientos propuestos por el gerente, el software debe contar con las siguientes especificaciones:
 </details>
 
@@ -25,7 +24,7 @@ Para satisfacer los requerimientos propuestos por el gerente, el software debe c
 
 ### Carta del restaurante: 
 Datos correspondientes a los diferentes tipos de platillos:
----
+
 - Código
 - Desayunos
 - Entradas
@@ -117,9 +116,9 @@ El programa deberá controlar la integridad de los datos, realizando validacione
 - No permitirá registrar el mismo pedido por dos meseros
 diferentes.
 - No permitirá que una mesa sea atendida por un mesero diferente al asignado. Sin embargo, en caso de su ausencia deberá la gerencia tener la opción de reasignar la mesa. (Validación especial).
----
+
 De acuerdo a las especificaciones dadas, aplique los conocimientos sobre la organización de archivos y elabore un programa en COBOL que satisfaga los requerimientos planteados y a su vez entregue un informe que contenga lo siguiente:
----
+
 * Algoritmo del programa en pseudolenguaje Listado documentado del programa (FUENTE): en el encabezado de cada procedimiento, función o sección debe incluir un breve comentario del proceso que se realiza.
 * Definición de las estructuras de datos utilizadas.
 * Listado de los reportes (código fuente y salida de cada reporte).
@@ -137,7 +136,7 @@ Se realizó el programa en un entorno linux Debian - Sid usando de compilador GN
 
 ### Creación
 Se crearon 8 archivos CSV para poder guardar la información de la misma, todos estos fueron pensados para ser usados para CRUD y para ser trabajados en hoja de cálculo si fuese necesario:
----
+
 * _clientes.csv_: guarda los datos de los clientes.
 * _carta.csv_: guarda los datos del menú.
 * _mesas.csv_: guarda los datos de mas mesas a usar.
@@ -146,9 +145,9 @@ Se crearon 8 archivos CSV para poder guardar la información de la misma, todos 
 * _platillo_pedido.csv_: guarda los platillos pedidos mencionados en __pedidos.csv__.
 * _platillos.csv_: guarda la lista tipos de platillos(lista).
 * _pago.csv_: guarda la lista de tipos de pagos que se pueden realizar(lista).
----
+
 Para el programa se creo el archivo __restaurante.cbl__ el cual tiene las definiciones y lógica para hacer funcional el programa.
----
+
 Este contiene 6 Rutinas las cuales cuentan con multiples sub-rutinas necesarias para completar el sistema programado.
 </details>
 
