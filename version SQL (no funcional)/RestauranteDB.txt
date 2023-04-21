@@ -1,0 +1,49 @@
+CREATE DATABASE restaurante;
+
+USE restaurante;
+
+CREATE TABLE carta_restaurante (
+  codigo INT PRIMARY KEY,
+  desayunos VARCHAR(50),
+  entradas VARCHAR(50),
+  ensaladas VARCHAR(50),
+  contornos VARCHAR(50),
+  carnes VARCHAR(50),
+  pescados_mariscos VARCHAR(50),
+  bebidas VARCHAR(50)
+);
+
+CREATE TABLE platillos (
+  codigo INT PRIMARY KEY,
+  tipo_platillo INT,
+  descripcion VARCHAR(50),
+  FOREIGN KEY (tipo_platillo) REFERENCES carta_restaurante(codigo)
+);
+
+CREATE TABLE meseros (
+  cedula INT PRIMARY KEY,
+  nombre VARCHAR(50),
+  apellido VARCHAR(50)
+);
+
+CREATE TABLE mesas (
+  numero_mesa INT PRIMARY KEY,
+  mesero_asignado INT,
+  cantidad_mesas INT,
+  FOREIGN KEY (mesero_asignado) REFERENCES meseros(cedula)
+);
+
+CREATE TABLE pedidos (
+  numero_pedido INT PRIMARY KEY,
+  numero_mesa INT,
+  cedula_mesero INT,
+  descripcion_pedido VARCHAR(50),
+  cantidad INT,
+  precio_unitario DECIMAL(10,2),
+  tipo_pago VARCHAR(50),
+  importe DECIMAL(10,2),
+  propina DECIMAL(10,2),
+  enviado CHAR(1),
+  FOREIGN KEY (numero_mesa) REFERENCES mesas(numero_mesa),
+  FOREIGN KEY (cedula_mesero) REFERENCES meseros(cedula)
+);
