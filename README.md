@@ -9,13 +9,18 @@
 
 <hr>
 
-# Situación:
+# Trabajo Practico
+Lo siguiente es un Trabajo practico realizado para La Universidad Nacional Abierta de Venezuela para la materia Procesamiento de datos (330) asesorada por la profesora Clemencia Caldera el cual 
+
+<details>
+<summary><b>Situación:</b></summary>
+</details>
 Un nuevo restaurante está a punto de ser inaugurado. En este momento se le está dando los últimos toques para su apertura. El gerente a cargo del proyecto, se ha planteado la necesidad de un sistema automatizado, para llevar el servicio de pedido del cliente dentro del local.
 
 Para satisfacer los requerimientos propuestos por el gerente, el software debe contar con las siguientes especificaciones:
 
 <details>
-<summary><b>Especificaciones</b></summary>
+<summary><b>Especificaciones:</b></summary>
 
 ### Carta del restaurante: 
 Datos correspondientes a los diferentes tipos de platillos:
@@ -101,7 +106,7 @@ Esta opción permite ingresar, modificar o eliminar un pedido. Su clave será el
 </details>
 
 <details>
-<summary><b>Requisitos</b></summary>
+<summary><b>Requisitos:</b></summary>
 
 El programa deberá controlar la integridad de los datos, realizando validaciones como:
 
@@ -114,6 +119,12 @@ De acuerdo a las especificaciones dadas, aplique los conocimientos sobre la orga
 * Algoritmo del programa en pseudolenguaje Listado documentado del programa (FUENTE): en el encabezado de cada procedimiento, función o sección debe incluir un breve comentario del proceso que se realiza.
 * Definición de las estructuras de datos utilizadas.
 * Listado de los reportes (código fuente y salida de cada reporte).
+</details>
+
+<details>
+<summary><b>Realización:</b></summary>
+
+Dadas la situación, se planeo la realización del proyecto estructurandolo en SQL en un principio pero se considero la realización usando archivos CSV considerando que un establecimiento de restaurante necesitaria mantener un registro mas comodo y que fuera de mas facil uso, dado que CSV puede ser facilmente manipulado en Excel o alguna otra herramienta de calculo se eligio esta opción, siendo mas realista y si se llega a presisar, se puede migrar a SQL dependiendo la necesidad del establecimiento.
 </details>
 
 ## Descarga el proyecto
@@ -134,9 +145,11 @@ ls
   ![clc](https://raw.githubusercontent.com/yordisc/Restaurante-330-UNA/main/clc.png)
 </details>
 
+* [Documentacion](https://devdocs.io/gnu_cobol/)
+* [Plan del curso - Procesamiento de Datos (330)](https://drive.google.com/file/d/1OO0qHJNdiKzNCs7qwBzIwBOGP2s_emLJ/view?usp=sharing)
+* [Material instrucional - Procesamiento de Datos (330)](https://drive.google.com/file/d/1CQYs_G7ihq21iYfH8th7Z5KnG_EBsCjD/view?usp=share_link)
 * [Foro de Cobol](cobolforo.es/)
 * [Repositorio aprendiendo COBOL](https://github.com/HiroNakamura/aprendiendo-cobol/tree/master/temario)
-* [Documentacion](https://devdocs.io/gnu_cobol/)
 
 ## :venezuela: Social Media 
 * [Stackoverflow](https://stackoverflow.com/users/19875787/yordisc)
