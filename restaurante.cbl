@@ -9,7 +9,6 @@
        OBJECT-COMPUTER. PC.
 
        INPUT-OUTPUT SECTION.
-
        FILE-CONTROL.
        SELECT clientes-file ASSIGN TO "clientes.csv".
        SELECT carta-file ASSIGN TO "carta.csv".
@@ -19,7 +18,7 @@
        SELECT pagos-file ASSIGN TO "pagos.csv".
        SELECT mesas-file ASSIGN TO "mesas.csv".
        SELECT meseros-file ASSIGN TO "meseros.csv".
-
+       
        DATA DIVISION.
        FILE SECTION.
 
@@ -84,7 +83,7 @@
        WORKING-STORAGE SECTION.
 
        01 EOF PIC S9(4) VALUE -1.
-
+       01 RES PIC X(1).
           01 WS-FECHA           PIC X(10).
           01 WS-OPCION          PIC 99.
           01 WS-CARTA-TIPOS.
