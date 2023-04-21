@@ -127,9 +127,11 @@ ls
 * [Foro de Cobol](cobolforo.es/)
 * [Repositorio aprendiendo COBOL](https://github.com/HiroNakamura/aprendiendo-cobol/tree/master/temario)
 * [Documentacion](https://devdocs.io/gnu_cobol/)
-* [Profesora Clemancia Cladera](mailto:clemenciacaldera@gmail.com)
+<summary><b>Profesora Clemencia Caldera</b></summary>
+* [Correo](mailto:clemenciacaldera@gmail.com)
 * [Web - Clemencia Caldera](https://asesoria-unidad-de-computacion.blogspot.com/)
-
+![clc](https://raw.githubusercontent.com/yordisc/Restaurante-330-UNA.git/master/clc.png)
+</details>
 
 ## :venezuela: Social Media 
 * [Stackoverflow](https://stackoverflow.com/users/19875787/yordisc)
