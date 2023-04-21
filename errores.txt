@@ -1,138 +1,22 @@
-restaurante.cbl:266: error: continuation character expected
-restaurante.cbl:281: error: continuation character expected
-restaurante.cbl:354: error: continuation character expected
-restaurante.cbl:355: error: continuation character expected
-restaurante.cbl:364: error: continuation character expected
-restaurante.cbl:878: error: continuation character expected
-restaurante.cbl:898: warning: line not terminated by a newline
-restaurante.cbl:14: error: missing file description for FILE clientes-file
-restaurante.cbl:15: error: PROCEDURE DIVISION header missing
-restaurante.cbl:15: error: syntax error, unexpected ORGANIZATION
-restaurante.cbl:16: error: syntax error, unexpected SELECT
-restaurante.cbl:17: error: syntax error, unexpected ORGANIZATION
-restaurante.cbl:18: error: syntax error, unexpected SELECT
-restaurante.cbl:19: error: syntax error, unexpected ORGANIZATION
-restaurante.cbl:20: error: syntax error, unexpected SELECT
-restaurante.cbl:21: error: syntax error, unexpected ORGANIZATION
-restaurante.cbl:22: error: syntax error, unexpected SELECT
-restaurante.cbl:23: error: syntax error, unexpected ORGANIZATION
-restaurante.cbl:24: error: syntax error, unexpected SELECT
-restaurante.cbl:25: error: syntax error, unexpected ORGANIZATION
-restaurante.cbl:26: error: syntax error, unexpected SELECT
-restaurante.cbl:27: error: syntax error, unexpected ORGANIZATION
-restaurante.cbl:28: error: syntax error, unexpected SELECT
-restaurante.cbl:29: error: syntax error, unexpected ORGANIZATION
-restaurante.cbl:31: error: syntax error, unexpected DATA
-restaurante.cbl:32: error: syntax error, unexpected FILE
-restaurante.cbl:34: error: syntax error, unexpected FD
-restaurante.cbl:35: error: unknown statement '01'
-restaurante.cbl:36: error: unknown statement '05'
-restaurante.cbl:37: error: unknown statement '05'
-restaurante.cbl:38: error: unknown statement '05'
-restaurante.cbl:40: error: syntax error, unexpected FD
-restaurante.cbl:41: error: unknown statement '01'
-restaurante.cbl:42: error: unknown statement '05'
-restaurante.cbl:43: error: unknown statement '05'
-restaurante.cbl:44: error: unknown statement '05'
-restaurante.cbl:45: error: unknown statement '05'
-restaurante.cbl:46: error: unknown statement '05'
-restaurante.cbl:47: error: unknown statement '05'
-restaurante.cbl:48: error: unknown statement '05'
-restaurante.cbl:49: error: unknown statement '05'
-restaurante.cbl:50: error: unknown statement '05'
-restaurante.cbl:51: error: unknown statement '05'
-restaurante.cbl:52: error: unknown statement '05'
-restaurante.cbl:54: error: syntax error, unexpected FD
-restaurante.cbl:55: error: unknown statement '01'
-restaurante.cbl:56: error: unknown statement '05'
-restaurante.cbl:57: error: unknown statement '05'
-restaurante.cbl:59: error: syntax error, unexpected FD
-restaurante.cbl:60: error: unknown statement '01'
-restaurante.cbl:61: error: unknown statement '05'
-restaurante.cbl:62: error: unknown statement '05'
-restaurante.cbl:63: error: unknown statement '05'
-restaurante.cbl:64: error: unknown statement '05'
-restaurante.cbl:66: error: syntax error, unexpected FD
-restaurante.cbl:67: error: unknown statement '01'
-restaurante.cbl:68: error: unknown statement '05'
-restaurante.cbl:69: error: unknown statement '05'
-restaurante.cbl:71: error: syntax error, unexpected FD
-restaurante.cbl:72: error: unknown statement '01'
-restaurante.cbl:73: error: unknown statement '05'
-restaurante.cbl:74: error: unknown statement '05'
-restaurante.cbl:75: error: unknown statement '05'
-restaurante.cbl:76: error: unknown statement '05'
-restaurante.cbl:77: error: unknown statement '05'
-restaurante.cbl:79: error: syntax error, unexpected FD
-restaurante.cbl:80: error: unknown statement '01'
-restaurante.cbl:81: error: unknown statement '05'
-restaurante.cbl:82: error: unknown statement '05'
-restaurante.cbl:83: error: unknown statement '05'
-restaurante.cbl:85: error: syntax error, unexpected FD
-restaurante.cbl:86: error: unknown statement '01'
-restaurante.cbl:87: error: unknown statement '05'
-restaurante.cbl:88: error: unknown statement '05'
-restaurante.cbl:89: error: unknown statement '05'
-restaurante.cbl:90: error: unknown statement '05'
-restaurante.cbl:92: error: syntax error, unexpected WORKING-STORAGE
-restaurante.cbl:94: error: unknown statement '01'
-restaurante.cbl:96: error: unknown statement '01'
-restaurante.cbl:97: error: unknown statement '01'
-restaurante.cbl:98: error: unknown statement '01'
-restaurante.cbl:99: error: unknown statement '05'
-restaurante.cbl:100: error: unknown statement '10'
-restaurante.cbl:101: error: unknown statement '10'
-restaurante.cbl:102: error: unknown statement '01'
-restaurante.cbl:103: error: unknown statement '05'
-restaurante.cbl:104: error: unknown statement '10'
-restaurante.cbl:105: error: unknown statement '10'
-restaurante.cbl:106: error: unknown statement '10'
-restaurante.cbl:107: error: unknown statement '10'
-restaurante.cbl:108: error: unknown statement '10'
-restaurante.cbl:109: error: unknown statement '01'
-restaurante.cbl:110: error: unknown statement '05'
-restaurante.cbl:111: error: unknown statement '10'
-restaurante.cbl:112: error: unknown statement '10'
-restaurante.cbl:113: error: unknown statement '10'
-restaurante.cbl:114: error: unknown statement '10'
-restaurante.cbl:115: error: unknown statement '01'
-restaurante.cbl:116: error: unknown statement '05'
-restaurante.cbl:117: error: unknown statement '10'
-restaurante.cbl:118: error: unknown statement '10'
-restaurante.cbl:119: error: unknown statement '10'
-restaurante.cbl:120: error: unknown statement '01'
-restaurante.cbl:121: error: unknown statement '05'
-restaurante.cbl:122: error: unknown statement '10'
-restaurante.cbl:123: error: unknown statement '10'
-restaurante.cbl:124: error: unknown statement '10'
-restaurante.cbl:125: error: unknown statement '10'
-restaurante.cbl:126: error: unknown statement '10'
-restaurante.cbl:127: error: unknown statement '10'
-restaurante.cbl:128: error: unknown statement '10'
-restaurante.cbl:129: error: unknown statement '10'
-restaurante.cbl:130: error: unknown statement '10'
-restaurante.cbl:131: error: unknown statement '10'
-restaurante.cbl:132: error: unknown statement '10'
-restaurante.cbl:133: error: unknown statement '01'
-restaurante.cbl:134: error: unknown statement '05'
-restaurante.cbl:135: error: unknown statement '10'
-restaurante.cbl:136: error: unknown statement '10'
-restaurante.cbl:137: error: unknown statement '10'
-restaurante.cbl:139: error: syntax error, unexpected PROCEDURE
-restaurante.cbl: in paragraph 'MAIN-PROGRAM':
-restaurante.cbl:141: error: 'WS-OPCION' is not defined
-restaurante.cbl: in paragraph 'MENU-PRINCIPAL':
-restaurante.cbl:159: error: 'WS-OPCION' is not defined
-restaurante.cbl:160: error: 'WS-OPCION' is not defined
-restaurante.cbl: in paragraph 'MENU-CARTA':
-restaurante.cbl:191: error: 'WS-OPCION' is not defined
-restaurante.cbl:192: error: 'WS-OPCION' is not defined
-restaurante.cbl: in paragraph 'VER-TIPOS-PLATILLOS':
-restaurante.cbl:212: error: 'EOF' is not defined
-restaurante.cbl: in paragraph 'LEER-TIPOS-PLATILLOS':
-restaurante.cbl:222: error: syntax error, unexpected Literal, expecting Identifier
-restaurante.cbl:223: error: 'carta' is not defined
-restaurante.cbl:223: error: 'carta' is not a file name
-cobc: too many errors
-
-cobc: aborting compile of restaurante.cbl at line 223 (PROGRAM-ID: Restaurante)
+restaurante.cbl:258: error: continuation character expected
+restaurante.cbl:273: error: continuation character expected
+restaurante.cbl:346: error: continuation character expected
+restaurante.cbl:347: error: continuation character expected
+restaurante.cbl:356: error: continuation character expected
+restaurante.cbl:870: error: continuation character expected
+restaurante.cbl:113: error: TO phrase without DEPENDING phrase
+restaurante.cbl: in paragraph 'HASTA-LEER-TODOS-TIPOS-PLATILLOS':
+restaurante.cbl:221: error: 'ID-CARTA-TIPO' requires one subscript
+restaurante.cbl:221: error: 'tipo-de-platillo' is ambiguous; needs qualification
+restaurante.cbl:61: error: 'tipo-de-platillo IN carta-record' defined here
+restaurante.cbl:93: error: 'tipo-de-platillo IN WS-CARTA-TIPO IN WS-CARTA-TIPOS' defined here
+restaurante.cbl: in paragraph 'AGREGAR-TIPO-PLATILLO':
+restaurante.cbl:237: error: 'ID-CARTA-TIPO' requires one subscript
+restaurante.cbl:237: error: 'ID-CARTA-TIPO' requires one subscript
+restaurante.cbl:238: error: WRITE requires a record name as subject
+restaurante.cbl:239: error: 'ID-CARTA-TIPO' requires one subscript
+restaurante.cbl:239: error: syntax error, unexpected Identifier
+restaurante.cbl: in paragraph 'MODIFICAR-TIPO-PLATILLO':
+restaurante.cbl:248: error: 'ID-CARTA-TIPO' requires one subscript
+restaurante.cbl:253: error: 'carta' is not defined
+restaurante.cbl:253: error: unknown statement 'csv'

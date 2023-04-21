@@ -12,22 +12,14 @@
 
        FILE-CONTROL.
        SELECT clientes-file ASSIGN TO "clientes.csv".
-              ORGANIZATION IS LINE SEQUENTIAL.
        SELECT carta-file ASSIGN TO "carta.csv".
-              ORGANIZATION IS LINE SEQUENTIAL.
        SELECT platillos-file ASSIGN TO "platillos.csv".
-              ORGANIZATION IS LINE SEQUENTIAL.
        SELECT platillo-pedido-file ASSIGN TO "platillo_pedido.csv".
-              ORGANIZATION IS LINE SEQUENTIAL.
        SELECT pedidos-file ASSIGN TO "pedidos.csv".
-              ORGANIZATION IS LINE SEQUENTIAL.
        SELECT pagos-file ASSIGN TO "pagos.csv".
-              ORGANIZATION IS LINE SEQUENTIAL.
        SELECT mesas-file ASSIGN TO "mesas.csv".
-              ORGANIZATION IS LINE SEQUENTIAL.
        SELECT meseros-file ASSIGN TO "meseros.csv".
-              ORGANIZATION IS LINE SEQUENTIAL.
-       
+
        DATA DIVISION.
        FILE SECTION.
 
@@ -66,7 +58,7 @@
        FD carta-file.
        01 carta-record.
           05 id-carta               PIC 9(5).
-          05 tipo-de-platillo       PIC X(20).
+          05 tipo                   PIC X(20).
 
        FD platillos-file.
        01 platillos-record.
@@ -219,22 +211,22 @@
           DISPLAY "===============================".
 
        LEER-TIPOS-PLATILLOS.
-          OPEN INPUT "carta.csv"
-          READ carta.csv
+          OPEN INPUT carta-file
+          READ carta-file
           AT END
               SET EOF TO 1
           END-READ.
 
        HASTA-LEER-TODOS-TIPOS-PLATILLOS.
           DISPLAY ID-CARTA-TIPO "    " TIPO-DE-PLATILLO
-          READ carta.csv
+          READ carta-file
           AT END
               SET EOF TO 1
           END-READ.
           IF EOF = 0
               PERFORM HASTA-LEER-TODOS-TIPOS-PLATILLOS
           END-IF.
-          CLOSE carta.csv.
+          CLOSE carta-file.
 
        AGREGAR-TIPO-PLATILLO.
           DISPLAY "==============================="
@@ -243,7 +235,7 @@
           DISPLAY "Ingrese el nuevo tipo de platillo:"
           ACCEPT TIPO-DE-PLATILLO
           COMPUTE ID-CARTA-TIPO = FUNCTION MAX(ID-CARTA-TIPO) + 1
-          WRITE carta.csv
+          WRITE carta-file
               FROM ID-CARTA-TIPO, TIPO-DE-PLATILLO
           DISPLAY "Tipo de platillo agregado exitosamente."
           DISPLAY "===============================".
@@ -263,7 +255,7 @@
               DISPLAY "Tipo de platillo modificado exitosamente."
           ELSE
         DISPLAY "No se encontró el tipo de platillo con el ID ingresado."
-          END-IF
+          END-IF.
           DISPLAY "===============================".
 
        ELIMINAR-TIPO-PLATILLO.
@@ -278,7 +270,7 @@
               DISPLAY "Tipo de platillo eliminado exitosamente."
           ELSE
         DISPLAY "No se encontró el tipo de platillo con el ID ingresado."
-          END-IF
+          END-IF.
           DISPLAY "===============================".
       *Fin de Menu Carta
 
@@ -350,8 +342,8 @@
               PERFORM MODIFICAR-PLATILLO-CSV
               DISPLAY "Platillo modificado exitosamente."
           ELSE
-              DISPLAY "No se encontró ningún platillo con ese ID. ,
-       - Intente de nuevo."
+              DISPLAY "No se encontró ningún platillo con ese ID. ",
+       - "Intente de nuevo."
           END-IF
        PERFORM MENU-PLATILLOS.
 
@@ -362,8 +354,8 @@
           IF FOUND-PLATILLO
               DISPLAY "Esta seguro que desea eliminar el platillo (S/N)?"
               ACCEPT CONFIRMACION
-              IF CONFIRMACION = "S" OR CONFIRMACION = "s"
-                  PERFORM ELIMINAR-PLATILLO-ARCHIVO
+              IF CONFIRMACION = "S" OR CONFIRMACION = "s",
+                  PERFORM ELIMINAR-PLATILLO-ARCHIVO,
                   DISPLAY "Platillo eliminado exitosamente."
               END-IF
           ELSE
@@ -378,7 +370,7 @@
           "TIPO DE PLATILLO      ",
           "PRECIO".
           DISPLAY "----------------------------------",
-          "----------------------------------------------".
+       -"----------------------------------------------".
           PERFORM VARYING I FROM 1 BY 1 UNTIL I > EOF
               DISPLAY ID-PLATILLO(I),
               "   ",
@@ -896,3 +888,4 @@
           END-IF
           PERFORM LEER-SIGUIENTE-REGISTRO.
       *Fin Registro Pedidos (Rutina 5)
+       STOP RUN.
