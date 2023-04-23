@@ -177,14 +177,23 @@ cd Restaurante-330-UNA
 ```
 <details>
   <summary><b>Imagenes de ejecución (has click aqui)</b></summary>
+  
   ![01](https://raw.githubusercontent.com/yordisc/Restaurante-330-UNA/main/imagenes/01.png)
+  
   ![02](https://raw.githubusercontent.com/yordisc/Restaurante-330-UNA/main/imagenes/02.png)
+  
   ![03](https://raw.githubusercontent.com/yordisc/Restaurante-330-UNA/main/imagenes/03.png)
+  
   ![04](https://raw.githubusercontent.com/yordisc/Restaurante-330-UNA/main/imagenes/04.png)
+  
   ![05](https://raw.githubusercontent.com/yordisc/Restaurante-330-UNA/main/imagenes/05.png)
+  
   ![06](https://raw.githubusercontent.com/yordisc/Restaurante-330-UNA/main/imagenes/06.png)
+  
   ![07](https://raw.githubusercontent.com/yordisc/Restaurante-330-UNA/main/imagenes/07.png)
+  
   ![08](https://raw.githubusercontent.com/yordisc/Restaurante-330-UNA/main/imagenes/08.png)
+  
 </details>
 
 ## :100: Resources used / Credits 
