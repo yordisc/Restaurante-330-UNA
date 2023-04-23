@@ -9,6 +9,7 @@
 <hr>
 
 # :blue_book: Trabajo Practico
+
 El siguiente repositorio es un Trabajo práctico realizado para La Universidad Nacional Abierta de Venezuela para la materia Procesamiento de datos (330) asesorada por la profesora Clemencia Caldera el cual evalúa el Objetivo 5 del plan de estudio.
 
 <details>
@@ -22,7 +23,8 @@ Para satisfacer los requerimientos propuestos por el gerente, el software debe c
 <details>
 <summary><b>Especificaciones:</b></summary>
 
-### Carta del restaurante: 
+### Carta del restaurante:
+
 Datos correspondientes a los diferentes tipos de platillos:
 
 - Código
@@ -34,22 +36,26 @@ Datos correspondientes a los diferentes tipos de platillos:
 - Pescados y Mariscos
 - Bebidas
 
-### Platillos por tipos: 
+### Platillos por tipos:
+
 Datos sobre cada plato por tipo
 ---
 - Código del platillo
 - Descripción del platillo
 
 ### Meseros: Datos sobre los meseros que atienden.
+
 - Nombre y Apellido
 - Cédula
 
 ### Mesas numeradas: Datos sobre las mesas
+
 - No. Mesa
 - Mesero Asignado
 - Cantidad de Mesas
 
 ### Pedidos: Datos de los pedidos realizados durante el día.
+
 - Nº de pedido pre impreso en talonario
 - Nº de mesa
 - Nº de cédula del mesero
@@ -70,30 +76,37 @@ Registro y modificación de datos de:
 - Mesas
 
 ### Las siguientes consultas:
+
 - Platillos disponibles
 - Pedidos realizados por fecha
 - Meseros con pedidos por Nº de Pedido
 - Meseros ausentes
 
 ## ESPECIFICACIONES GENERALES PARA LA IMPLEMENTACIÓN:
+
 El programa a realizar debe presentar un Menú con las opciones descritas a continuación.
 
 ### 1) Carta del restaurante: 
 Esta opción permite ingresar o modificar los datos de los tipos de platillos que se encuentran en la carta. La clave es el código asignado por tipo.
 
 ### 2) Platillos por tipos:
+
 Esta opción permite ingresar o modificar los datos de los diferentes platillos que conforman los tipos. La clave de acceso de cada platillo es el código asignado.
 
 ### 3) Registro de Meseros:
+
 Esta opción permite ingresar o modificar los datos de los meseros. La clave de acceso será la cédula de cada mesero.
 
 ### 4) Registro de Mesas numeradas:
+
 Esta opción permite ingresar o modificar los datos de las mesas que conforman el comedor. Su clave será el Nº de mesa.
 
 ### 5) Registro de Pedidos:
+
 Esta opción permite ingresar, modificar o eliminar un pedido. Su clave será el No. de pedido.
 
 ### Consultas: El programa permitirá realizar las siguientes consultas:
+
 - Platillos por tipos.
 - Meseros ausentes o retirados por fecha
 - Mesas atendidas por mesero y fecha
@@ -101,11 +114,13 @@ Esta opción permite ingresar, modificar o eliminar un pedido. Su clave será el
 - Importe por pedidos y total por fecha
 
 ## Para la implementación se deberán diseñar los archivos para almacenar los datos de:
+
 - CARTA DEL RESTAURANTE
 - PLATILLOS POR TIPOS
 - MESEROS
 - MESAS
 - PEDIDOS
+
 </details>
 
 <details>
@@ -135,10 +150,11 @@ Dadas la situación, se planeó la realización del proyecto estructurando en SQ
 
 ### Entorno
 Se realizó el programa en un entorno linux Fedora 37 usando de compilador GNUCobol versión 3.
+
   ![entorno](https://raw.githubusercontent.com/yordisc/Restaurante-330-UNA/main/imagenes/entorno.png)
 
 ### Creación
-Se crearon 5 archivos TXT para poder guardar la información de la misma, todos estos fueron pensados para ser usados para CRUD y para ser trabajados en hoja de cálculo si fuese necesario:
+Se crearon 5 archivos TXT para poder guardar la información de la misma, todos estos fueron pensados para ser usados para CRUD y para ser trabajados en cualquier medio posible si fuese necesario:
 
 * _carta.txt_: guarda los datos del menú.
 * _platillos.csv_: guarda la lista tipos de platillos(lista).
@@ -170,11 +186,7 @@ cobc -x restaurante.cbl -o restaurante.o
 ```
 
 ### Ejecución
-```bash
-git clone https://github.com/yordisc/Restaurante-330-UNA.git
-cd Restaurante-330-UNA
-./restaurante.exe
-```
+
 <details>
   <summary><b>Imagenes de ejecución (has click aqui)</b></summary>
   
@@ -195,6 +207,13 @@ cd Restaurante-330-UNA
   ![08](https://raw.githubusercontent.com/yordisc/Restaurante-330-UNA/main/imagenes/08.png)
   
 </details>
+
+
+```bash
+git clone https://github.com/yordisc/Restaurante-330-UNA.git
+cd Restaurante-330-UNA
+./restaurante.exe
+```
 
 ## :100: Resources used / Credits 
 
