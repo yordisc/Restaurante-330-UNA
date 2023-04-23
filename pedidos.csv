@@ -1,2 +1,0 @@
-id_pedido,id_cliente,id_mesa,id_mesero,id_platillo_pedido,id_pago,Propina,Importe,Enviado(s/n),fecha,hora
-1,6,6,1,1,1,2.00,7.00,s,2023-04-20,14:30:00

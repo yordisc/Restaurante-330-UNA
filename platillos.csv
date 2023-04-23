@@ -1,7 +1,0 @@
-id_platillo,Nombre,Descripción,id_carta,precio_unitario
-1,Hamburguesa,Carne de res con queso,5,5.00
-2,Pizza,Hawaiana con piña y jamón,2,8.00
-3,Ensalada,César con pollo y aderezo,3,2.00
-4,Sopa,De tomate con croutones,2,3.00
-5,Coca Cola, Refresco,7,1.50
-6,Pasta con Caraotas,2,6.60

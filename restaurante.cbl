@@ -1,955 +1,1170 @@
+       *>  *************************************************************
+       *>  UNIVERSIDAD NACIONAL ABIERTA                                *
+       *>  TRABAJO PRÁCTICO                                            *
+       *>  ASIGNATURA: PROCESAMIENTO DE DATOS                         *
+       *>  CÓDIGO: 330                                                 *
+       *>  COMPILADO CON GnuCOBOL VERSIÓN (3.1.2.0)  GNU/LINUX         *
+       *>  EDITOR DE CÓDIGO: VISUAL STUDIO CODE                        *
+       *> **************************************************************
+       *>  PARA COMPILAR DEBE INSTALAR gnucobol                        *
+       *>  y ejecutar: cobc -O restaurante.cbl -x -o main
+       *>  -------------------------------------------------------------
        IDENTIFICATION DIVISION.
-       PROGRAM-ID. Restaurante.
-       AUTHOR. github.com/yordisc.
-       DATE-WRITTEN. 2023.
-       DATE-COMPILED.
+       PROGRAM-ID. RESTAURANTE.
+       AUTHOR. GITHUB.COM/YORDISC/Restaurante-330-UNA.
+       DATE-WRITTEN. [22-04-2023].
+       DATE-COMPILED. [22-04-2023].
+       *>  -------------------------------------------------------------
        ENVIRONMENT DIVISION.
-       CONFIGURATION SECTION.
-       SOURCE-COMPUTER. PC.
-       OBJECT-COMPUTER. PC.
-
        INPUT-OUTPUT SECTION.
        FILE-CONTROL.
-
-       SELECT clientes-file ASSIGN TO "clientes.csv".
-           ORGANIZATION IS LINE SEQUENTIAL.
-       SELECT carta-file ASSIGN TO "carta.csv".
-           ORGANIZATION IS LINE SEQUENTIAL.
-       SELECT platillos-file ASSIGN TO "platillos.csv".
-           ORGANIZATION IS LINE SEQUENTIAL.
-       SELECT platillo-pedido-file ASSIGN TO "platillo_pedido.csv".
-           ORGANIZATION IS LINE SEQUENTIAL.
-       SELECT pedidos-file ASSIGN TO "pedidos.csv".
-           ORGANIZATION IS LINE SEQUENTIAL.
-       SELECT pagos-file ASSIGN TO "pago.csv".
-           ORGANIZATION IS LINE SEQUENTIAL.
-       SELECT mesas-file ASSIGN TO "mesas.csv".
-           ORGANIZATION IS LINE SEQUENTIAL.
-       SELECT meseros-file ASSIGN TO "meseros.csv".
-           ORGANIZATION IS LINE SEQUENTIAL.
-
+       *>  ASIGNACIÓN DE LOS ARCHIVOS LÓGICOS AL ARCHIVO FÍSICO:
+       *>  ARCHIVO PARA LA CARTA DEL RESTAURANTE
+           SELECT F-ARCHIVO-CARTA
+               ASSIGN TO 'CARTA.TXT'
+               ORGANIZATION IS INDEXED
+               RECORD KEY IS RC-CODIGO
+               ACCESS MODE IS DYNAMIC
+               FILE STATUS IS FS-STATUS-CARTA.
+       *>  ARCHIVO PARA LOS PLATILLOS
+           SELECT F-ARCHIVO-PLATILLOS
+               ASSIGN TO 'PLATILLOS.TXT'
+               ORGANIZATION IS INDEXED
+               RECORD KEY IS RP-CODIGO
+               ACCESS MODE IS DYNAMIC
+               FILE STATUS IS FS-STATUS-PLATILLOS.
+       *>  ARCHIVO PARA EL LISTADO DE MESEROS
+           SELECT F-ARCHIVO-MESEROS 
+               ASSIGN TO 'MESEROS.TXT'
+               ORGANIZATION IS INDEXED
+               RECORD KEY IS RM-CEDULA
+               ACCESS MODE IS DYNAMIC
+               FILE STATUS IS FS-STATUS-MESEROS.
+       *>  ARCHIVO PARA LAS MESAS
+           SELECT F-ARCHIVO-MESAS
+               ASSIGN TO 'MESAS.TXT'
+               ORGANIZATION IS INDEXED
+               RECORD KEY IS RME-NUMERO
+               ACCESS MODE IS DYNAMIC
+               FILE STATUS IS FS-STATUS-MESAS.
+       *>  ARCHIVO PARA LAS MESAS
+           SELECT F-ARCHIVO-PEDIDOS
+               ASSIGN TO 'PEDIDOS.TXT'
+               ORGANIZATION IS INDEXED
+               RECORD KEY IS RPE-NUMERO
+               ACCESS MODE IS DYNAMIC
+               FILE STATUS IS FS-STATUS-PEDIDOS.
+       *>  -------------------------------------------------------------
        DATA DIVISION.
        FILE SECTION.
-
-       FD platillo-pedido-file.
-          LABEL RECORDS ARE STANDARD
-          VALUE OF FILE-ID IS "platillo_pedido.csv"
-          DATA RECORD IS platillo-pedido-record.
-       01 platillo-pedido-record.
-          05 id-platillo-pedido     PIC 9(5).
-          05 id-platillo            PIC 9(5).
-          05 cantidad               PIC 9(5).
-
-       FD pedidos-file.
-          LABEL RECORDS ARE STANDARD
-          VALUE OF FILE-ID IS "pedidos.csv"
-          DATA RECORD IS pedidos-record.
-       01 pedidos-record.
-          05 id-pedido              PIC 9(5).
-          05 id-cliente             PIC 9(5).
-          05 id-mesa                PIC 9(5).
-          05 id-mesero              PIC 9(5).
-          05 id-platillo-pedido     PIC 9(5).
-          05 id-pago                PIC 9(5).
-          05 propina                PIC 9(5)V99.
-          05 importe                PIC 9(5)V99.
-          05 enviado                PIC X.
-          05 fecha                  PIC X(10).
-          05 hora                   PIC X(8).
-
-       FD pagos-file.
-          LABEL RECORDS ARE STANDARD
-          VALUE OF FILE-ID IS "pago.csv"
-          DATA RECORD IS pagos-record.
-       01 pagos-record.
-          05 id-pago                PIC 9(5).
-          05 tipo-de-pago           PIC X(10).
-
-       FD clientes-file.
-          LABEL RECORDS ARE STANDARD
-          VALUE OF FILE-ID IS "clientes.csv"
-          DATA RECORD IS clientes-record.
-       01 clientes-record.
-          05 id-cliente             PIC 9(5).
-          05 nombre                 PIC X(30).
-          05 telefono               PIC X(14).
-          05 direccion-cliente      PIC X(30).
-
-       FD carta-file.
-          LABEL RECORDS ARE STANDARD
-          VALUE OF FILE-ID IS "carta.csv"
-          DATA RECORD IS carta-record.
-       01 carta-record.
-         05 ID-CARTA-TIPO         PIC 9(5).
-         05 FILLER             PIC X(01) VALUE ";".
-         05 TIPO-DE-PLATILLO      PIC X(20).
-
-       FD platillos-file.
-          LABEL RECORDS ARE STANDARD
-          VALUE OF FILE-ID IS "platillos.csv"
-          DATA RECORD IS platillos-record.
-       01 platillos-record.
-          05 id-platillo            PIC 9(5).
-          05 nombre                 PIC X(20).
-          05 descripcion            PIC X(30).
-          05 id-carta               PIC 9(5).
-          05 precio-unitario        PIC 9(5)V99.
-
-       FD mesas-file.
-          LABEL RECORDS ARE STANDARD
-          VALUE OF FILE-ID IS "mesas.csv"
-          DATA RECORD IS mesas-record.
-       01 mesas-record.
-          05 id-mesa                PIC 9(5).
-          05 id-mesero              PIC 9(5).
-          05 cantidad               PIC 9(5).
-
-       FD meseros-file.
-          LABEL RECORDS ARE STANDARD
-          VALUE OF FILE-ID IS "meseros.csv"
-          DATA RECORD IS meseros-record.
-       01 meseros-record.
-          05 id-mesero              PIC 9(5).
-          05 cedula                 PIC X(8).
-          05 nombre                 PIC X(20).
-          05 apellido               PIC X(20).
-
+       *>  REGISTRO PARA ARCHIVO CARTA
+       FD  F-ARCHIVO-CARTA.
+       01  REG-CARTA.
+           02 RC-CODIGO         PIC X(15).
+           02 RC-DESAYUNOS      PIC X(250).
+           02 RC-ENTRADAS       PIC X(250).
+           02 RC-ENSALADAS      PIC X(250).
+           02 RC-CONTORNOS      PIC X(250).
+           02 RC-CARNES         PIC X(250).
+           02 RC-PESCADOS-MARISCOS PIC X(250).
+           02 RC-BEBIDAS        PIC X(250).
+       *>  REGISTRO PARA EL ARCHIVO PLATILLOS
+       FD  F-ARCHIVO-PLATILLOS.
+       01  REG-PLATILLOS.
+           02 RP-CODIGO              PIC X(15).
+           02 RP-DESCRIPCION         PIC X(100).
+           02 RP-TIPO                PIC X(30).
+       *>  REGISTRO PARA ARCHIVO MESEROS
+       FD  F-ARCHIVO-MESEROS.
+       01  REG-MESEROS.
+           02 RM-NOMBRE-APELLIDO      PIC X(50).
+           02 RM-CEDULA               PIC X(15).
+       *>  REGISTRO PARA EL ARCHIVO MESAS
+       FD  F-ARCHIVO-MESAS.
+       01  REG-MESAS.
+           02 RME-NUMERO            PIC X(4).
+           02 RME-MESERO            PIC X(15).
+       *>  REGISTRO PARA EL ARCHIVO PEDIDOS
+       FD  F-ARCHIVO-PEDIDOS.
+       01  REG-PEDIDOS.
+           02 RPE-NUMERO              PIC 9(15).
+           02 RPE-MESA                PIC X(4).
+           02 RPE-MESERO              PIC X(15).
+           02 RPE-DESCRIPCION         PIC X(100).
+           02 RPE-CANTIDAD            PIC 9(5).
+           02 RPE-PRECIO-UNITARIO     PIC 9(6)V99.
+           02 RPE-TIPO-PAGO           PIC X(20).
+           02 RPE-IMPORTE             PIC 9(6)V99.
+           02 RPE-PROPINA             PIC 9(6)V99.
+           02 RPE-ENVIADO             PIC X(1).
+           02 RPE-FECHA.
+                03 RPE-DIA           PIC 9(02).
+                03 RPE-MES           PIC 9(02).
+                03 RPE-ANNO          PIC 9(04).
+       *>  -------------------------------------------------------------
        WORKING-STORAGE SECTION.
+       *>  ESTRUCTURA PARA EL REGISTRO DE LA CARTA DEL RESTAURANTE
+       01  WS-ENT-CARTA.
+           02 WS-CARTA-CODIGO         PIC X(15).
+           02 WS-CARTA-DESAYUNOS      PIC X(250).
+           02 WS-CARTA-ENTRADAS       PIC X(250).
+           02 WS-CARTA-ENSALADAS      PIC X(250).
+           02 WS-CARTA-CONTORNOS      PIC X(250).
+           02 WS-CARTA-CARNES         PIC X(250).
+           02 WS-CARTA-PESCADOS-MARISCOS PIC X(250).
+           02 WS-CARTA-BEBIDAS        PIC X(250).
+       *>  ESTRUCTURA PARA EL REGISTRO DE LOS PLATILLOS
+       01  WS-ENT-PLATILLOS.
+           02 WS-PLATILLOS-CODIGO         PIC X(15).
+           02 WS-PLATILLOS-DESCRIPCION    PIC X(100).
+           02 WS-PLATILLOS-TIPO           PIC X(30).
+       *>  ESTRUCTURA PARA EL REGISTRO DE MESEROS
+       01  WS-ENT-MESEROS.
+           02 WS-MESEROS-NOMBRE-APELLIDO    PIC X(50).
+           02 WS-MESEROS-CEDULA             PIC X(15).
+       *>  ESTRUCTURA PARA EL REGISTRO DE LAS MESAS
+       01  WS-ENT-MESAS.
+           02 WS-MESAS-NUMERO            PIC X(4).
+           02 WS-MESAS-MESERO            PIC X(15).
+       *>  ESTRUCTURA PARA EL REGISTRO DE LOS PEDIDOS    
+       01  WS-ENT-PEDIDOS.
+           02 WS-PEDIDOS-NUMERO              PIC 9(15).
+           02 WS-PEDIDOS-MESA                PIC X(4).
+           02 WS-PEDIDOS-MESERO              PIC X(15).
+           02 WS-PEDIDOS-DESCRIPCION         PIC X(100).
+           02 WS-PEDIDOS-CANTIDAD            PIC 9(5).
+           02 WS-PEDIDOS-PRECIO-UNITARIO     PIC 9(6)V99.
+           02 WS-PEDIDOS-TIPO-PAGO           PIC X(20).
+           02 WS-PEDIDOS-IMPORTE             PIC 9(6)V99.
+           02 WS-PEDIDOS-PROPINA             PIC 9(6)V99.
+           02 WS-PEDIDOS-ENVIADO             PIC X(1).
+           02 WS-PEDIDOS-FECHA.
+                03 WS-PEDIDOS-DIA           PIC 9(02).
+                03 WS-PEDIDOS-MES           PIC 9(02).
+                03 WS-PEDIDOS-ANNO          PIC 9(04).
+       *>  -------------------------------------------------------------
+       *>  VARIABLES PARA MANEJO DE LOS ESTADOS EN I-O DE LOS ARCHIVOS
+       77  FS-STATUS-CARTA            PIC X(2).
+       77  FS-STATUS-PLATILLOS        PIC X(2).
+       77  FS-STATUS-MESEROS          PIC X(2).
+       77  FS-STATUS-MESAS            PIC X(2).
+       77  FS-STATUS-PEDIDOS          PIC X(2).
+       *>  -------------------------------------------------------------    
+       *>  VARIABLES DE USO GENERAL
+       77  WS-FIN                      PIC 9(01) VALUE ZERO.
+       77  WS-OPCION                   PIC 9(01).
+       77  WS-FIN-SUBMENU              PIC 9(01) VALUE ZERO.
+       77  WS-OPCION-SUBMENU           PIC 9(01).
+       77  WS-CONSULTA                 PIC 9(01) VALUE ZERO.
+       77  WS-FIN-ARCHIVO              PIC 9(01) VALUE ZERO.
+       77  WS-ENCONTRADO               PIC 9(01) VALUE ZERO.
+       77  WS-CONTADOR                 PIC 9(15) VALUE 1.
+       77  WS-TIPO-PEDIDO              PIC 9(01) VALUE ZERO.
+       77  WS-TOTAL-PAGO               PIC 9(9)V99 VALUE 0.00.
+       77  EOF-IN                      PIC X(1) VALUE 'N'.
+       77  WS-PEDIDOS-CREADO           PIC 9(01) VALUE ZERO.
+       *>  -------------------------------------------------------------
+       *> MANEJO DE FECHA
+       77 WS-FECHA-SISTEMA            PIC 9(06).
+       01 WS-FECHA-FORMATO.
+                02 WS-FECHA-ANNO           PIC 9(02).
+                02 WS-FECHA-MES            PIC 9(02).
+                02 WS-FECHA-DIA            PIC 9(02).
+       77 WS-ANNO-EXTENDIDO           PIC 9(04).
+       *>  -------------------------------------------------------------
+       PROCEDURE DIVISION.
+       *>  -------------------------------------------------------------
+       *>  FUNCIÓN PRINCIPAL DEL SISTEMA
+       *>  -------------------------------------------------------------
+       MAIN-PROGRAM.
+           MOVE 0 TO WS-FIN
 
-       01 EOF PIC S9(4) VALUE -1.
-       01 EOFCARTA               PIC X(1) VALUE 'N'.
-       01 RES PIC X(1).
-       01 I PIC 9(2) VALUE 1.
-       01 WS-FECHA                      PIC X(10).
-       01 WS-OPCION                     PIC 99.
-       01 ID-CARTA-TIPO      PIC 9(5) VALUE 0.
-       01 TIPO-DE-PLATILLO  PIC X(20).
-       01 WS-PLATILLOS.
-             05 WS-PLATILLO OCCURS 6 TIMES.
-               10 ID-PLATILLO PIC 9(5).
-               10 NOMBRE PIC X(20).
-               10 DESCRIPCION PIC X(30).
-               10 ID-CARTA PIC 9(5).
-               10 PRECIO-UNITARIO PIC 9(5)V99.
-       01 TIPO-DE-PLATILLO OCCURS 100 TIMES.
-             05 TIPO-PLATILLO              PIC X(50).
-       01 WS-OPCION-MESEROS             PIC 9(2) VALUE 0.
-       01 WS-MESEROS.
-             05 WS-MESERO OCCURS 6 TIMES.
-                10 ID-MESERO               PIC 9(5).
-                10 CEDULA                  PIC X(8).
-                10 NOMBRE                  PIC X(20).
-                10 APELLIDO                PIC X(20).
-       01 WS-MESAS.
-             05 WS-MESA OCCURS 6 TIMES.
-                10 ID-MESA                 PIC 9(5).
-                10 ID-MESERO               PIC 9(5).
-                10 CANTIDAD                PIC 9(5).
-       01 WS-PEDIDOS.
-             05 WS-PEDIDO OCCURS 6 TIMES.
-                10 ID-PEDIDO               PIC 9(5).
-                10 ID-CLIENTE              PIC 9(5).
-                10 ID-MESA                 PIC 9(5).
-                10 ID-MESERO               PIC 9(5).
-                10 ID-PLATILLO-PEDIDO      PIC 9(5).
-                10 ID-PAGO                 PIC 9(5).
-                10 PROPINA                 PIC 9(5)V99.
-                10 IMPORTE                 PIC 9(5)V99.
-                10 ENVIADO                 PIC X.
-                10 FECHA                   PIC X(10).
-                10 HORA                    PIC X(8).
-        01 WS-PAGOS.
-             05 WS-PAGO OCCURS 3 TIMES.
-                10 ID-PAGO                 PIC 9(5).
-                10 TIPO-DE-PAGO            PIC X(20).
-                10 MONTO                   PIC 9(5)V99. 
+           PERFORM 000-MENU-PRINCIPAL UNTIL WS-FIN = 1.
 
-        PROCEDURE DIVISION.
-          MAIN-PROGRAM.
-              PERFORM MENU-PRINCIPAL UNTIL WS-OPCION = 0.
-              STOP RUN.
+           DISPLAY "CERRANDO: SISTEMA RESTAURANTE..."
+           STOP RUN.
+       *>  -------------------------------------------------------------
+       *>  FUNCIÓN PARA IMPRIMIR EL MENÚ PRINCIPAL DEL SISTEMA
+       *>  -------------------------------------------------------------
+       000-MENU-PRINCIPAL.
+           DISPLAY "+++++++++++++++++++++++++++++++++++++++++".
+           DISPLAY "SISTEMA PARA EL CONTROL DEL RESTAURANTE +".
+           DISPLAY "+++++++++++++++++++++++++++++++++++++++++".
 
-      *Inicio del Menu Principal(Rutina -0)
-          MENU-PRINCIPAL.
-              DISPLAY "==============================="
-              DISPLAY "RESTAURANTE - MENU PRINCIPAL"
-              DISPLAY "==============================="
-              DISPLAY "1. Carta del restaurante"
-              DISPLAY "2. Platillos por tipos"
-              DISPLAY "3. Registro de Meseros"
-              DISPLAY "4. Registro de Mesas enumeradas"
-              DISPLAY "5. Registro de Pedidos"
-              DISPLAY "6. Consultas"
-              DISPLAY "0. Salir"
-              DISPLAY "==============================="
-              DISPLAY "github.com/yordisc  -  UNA-CLA "
-              DISPLAY "==============================="
-              ACCEPT WS-OPCION.
-              EVALUATE WS-OPCION
-                  WHEN 1
-                      PERFORM MENU-CARTA
-                  WHEN 2
-                      PERFORM MENU-PLATILLOS
-                  WHEN 3
-                      PERFORM MENU-MESEROS
-                  WHEN 4
-                      PERFORM MENU-MESAS
-                  WHEN 5
-                      PERFORM MENU-PEDIDOS
-                  WHEN 6
-                      PERFORM MENU-CONSULTAS
-                  WHEN 0
-                      CONTINUE
-                  WHEN OTHER
-                      DISPLAY "Opción inválida. Intente de nuevo."
-              END-EVALUATE.
-      *Final del Menu Principal(Rutina -0)
+           MOVE 0 TO WS-FIN-SUBMENU
 
-      ***************MENUS*********************
-      *Menu Carta (Rutina 1)
-        MENU-CARTA.
-            PERFORM LIMPIAR-PANTALLA.
-            DISPLAY "==============================="
-            DISPLAY "     CARTA DEL RESTAURANTE"
-            DISPLAY "==============================="
-            DISPLAY "1. Ver tipos de platillos"
-            DISPLAY "2. Agregar tipo de platillo"
-            DISPLAY "3. Modificar tipo de platillo"
-            DISPLAY "4. Eliminar tipo de platillo"
-            DISPLAY "0. Volver al menú principal"
-            ACCEPT WS-OPCION.
-            EVALUATE WS-OPCION
-                WHEN 1
-                    PERFORM VER-TIPOS-PLATILLOS
-                WHEN 2
-                    PERFORM AGREGAR-TIPO-PLATILLO
-                WHEN 3
-                    PERFORM MODIFICAR-TIPO-PLATILLO
-                WHEN 4
-                    PERFORM ELIMINAR-TIPO-PLATILLO
-                WHEN 0
-                    PERFORM RETURN-TO-MAIN-MENU
-                WHEN OTHER
-                    DISPLAY "Opción inválida. Intente de nuevo."
-            END-EVALUATE.
-      *Fin de Menu Carta (Rutina 1)
+           ACCEPT WS-FECHA-SISTEMA FROM DATE.
+           MOVE WS-FECHA-SISTEMA TO WS-FECHA-FORMATO.
 
-      *Menu Platillos (Rutina 2)
-            MENU-PLATILLOS.
-          DISPLAY "====================================="
-          DISPLAY "  RESTAURANTE - PLATILLOS POR TIPOS"
-          DISPLAY "====================================="
-          DISPLAY "1. Agregar un platillo"
-          DISPLAY "2. Modificar un platillo"
-          DISPLAY "3. Eliminar un platillo"
-          DISPLAY "4. Listar todos los platillos"
-          DISPLAY "5. Listar platillos por tipo"
-          DISPLAY "0. Regresar al menú principal"
-          ACCEPT WS-OPCION
-          EVALUATE WS-OPCION
-              WHEN 1
-                  PERFORM AGREGAR-PLATILLO
-              WHEN 2
-                  PERFORM MODIFICAR-PLATILLO
-              WHEN 3
-                  PERFORM ELIMINAR-PLATILLO
-              WHEN 4
-                  PERFORM LISTAR-PLATILLOS
-              WHEN 5
-                  PERFORM LISTAR-PLATILLOS-POR-TIPO
-              WHEN 0
-                  CONTINUE
-              WHEN OTHER
-                  DISPLAY "Opción inválida. Intente de nuevo."
-                  PERFORM MENU-PLATILLOS
-          END-EVALUATE.
-      *Fin Menu Platillos (Rutina 2)
+           COMPUTE WS-ANNO-EXTENDIDO = WS-FECHA-ANNO + 2000.
 
-      *Menu Meseros (Rutina 3)
-       MENU-MESEROS.
-              PERFORM UNTIL WS-OPCION-MESEROS = 0
-                  DISPLAY "==============================="
-                  DISPLAY "      REGISTRO DE MESEROS"
-                  DISPLAY "==============================="
-                  DISPLAY "1. Agregar mesero"
-                  DISPLAY "2. Modificar datos de mesero"
-                  DISPLAY "0. Volver al menú principal"
-                  ACCEPT WS-OPCION-MESEROS
-                  EVALUATE WS-OPCION-MESEROS
-                      WHEN 1
-                          PERFORM AGREGAR-MESERO
-                      WHEN 2
-                          PERFORM MODIFICAR-MESERO
-                      WHEN 0
-                    CONTINUE
-                      WHEN OTHER
-                          DISPLAY "Opción inválida. Intente de nuevo."
-                  END-EVALUATE
-              END-PERFORM.
-      *Fin Menu Meseros (Rutina 3)
+           DISPLAY "BIENVENIDO | FECHA: "
+                    WS-FECHA-DIA "/" WS-FECHA-MES
+                     "/" WS-ANNO-EXTENDIDO.
+           
+           DISPLAY " ".
+           DISPLAY "MENÚ PRINCIPAL DEL SISTEMA RESTAURANTE  ".
+           DISPLAY "--------------------------------------".
+           DISPLAY "1 - CARTA DEL RESTAURANTE.".
+           DISPLAY "2 - PLATILLOS.".
+           DISPLAY "3 - MESEROS.".
+           DISPLAY "4 - MESAS.".
+           DISPLAY "5 - PEDIDOS.".
+           DISPLAY "6 - CONSULTAS.".
+           DISPLAY "--------------------------------------".
+           DISPLAY "9 - SALIR DEL SISTEMA.".
+           DISPLAY " ".
+           DISPLAY "OPCIÓN: " WITH NO ADVANCING.
 
-      *Menu Mesas (Rutina 4)
-       MENU-MESAS.
-         DISPLAY "==============================="
-         DISPLAY " REGISTRO DE MESAS ENUMERADAS"
-         DISPLAY "==============================="
-         DISPLAY "1. Ingresar nueva mesa"
-         DISPLAY "2. Modificar mesa existente"
-         DISPLAY "0. Volver al Menú Principal"
-         ACCEPT WS-OPCION
-         EVALUATE WS-OPCION
-            WHEN 1
-               PERFORM INGRESAR-MESA
-            WHEN 2
-               PERFORM MODIFICAR-MESA
-            WHEN 0
-               CONTINUE
-            WHEN OTHER
-               DISPLAY "Opción inválida. Intente de nuevo."
-               PERFORM MENU-MESAS
-         END-EVALUATE.
-      *Fin Menu Mesas (Rutina 4)
+           ACCEPT WS-OPCION.
+
+           EVALUATE WS-OPCION
+               WHEN 1     PERFORM 001-CARTA
+               WHEN 2     PERFORM 001-PLATILLOS
+               WHEN 3     PERFORM 001-MESEROS
+               WHEN 4     PERFORM 001-MESAS
+               WHEN 5     PERFORM 001-PEDIDOS
+               WHEN 6     PERFORM 002-SUBMENU-CONSULTAS 
+                            UNTIL WS-FIN-SUBMENU = 1
+               WHEN 9     MOVE 1 TO WS-FIN
+               WHEN OTHER
+                   DISPLAY " "
+                   DISPLAY "OPCION INVÁLIDA, VERIFICA"
+           END-EVALUATE.
+       *>  -------------------------------------------------------------
+       *>  REGISTRO Y/O ACTUALIZACIÓN DE LOS DATOS DE LA CARTA
+       *>  -------------------------------------------------------------
+       001-CARTA.
+           DISPLAY " ".
+           DISPLAY "REGISTRO Y/0 ACTUALIZACIÓN DE LA CARTA.".
+           DISPLAY "---------------------------------------".
+           DISPLAY " ".
+
+           DISPLAY "CÓDIGO CARTA: " WITH NO ADVANCING.
+           ACCEPT WS-CARTA-CODIGO.
+
+           PERFORM 000-INICIA-CARTA.
+               MOVE WS-CARTA-CODIGO TO RC-CODIGO.
       
-      *Registro Pedidos (Rutina 5)
-       MENU-PEDIDOS.
-             PERFORM UNTIL WS-OPCION = 0
-                 DISPLAY "==============================="
-                 DISPLAY "REGISTRO DE PEDIDOS"
-                 DISPLAY "==============================="
-                 DISPLAY "1. Ingresar un nuevo pedido"
-                 DISPLAY "2. Modificar un pedido existente"
-                 DISPLAY "3. Eliminar un pedido"
-                 DISPLAY "0. Volver al Menú Principal"
-                 ACCEPT WS-OPCION
-                 EVALUATE WS-OPCION
-                     WHEN 1
-                         PERFORM INGRESAR-PEDIDO
-                     WHEN 2
-                         PERFORM MODIFICAR-PEDIDO
-                     WHEN 3
-                         PERFORM ELIMINAR-PEDIDO
-                     WHEN 0
-                         CONTINUE
-                     WHEN OTHER
-                         DISPLAY "Opción inválida. Intente de nuevo."
-                 END-EVALUATE
-             END-PERFORM
-             DISPLAY "Saliendo del menú de pedidos."
-             DISPLAY "Volviendo al Menú Principal."
-             GO TO MENU-PRINCIPAL.
-      *Fin Registro Pedidos (Rutina 5)
+               READ F-ARCHIVO-CARTA RECORD
+                   KEY RC-CODIGO
+                   INVALID KEY MOVE 0 TO WS-CONSULTA
+                   NOT INVALID KEY MOVE 1 TO WS-CONSULTA.
+           PERFORM 000-CIERRE-CARTA
+
+           IF WS-CONSULTA = 1
+                DISPLAY " "
+                DISPLAY "+++ADVERTENCIA: REGISTRO DE "
+                            "CARTA YA EXISTE, "
+                            "LOS DATOS QUE INTRODUZCA A CONTINUACIÓN "
+                            "ACTUALIZARAN LOS YA EXISTENTE+++"
+                DISPLAY " "
+                MOVE ZERO TO WS-CONSULTA
+           END-IF.
+       *>  ENTRADA DE DATOS
+           DISPLAY "DESAYUNOS (USE COMA PARA SEPARAR): "
+               WITH NO ADVANCING.
+           ACCEPT WS-CARTA-DESAYUNOS.
+           DISPLAY "ENTRADAS (USE COMA PARA SEPARAR): "
+               WITH NO ADVANCING.
+           ACCEPT WS-CARTA-ENTRADAS.
+           DISPLAY "ENSALADAS (USE COMA PARA SEPARAR): "
+               WITH NO ADVANCING.
+           ACCEPT WS-CARTA-ENSALADAS.
+           DISPLAY "CONTORNOS (USE COMA PARA SEPARAR): "
+               WITH NO ADVANCING.
+           ACCEPT WS-CARTA-CONTORNOS.
+           DISPLAY "CARNES (USE COMA PARA SEPARAR): "
+               WITH NO ADVANCING.
+           ACCEPT WS-CARTA-CARNES.
+           DISPLAY "PESCADOS-MARISCOS (USE COMA PARA SEPARAR): "
+               WITH NO ADVANCING.
+           ACCEPT WS-CARTA-PESCADOS-MARISCOS.
+           DISPLAY "BEBIDAS (USE COMA PARA SEPARAR): "
+               WITH NO ADVANCING.
+           ACCEPT WS-CARTA-BEBIDAS.
+       *>  REGISTRO DE LOS DATOS EN EL ARCHIVO
+           PERFORM 000-INICIA-CARTA
+           WRITE REG-CARTA FROM WS-ENT-CARTA
+                INVALID KEY
+                    REWRITE REG-CARTA FROM WS-ENT-CARTA
+                    END-REWRITE
+           END-WRITE.
+           PERFORM 000-CIERRE-CARTA
+           DISPLAY "CARTA REGISTRADA EXITOSAMENTE... " 
+               WITH NO ADVANCING.
+           STOP "ENTER PARA CONTINUAR".
+       *>  -------------------------------------------------------------
+       *>  REGISTRO Y/O ACTUALIZACIÓN DE LOS DATOS DEL PLATILLO
+       *>  -------------------------------------------------------------
+       001-PLATILLOS.
+           DISPLAY " ".
+           DISPLAY "REGISTRO Y/0 ACTUALIZACIÓN DE PLATILLOS.".
+           DISPLAY "--------------------------------------".
+           DISPLAY " ".
+
+           DISPLAY "CÓDIGO DEL PLATILLO: " WITH NO ADVANCING.
+           ACCEPT WS-PLATILLOS-CODIGO.
+
+           PERFORM 000-INICIA-PLATILLOS.
+               MOVE WS-PLATILLOS-CODIGO TO RP-CODIGO.
       
-      *Consultas (Rutina 6)
-       MENU-CONSULTAS.
-          DISPLAY "==================================="
-          DISPLAY "RESTAURANTE - MENÚ DE CONSULTAS"
-          DISPLAY "==================================="
-          DISPLAY "1. Platillos por tipos"
-          DISPLAY "2. Meseros ausentes o retirados por fecha"
-          DISPLAY "3. Mesas atendidas por un mesero ",
-          "en una fecha y hora específicas"
-          DISPLAY "0. Volver al menú principal"
-          ACCEPT WS-OPCION.
-          EVALUATE WS-OPCION
-              WHEN 1
-            PERFORM CONSULTA-PLATILLOS
-              WHEN 2
-                  PERFORM CONSULTA-MESEROS
-              WHEN 3
-                  PERFORM CONSULTA-MESAS
-              WHEN 0
-                  CONTINUE
-              WHEN OTHER
-                  DISPLAY "Opción inválida. Intente de nuevo."
-          END-EVALUATE.
-          PERFORM MENU-CONSULTAS.
-      *Fin Consultas (Rutina 6)
-      ***********************************************
-      *********************MENUS*********************
-      ***********************************************
+               READ F-ARCHIVO-PLATILLOS RECORD
+                   KEY RP-CODIGO
+                   INVALID KEY MOVE 0 TO WS-CONSULTA
+                   NOT INVALID KEY MOVE 1 TO WS-CONSULTA.
+           PERFORM 000-CIERRE-PLATILLOS
 
-       LIMPIAR-PANTALLA.
-          DISPLAY FUNCTION CHAR(27) ,
-       "[2J" *> secuencia de escape ANSI para borrar la pantalla
-          CONTINUE.
+           IF WS-CONSULTA = 1
+                DISPLAY " "
+                DISPLAY "+++ADVERTENCIA: REGISTRO DE "
+                            "MESERO YA EXISTE, "
+                            "LOS DATOS QUE INTRODUZCA A CONTINUACIÓN "
+                            "ACTUALIZARAN LOS YA EXISTENTE+++"
+                DISPLAY " "
+                MOVE ZERO TO WS-CONSULTA
+           END-IF.
+       *>  ENTRADA DE DATOS
+           DISPLAY "NOMBRE Y DESCRIPCIÓN DEL PLATILLO: "
+               WITH NO ADVANCING.
+           ACCEPT WS-PLATILLOS-DESCRIPCION.
+           DISPLAY "TIPO DE PLATILLO: "
+               WITH NO ADVANCING.
+           ACCEPT WS-PLATILLOS-TIPO.
+       *>  REGISTRO DE LOS DATOS EN EL ARCHIVO
+           PERFORM 000-INICIA-PLATILLOS
+           WRITE REG-PLATILLOS FROM WS-ENT-PLATILLOS
+                INVALID KEY
+                    REWRITE REG-PLATILLOS FROM WS-ENT-PLATILLOS
+                    END-REWRITE
+           END-WRITE.
+           PERFORM 000-CIERRE-PLATILLOS
+           DISPLAY "PLATILLO REGISTRADO EXITOSAMENTE... " 
+               WITH NO ADVANCING.
+           STOP "ENTER PARA CONTINUAR".
+       *>  -------------------------------------------------------------
+       *>  REGISTRO Y/O ACTUALIZACIÓN DE LOS DATOS DEL MESONERO
+       *>  -------------------------------------------------------------
+       001-MESEROS.
+           DISPLAY " ".
+           DISPLAY "REGISTRO Y/0 ACTUALIZACIÓN DE MESEROS.".
+           DISPLAY "--------------------------------------".
+           DISPLAY " ".
 
-      ***********************************************
-      *****************SUB-RUTINAS*******************
-      ***********************************************
+           DISPLAY "CÉDULA DE IDENTIDAD: " WITH NO ADVANCING.
+           ACCEPT WS-MESEROS-CEDULA.
 
-      ***********************************************
-      *****************SUB-RUTINAS*******************
-      ***********************************************
-      *Menu Carta (Sub-Rutinas 1-1)
-       VER-TIPOS-PLATILLOS.
-          DISPLAY "==============================="
-          DISPLAY "       TIPOS DE PLATILLOS"
-          DISPLAY "==============================="
-          PERFORM LEER-TIPOS-PLATILLOS
-          IF EOFCARTA = 0
-              DISPLAY "ID       TIPO DE PLATILLO"
-              DISPLAY "==============================="
-              PERFORM HASTA-LEER-TODOS-TIPOS-PLATILLOS
-          ELSE
-              DISPLAY "No hay tipos de platillos registrados."
-          END-IF
-          DISPLAY "===============================".
-
-       LEER-TIPOS-PLATILLOS.
-          OPEN INPUT carta-file
-          READ carta-file
-          AT END
-              SET EOFCARTA TO 1
-          END-READ.
-
-       HASTA-LEER-TODOS-TIPOS-PLATILLOS.
-          DISPLAY ID-CARTA-TIPO "    " TIPO-DE-PLATILLO
-          READ carta-file
-          AT END
-              SET EOFCARTA TO 1
-          END-READ.
-          IF EOFCARTA = 0
-              PERFORM HASTA-LEER-TODOS-TIPOS-PLATILLOS
-          END-IF.
-          CLOSE carta-file.
-
-       AGREGAR-TIPO-PLATILLO.
-          DISPLAY "==============================="
-          DISPLAY "AGREGAR NUEVO TIPO DE PLATILLO"
-          DISPLAY "==============================="
-          DISPLAY "Ingrese el nuevo tipo de platillo:"
-          ACCEPT TIPO-DE-PLATILLO
-          COMPUTE ID-CARTA-TIPO = FUNCTION MAX(ID-CARTA-TIPO) + 1
-          WRITE carta-file
-              FROM ID-CARTA-TIPO, TIPO-DE-PLATILLO
-          DISPLAY "Tipo de platillo agregado exitosamente."
-          DISPLAY "===============================".
-
-       MODIFICAR-TIPO-PLATILLO.
-          DISPLAY "==============================="
-          DISPLAY "   MODIFICAR TIPO DE PLATILLO"
-          DISPLAY "==============================="
-          DISPLAY "Ingrese el ID del tipo de platillo a modificar:"
-          ACCEPT ID-CARTA-TIPO
-          PERFORM BUSCAR-TIPO-PLATILLO
-          IF EOFCARTA = 0
-              DISPLAY "Ingrese el nuevo tipo de platillo:"
-              ACCEPT TIPO-DE-PLATILLO
-              REWRITE carta-file
-                  FROM ID-CARTA-TIPO, TIPO-DE-PLATILLO
-              DISPLAY "Tipo de platillo modificado exitosamente."
-          ELSE
-        DISPLAY "No se encontró el tipo de platillo con el ID ingresado."
-          END-IF.
-          DISPLAY "===============================".
-
-       ELIMINAR-TIPO-PLATILLO.
-          DISPLAY "==============================="
-          DISPLAY "   ELIMINAR TIPO DE PLATILLO"
-          DISPLAY "==============================="
-          DISPLAY "Ingrese el ID del tipo de platillo a eliminar:"
-          ACCEPT ID-CARTA-TIPO
-          PERFORM BUSCAR-TIPO-PLATILLO
-          IF EOFCARTA = 0
-              DELETE carta-file
-              DISPLAY "Tipo de platillo eliminado exitosamente."
-          ELSE
-        DISPLAY "No se encontró el tipo de platillo con el ID ingresado."
-          END-IF.
-          DISPLAY "===============================".
-      *Fin de Menu Carta (Sub-Rutina 1-1)
+           PERFORM 000-INICIA-MESEROS.
+               MOVE WS-MESEROS-CEDULA TO RM-CEDULA.
       
-      *Menu Platillos (Sub-Rutina 2-1)
-       AGREGAR-PLATILLO.
-          DISPLAY "====================================="
-          DISPLAY "    RESTAURANTE - AGREGAR PLATILLO"
-          DISPLAY "====================================="
-          DISPLAY "Ingrese los siguientes datos:"
-          ACCEPT WS-PLATILLO-AGREGAR-ID
-          DISPLAY "Nombre:"
-          ACCEPT WS-PLATILLO-AGREGAR-NOMBRE
-          DISPLAY "Descripción:"
-          ACCEPT WS-PLATILLO-AGREGAR-DESCRIPCION
-          DISPLAY "Tipo de platillo:"
-          ACCEPT WS-PLATILLO-AGREGAR-TIPO
-          DISPLAY "Precio unitario:"
-          ACCEPT WS-PLATILLO-AGREGAR-PRECIO
-          PERFORM AGREGAR-PLATILLO-CSV
-          DISPLAY "Platillo agregado exitosamente."
-          PERFORM MENU-PLATILLOS.
+               READ F-ARCHIVO-MESEROS RECORD
+                   KEY RM-CEDULA
+                   INVALID KEY MOVE 0 TO WS-CONSULTA
+                   NOT INVALID KEY MOVE 1 TO WS-CONSULTA.
+           PERFORM 000-CIERRE-MESEROS
 
-       MODIFICAR-PLATILLO.
-          DISPLAY "====================================="
-          DISPLAY "  RESTAURANTE - MODIFICAR PLATILLO"
-          DISPLAY "====================================="
-          DISPLAY "Ingrese el ID del platillo a modificar:"
-          ACCEPT WS-PLATILLO-MODIFICAR-ID
-          PERFORM BUSCAR-PLATILLO-ID
-          IF WS-PLATILLO-ENCONTRADO = "SI"
-              DISPLAY "Ingrese los nuevos datos del platillo:"
-              DISPLAY "Nombre:"
-              ACCEPT WS-PLATILLO-AGREGAR-NOMBRE
-              DISPLAY "Descripción:"
-              ACCEPT WS-PLATILLO-AGREGAR-DESCRIPCION
-              DISPLAY "Tipo de platillo:"
-              ACCEPT WS-PLATILLO-AGREGAR-TIPO
-              DISPLAY "Precio unitario:"
-              ACCEPT WS-PLATILLO-AGREGAR-PRECIO
-              PERFORM MODIFICAR-PLATILLO-CSV
-              DISPLAY "Platillo modificado exitosamente."
-          ELSE
-              DISPLAY "No se encontró ningún platillo con ese ID. ",
-       - "Intente de nuevo."
-          END-IF
-       PERFORM MENU-PLATILLOS.
+           IF WS-CONSULTA = 1
+                DISPLAY " "
+                DISPLAY "+++ADVERTENCIA: REGISTRO DE "
+                            "MESERO YA EXISTE, "
+                            "LOS DATOS QUE INTRODUZCA A CONTINUACIÓN "
+                            "ACTUALIZARAN LOS YA EXISTENTE+++"
+                DISPLAY " "
+                MOVE ZERO TO WS-CONSULTA
+           END-IF.
+       *>  ENTRADA DE DATOS
+           DISPLAY "NOMBRE Y APELLIDO: " WITH NO ADVANCING.
+           ACCEPT WS-MESEROS-NOMBRE-APELLIDO.
+       *>  REGISTRO DE LOS DATOS EN EL ARCHIVO
+           PERFORM 000-INICIA-MESEROS
+           WRITE REG-MESEROS FROM WS-ENT-MESEROS
+                INVALID KEY
+                    REWRITE REG-MESEROS FROM WS-ENT-MESEROS
+                    END-REWRITE
+           END-WRITE.
+           PERFORM 000-CIERRE-MESEROS
+           DISPLAY "MESERO REGISTRADO EXITOSAMENTE... " 
+               WITH NO ADVANCING.
+           STOP "ENTER PARA CONTINUAR".
+       *>  -------------------------------------------------------------
+       *>  REGISTRO Y/O ACTUALIZACIÓN DE LOS DATOS DE MESAS ENUMERADAS
+       *>  -------------------------------------------------------------
+       001-MESAS.
+           DISPLAY " ".
+           DISPLAY "REGISTRO Y/0 ACTUALIZACIÓN DE MESAS.".
+           DISPLAY "--------------------------------------".
+           DISPLAY " ".
 
-       ELIMINAR-PLATILLO.
-          DISPLAY "Ingrese el ID del platillo que desea eliminar:"
-          ACCEPT ID-PLATILLO
-          PERFORM BUSCAR-PLATILLO
-          IF FOUND-PLATILLO
-              DISPLAY "Esta seguro que desea eliminar el platillo (S/N)?"
-              ACCEPT CONFIRMACION
-              IF CONFIRMACION = "S" OR CONFIRMACION = "s",
-            PERFORM ELIMINAR-PLATILLO-ARCHIVO,
-            DISPLAY "Platillo eliminado exitosamente."
-              END-IF
-          ELSE
-              DISPLAY "No se encontro el platillo con el ID ingresado."
-          END-IF.
+           DISPLAY "NÚMERO DE LA MESA: " WITH NO ADVANCING.
+           ACCEPT WS-MESAS-NUMERO.
 
-       LISTAR-PLATILLOS.
-          PERFORM LEER-ARCHIVO-PLATILLOS
-          DISPLAY "ID      ",
-          "NOMBRE                ",
-          "DESCRIPCION           ",
-          "TIPO DE PLATILLO      ",
-          "PRECIO".
-          DISPLAY "----------------------------------",
-       -"----------------------------------------------".
-          PERFORM VARYING I FROM 1 BY 1 UNTIL I > EOF
-              DISPLAY ID-PLATILLO(I),
-              "   ",
-              NOMBRE(I),
-              " ",
-              DESCRIPCION(I),
-              " ",
-              TIPO-DE-PLATILLO(I)
-              " ",
-              PRECIO-UNITARIO(I).
-          END-PERFORM.
-
-       LISTAR-PLATILLOS-POR-TIPO.
-          DISPLAY "Ingrese el tipo de platillo que desea buscar:"
-          ACCEPT TIPO-BUSQUEDA
-          PERFORM LEER-ARCHIVO-PLATILLOS
-          DISPLAY "ID      ",
-          "NOMBRE                ",
-          "DESCRIPCION           ",
-          "TIPO DE PLATILLO      ",
-          "PRECIO".
-          DISPLAY "----------------------------------",
-          "----------------------------------------------".
-          PERFORM VARYING I FROM 1 BY 1 UNTIL I > EOF
-        IF TIPO-DE-PLATILLO(I) = TIPO-BUSQUEDA
-              DISPLAY ID-PLATILLO(I),
-              "   ",
-              NOMBRE(I),
-              " ",
-              DESCRIPCION(I),
-              " ",
-              TIPO-DE-PLATILLO(I)
-              " ",
-              PRECIO-UNITARIO(I).
-              END-IF
-          END-PERFORM.
-
-       VOLVER-MENU-PLATILLOS.
-          DISPLAY "Presione cualquier tecla ",
-          "para volver al menu de platillos."
-          ACCEPT TECLA
-          PERFORM MENU-PLATILLOS.
-
-       BUSCAR-PLATILLO.
-          SET FOUND-PLATILLO TO FALSE
-          PERFORM LEER-ARCHIVO-PL
-      *Fin Menu Platillos (Sub-Rutina 2-1)
-
-      *Menu Meseros (Sub-Rutinas 3-1)
-          AGREGAR-MESERO.
-              DISPLAY "==============================="
-              DISPLAY "          AGREGAR MESERO"
-              DISPLAY "==============================="
-              ACCEPT WS-CEDULA-MESERO
-              IF VALIDAR-CEDULA-MESERO(WS-CEDULA-MESERO) = TRUE
-            DISPLAY "La cédula ingresada ya está registrada.",
-            " Intente de nuevo.".
-                  GO TO AGREGAR-MESERO
-              END-IF
-              ACCEPT WS-NOMBRE-MESERO
-              ACCEPT WS-APELLIDO-MESERO
-              SET WS-ID-MESERO TO WS-ID-MESERO + 1
-        MOVE WS-CEDULA-MESERO TO WS-MESEROS(WS-ID-MESERO).CEDULA
-        MOVE WS-NOMBRE-MESERO TO WS-MESEROS(WS-ID-MESERO).NOMBRE
-        MOVE WS-APELLIDO-MESERO TO WS-MESEROS(WS-ID-MESERO).APELLIDO
-              DISPLAY "Mesero agregado exitosamente."
-              PERFORM CONFIRMAR-VOLVER
-
-       MODIFICAR-MESERO.
-          DISPLAY "Ingrese la cédula del mesero que desea modificar: "
-          ACCEPT ID-MESERO-MOD
-          PERFORM BUSCAR-MESERO
-          IF WS-ENCONTRADO = "S"
-              DISPLAY "==============================="
-              DISPLAY "       DATOS DEL MESERO"
-              DISPLAY "==============================="
-              DISPLAY "Cédula: " ID-MESERO
-              DISPLAY "Nombre: " NOMBRE-MESERO
-              DISPLAY "Apellido: " APELLIDO-MESERO
-              DISPLAY "Teléfono: " TELEFONO-MESERO
-              DISPLAY "¿Desea modificar el nombre? (S/N)"
-              ACCEPT RESPUESTA
-              IF RESPUESTA = "S"
-                  DISPLAY "Ingrese el nuevo nombre: "
-                  ACCEPT NOMBRE-MESERO
-              END-IF
-              DISPLAY "¿Desea modificar el apellido? (S/N)"
-              ACCEPT RESPUESTA
-              IF RESPUESTA = "S"
-                  DISPLAY "Ingrese el nuevo apellido: "
-                  ACCEPT APELLIDO-MESERO
-              END-IF
-              DISPLAY "¿Desea modificar el teléfono? (S/N)"
-              ACCEPT RESPUESTA
-              IF RESPUESTA = "S"
-                  DISPLAY "Ingrese el nuevo teléfono: "
-                  ACCEPT TELEFONO-MESERO
-              END-IF
-              PERFORM ACTUALIZAR-MESERO
-          ELSE
-              DISPLAY "El mesero no se encuentra registrado."
-          END-IF. 
-      *Fin Menu Meseros (Sub-Rutinas 3-1)
+           PERFORM 000-INICIA-MESAS.
+               MOVE WS-MESAS-NUMERO TO RME-NUMERO.
       
-      *Menu Mesas (Sub-Rutinas 4-1)
-       INGRESAR-MESA.
-         DISPLAY "==============================="
-         DISPLAY "     INGRESO DE NUEVA MESA"
-         DISPLAY "==============================="
-         ACCEPT WS-MESA-ID
-         IF WS-MESA-ID = 0
-            PERFORM MENU-MESAS
-         END-IF
-         ACCEPT WS-MESERO-ID
-         ACCEPT WS-MESA-CANTIDAD
-         PERFORM GUARDAR-MESA
-         DISPLAY "Mesa ingresada exitosamente."
-         PERFORM MENU-MESAS.
+               READ F-ARCHIVO-MESAS RECORD
+                   KEY RME-NUMERO
+                   INVALID KEY MOVE 0 TO WS-CONSULTA
+                   NOT INVALID KEY MOVE 1 TO WS-CONSULTA.
+           PERFORM 000-CIERRE-MESAS
 
-       MODIFICAR-MESA.
-         DISPLAY "==============================="
-         DISPLAY "MODIFICACIÓN DE MESA EXISTENTE"
-         DISPLAY "==============================="
-         DISPLAY "Ingrese el ID de la mesa a modificar:"
-         ACCEPT WS-MESA-ID
-         IF WS-MESA-ID = 0
-            PERFORM MENU-MESAS
-         END-IF
-         PERFORM BUSCAR-MESA
-         IF WS-ENCONTRADO = "S"
-            DISPLAY "Ingrese los nuevos datos de la mesa:"
-            ACCEPT WS-MESERO-ID
-            ACCEPT WS-MESA-CANTIDAD
-            PERFORM ACTUALIZAR-MESA
-            DISPLAY "Mesa modificada exitosamente."
-         ELSE
-            DISPLAY "No se encontró la mesa con el ID ingresado."
-         END-IF
-         PERFORM MENU-MESAS.
+           IF WS-CONSULTA = 1
+                DISPLAY " "
+                DISPLAY "+++ADVERTENCIA: REGISTRO DE "
+                            "MESA YA EXISTE, "
+                            "LOS DATOS QUE INTRODUZCA A CONTINUACIÓN "
+                            "ACTUALIZARAN LOS YA EXISTENTE+++"
+                DISPLAY " "
+                MOVE ZERO TO WS-CONSULTA
+           END-IF.
+       *>  ENTRADA DE DATOS
+           PERFORM 000-INICIA-MESEROS.
+               PERFORM 003-MOSTRAR-MESEROS.
 
-       BUSCAR-MESA.
-         SET WS-ENCONTRADO TO "N"
-         PERFORM VACIAR-WS-MESA
-         PERFORM LEER-MESAS
-            IF WS-MESA-ID = WS-BUSQUEDA-ID
-               SET WS-ENCONTRADO TO "S"
-               MOVE WS-MESA-ID TO WS-MESA-ID-ANTERIOR
-               MOVE WS-MESERO-ID TO WS-MESA-MESERO-ID
-               MOVE WS-MESA-CANTIDAD TO WS-MESA-CANTIDAD-ANTERIOR
-            END-IF
-         END-PERFORM.
+               DISPLAY "INTRODUZCA LA CEDULA DEL MESERO: "
+                   WITH NO ADVANCING.
+               ACCEPT WS-MESAS-MESERO.
+               MOVE WS-MESAS-MESERO TO RM-CEDULA.
 
-       ACTUALIZAR-MESA.
-         PERFORM VACIAR-WS-MESA-TEMP
-         PERFORM LEER-MESAS
-            IF WS-MESA-ID = WS-BUSQUEDA-ID
-               MOVE WS-MESA-ID TO WS-MESA-ID-ANTERIOR
-               MOVE WS-MESERO-ID TO WS-MESA-MESERO-ID
-               MOVE WS-MESA-CANTIDAD TO WS-MESA-CANTIDAD-ANTERIOR
-               PERFORM GUARDAR-MESA-TEMP
-            ELSE
-               PERFORM GUARDAR-MESA-TEMP
-            END-IF
-         END-PERFORM.
+               READ F-ARCHIVO-MESEROS RECORD
+                   KEY RM-CEDULA
+                   INVALID KEY MOVE 1 TO WS-CONSULTA
+                   NOT INVALID KEY MOVE 0 TO WS-CONSULTA
+               END-READ.
+           PERFORM 000-CIERRE-MESEROS
 
-       VACIAR-WS-MESA.
-         MOVE 0 TO WS-MESA-ID
-         MOVE 0 TO WS-MESERO-ID
-         MOVE 0 TO WS-MESA-CANTIDAD
-      *Fin Menu Mesas (Sub-Rutinas 4-1)
-      
-      *Registro Pedidos (Sub-Rutinas 5-1)
-       INGRESAR-PEDIDO.
-          DISPLAY "==============================="
-          DISPLAY "RESTAURANTE - INGRESO DE PEDIDO"
-          DISPLAY "==============================="
-          ACCEPT WS-PEDIDO(ID-PEDIDO)
-          IF WS-PEDIDO(ID-PEDIDO) = 0
-              CONTINUE
-          END-IF
-          DISPLAY "ID del cliente: "
-          ACCEPT WS-PEDIDO(ID-PEDIDO, ID-CLIENTE)
-          DISPLAY "ID de la mesa: "
-          ACCEPT WS-PEDIDO(ID-PEDIDO, ID-MESA)
-          DISPLAY "ID del mesero: "
-          ACCEPT WS-PEDIDO(ID-PEDIDO, ID-MESERO)
-          DISPLAY "ID del platillo: "
-          ACCEPT WS-PEDIDO(ID-PEDIDO, ID-PLATILLO-PEDIDO)
-          DISPLAY "ID del pago: "
-          ACCEPT WS-PEDIDO(ID-PEDIDO, ID-PAGO)
-          DISPLAY "Propina: "
-          ACCEPT WS-PEDIDO(ID-PEDIDO, PROPINA)
-          DISPLAY "Importe: "
-          ACCEPT WS-PEDIDO(ID-PEDIDO, IMPORTE)
-          DISPLAY "Enviado (s/n): "
-          ACCEPT WS-PEDIDO(ID-PEDIDO, ENVIADO)
-          DISPLAY "Fecha (YYYY-MM-DD): "
-          ACCEPT WS-PEDIDO(ID-PEDIDO, FECHA)
-          DISPLAY "Hora (HH:MM:SS): "
-          ACCEPT WS-PEDIDO(ID-PEDIDO, HORA)
-          DISPLAY "Pedido ingresado correctamente."
-          GOBACK.
-          
-       MODIFICAR-PEDIDO.
-          PERFORM UNTIL WS-OPCION = 0
-              DISPLAY "==============================="
-              DISPLAY "MODIFICAR PEDIDO"
-              DISPLAY "==============================="
-              DISPLAY "Ingrese el ID del pedido que ",
-              -"desea modificar (0 para salir):"
-        ACCEPT WS-ID-PEDIDO
-        IF WS-ID-PEDIDO = 0
-            EXIT PERFORM
-        END-IF
-        COMPUTE WS-INDICE-PEDIDO = 
-        FUNCTION MOD(WS-ID-PEDIDO - 1, 100) + 1
-        IF WS-PEDIDO(WS-INDICE-PEDIDO:ID-PEDIDO) = 0
-            DISPLAY "El ID del pedido no existe. Intente de nuevo."
-        ELSE
-            DISPLAY "Pedido actual:"
-            DISPLAY "ID Pedido: " WS-PEDIDO(WS-INDICE-PEDIDO:ID-PEDIDO)
-            DISPLAY "ID Cliente: " WS-PEDIDO(WS-INDICE-PEDIDO:ID-CLIENTE)
-            DISPLAY "ID Mesa: " WS-PEDIDO(WS-INDICE-PEDIDO:ID-MESA)
-            DISPLAY "ID Mesero: " WS-PEDIDO(WS-INDICE-PEDIDO:ID-MESERO)
-            DISPLAY "ID Platillo Pedido: ",
-            WS-PEDIDO(WS-INDICE-PEDIDO:ID-PLATILLO-PEDIDO)
-            DISPLAY "ID Pago: " WS-PEDIDO(WS-INDICE-PEDIDO:ID-PAGO)
-            DISPLAY "Propina: " WS-PEDIDO(WS-INDICE-PEDIDO:PROPINA)
-            DISPLAY "Importe: " WS-PEDIDO(WS-INDICE-PEDIDO:IMPORTE)
-            DISPLAY "Enviado: " WS-PEDIDO(WS-INDICE-PEDIDO:ENVIADO)
-            DISPLAY "Fecha: " WS-PEDIDO(WS-INDICE-PEDIDO:FECHA)
-            DISPLAY "Hora: " WS-PEDIDO(WS-INDICE-PEDIDO:HORA)
-            DISPLAY "==============================="
-            DISPLAY "Ingrese el nuevo valor para cada campo ",
-            -"(dejar vacío para no modificar):"
-            DISPLAY "ID Cliente: " WS-PEDIDO(WS-INDICE-PEDIDO:ID-CLIENTE)
-            ACCEPT WS-NUEVO-ID-CLIENTE
-            IF WS-NUEVO-ID-CLIENTE NOT = ""
-                MOVE WS-NUEVO-ID-CLIENTE TO 
-                WS-PEDIDO(WS-INDICE-PEDIDO:ID-CLIENTE)
-            END-IF
-            DISPLAY "ID Mesa: " WS-PEDIDO(WS-INDICE-PEDIDO:ID-MESA)
-            ACCEPT WS-NUEVO-ID-MESA
-            IF WS-NUEVO-ID-MESA NOT = ""
-                MOVE WS-NUEVO-ID-MESA TO 
-                WS-PEDIDO(WS-INDICE-PEDIDO:ID-MESA)
-            END-IF
-            DISPLAY "ID Mesero: " WS-PEDIDO(WS-INDICE-PEDIDO:ID-MESERO)
-            ACCEPT WS-NUEVO-ID-MESERO
-            IF WS-NUEVO-ID-MESERO NOT = ""
-         MOVE WS-NUEVO-ID-MESERO TO WS-PEDIDO(WS-INDICE-PEDIDO:ID-MESERO)
-            END-IF
-            DISPLAY "ID Platillo Pedido: " 
-            WS-PEDIDO(WS-INDICE-PEDIDO:ID-PLATILLO-PEDIDO)
-            ACCEPT
+           IF WS-CONSULTA = 0 THEN
+       *>  REGISTRO DE LOS DATOS EN EL ARCHIVO
+               PERFORM 000-INICIA-MESAS
+               WRITE REG-MESAS FROM WS-ENT-MESAS
+                    INVALID KEY
+                        REWRITE REG-MESAS FROM WS-ENT-MESAS
+                        END-REWRITE
+               END-WRITE
+               PERFORM 000-CIERRE-MESAS
+               DISPLAY "MESA REGISTRADA EXITOSAMENTE... " 
+                   WITH NO ADVANCING
+               STOP "ENTER PARA CONTINUAR"
+           ELSE
+               DISPLAY "MESERO NO EXISTE, INTENTE DE NUEVO "
+                   "Y ASEGURESE DE VER LAS CÉDULAS EN LA LISTA"
+               MOVE ZERO TO WS-CONSULTA
+               PERFORM 001-MESAS
+           END-IF.
+       *>  -------------------------------------------------------------
+       *>  REGISTRO Y/O ACTUALIZACIÓN DE LOS PEDIDOS
+       *>  -------------------------------------------------------------
+       001-PEDIDOS.
+           DISPLAY " ".
+           DISPLAY "REGISTRO Y/O ACTUIALIZACIÓN DE PEDIDOS.".
+           DISPLAY "--------------------------------------".
+           DISPLAY " ".
 
-       ELIMINAR-PEDIDO.
-         DISPLAY "==============================="
-         DISPLAY "ELIMINAR PEDIDO"
-         DISPLAY "==============================="
-         DISPLAY "Ingrese el ID del pedido a eliminar ",
-         "(0 para volver al menú principal):".
-         ACCEPT WS-ID-PEDIDO-ELIMINAR
-         IF WS-ID-PEDIDO-ELIMINAR = 0
-             EXIT
-         END-IF
-         PERFORM BUSCAR-PEDIDO-ELIMINAR
-         IF WS-ENCONTRADO
-             DISPLAY "Pedido eliminado exitosamente."
-         ELSE
-       DISPLAY "No se encontró el pedido con ID " WS-ID-PEDIDO-ELIMINAR
-         END-IF
-       GO TO MENU-PRINCIPAL.
-      *Fin Registro Pedidos (Sub-Rutinas 5-1)
-      
-      *Consultas (Sub-Rutinas 6-1)
-       CONSULTA-PLATILLOS.
-          DISPLAY "==============================="
-          DISPLAY "RESTAURANTE - CONSULTA DE PLATILLOS"
-          DISPLAY "==============================="
-          DISPLAY "Tipos de platillos disponibles:"
-    
-          PERFORM VARYING WS-CARTA-TIPO-INDEX FROM 1 BY 1
-              UNTIL WS-CARTA-TIPO(WS-CARTA-TIPO-INDEX) = ''
-              DISPLAY WS-CARTA-TIPO-INDEX, ". ",
-              WS-CARTA-TIPO(WS-CARTA-TIPO-INDEX)
-          END-PERFORM
-    
-          ACCEPT WS-OPCION
-          IF WS-OPCION = 0
-              GO TO MENU-PRINCIPAL
-          END-IF
-    
-          PERFORM VARYING WS-PLATILLO-INDEX FROM 1 BY 1
-              UNTIL WS-PLATILLOS(WS-PLATILLO-INDEX).ID-PLATILLO = 0
-              IF WS-PLATILLOS(WS-PLATILLO-INDEX).ID-CARTA = 
-              WS-CARTA-TIPO(WS-OPCION)
-                  DISPLAY WS-PLATILLOS(WS-PLATILLO-INDEX).ID-PLATILLO,
-                  ". ", WS-PLATILLOS(WS-PLATILLO-INDEX).NOMBRE,
-                          " - $",
-                          WS-PLATILLOS(WS-PLATILLO-INDEX).PRECIO-UNITARIO
-              END-IF
-          END-PERFORM
-    
-          PERFORM CONSULTA-PLATILLOS UNTIL WS-OPCION = 0
-          GOBACK.
-          
-       CONSULTA-MESEROS.
-          DISPLAY "==================================="
-          DISPLAY "CONSULTA DE MESEROS"
-          DISPLAY "==================================="
-          PERFORM VACIAR-DATOS
-          READ MESEROS.CSV
-              AT END SET EOF TO 0
-              NOT AT END
-                  MOVE ID-MESERO TO WS-MESERO(I)
-                  MOVE CEDULA TO WS-CEDULA(I)
-                  MOVE NOMBRE TO WS-NOMBRE(I)
-                  MOVE APELLIDO TO WS-APELLIDO(I)
-                  ADD 1 TO I
-              END-READ
-          END-READ
-          PERFORM MOSTRAR-MESEROS
-          DISPLAY "Presione cualquier tecla ",
-          "para volver al Menú Principal"
-          ACCEPT WS-OPCION
-          PERFORM VACIAR-DATOS
-          DISPLAY "==================================="
+           MOVE 1 TO WS-CONTADOR.
 
-       VACIAR-DATOS.
-          PERFORM VARYING I FROM 1 BY 1 UNTIL I > 6
-              MOVE SPACES TO WS-CEDULA(I)
-              MOVE SPACES TO WS-NOMBRE(I)
-              MOVE SPACES TO WS-APELLIDO(I)
-          END-PERFORM
-          MOVE 1 TO I
-          MOVE -1 TO EOF.
+           DISPLAY "INTRODUZCA EL NÚMERO DE PEDIDO, "
+               "SI ESCRIBE SÓLO EL CERO, EL SISTEMA LE ASIGNARÁ UNO, "
+               "SEGÚN EL ORDEN EN QUE SE VAN REGISTRANDO.".
+           DISPLAY "NÚMERO DEL PEDIDO: " WITH NO ADVANCING.
+           ACCEPT WS-PEDIDOS-NUMERO.
+           MOVE 'N' TO EOF-IN
 
-       MOSTRAR-MESEROS.
-          DISPLAY "ID     Cédula       Nombre          Apellido"
-          DISPLAY "==========================================="
-          PERFORM VARYING I FROM 1 BY 1 UNTIL I > 6
-              IF WS-CEDULA(I) = SPACES
-                  EXIT PERFORM
-              END-IF
-              DISPLAY ID-MESERO(I),
-              WS-CEDULA(I),
-              WS-NOMBRE(I),
-              WS-APELLIDO(I)
-          END-PERFORM.
-    
-       CONSULTA-MESAS.
-          DISPLAY "==================================="
-          DISPLAY "CONSULTA DE MESAS"
-          DISPLAY "==================================="
-          DISPLAY "Ingresa el ID de la mesa que deseas consultar:"
-          ACCEPT WS-ID-MESA
-          PERFORM VALIDAR-EXISTENCIA-MESA
-          IF WS-MESA-ENCONTRADA
-              DISPLAY "La mesa con ID ",
-              WS-ID-MESA,
-              " está ocupada por el mesero con ID ", WS-ID-MESERO.
-          ELSE
-        DISPLAY "La mesa con ID ",
-        WS-ID-MESA,
-        " está libre."
-          END-IF
-          DISPLAY "Presiona enter para volver al menú principal."
-          ACCEPT WS-ENTER
-          DISPLAY " "
-          DISPLAY " "
-          EXIT.
+           IF WS-PEDIDOS-NUMERO = 0 THEN
+               PERFORM 000-INICIA-PEDIDOS
+               IF WS-PEDIDOS-CREADO = ZERO THEN
+                   PERFORM UNTIL EOF-IN = 'Y'
+                       READ F-ARCHIVO-PEDIDOS
+                           AT END
+                               MOVE 'Y' TO EOF-IN
+                           NOT AT END
+                               ADD 1 TO WS-CONTADOR
+                       END-READ
+                   END-PERFORM
+                END-IF
+                PERFORM 000-CIERRE-PEDIDOS
+           ELSE
+               PERFORM 000-INICIA-PEDIDOS
+               MOVE WS-PEDIDOS-NUMERO TO RPE-NUMERO
+               READ F-ARCHIVO-PEDIDOS RECORD
+                   KEY RPE-NUMERO
+                   INVALID KEY MOVE 0 TO WS-CONSULTA
+                   NOT INVALID KEY MOVE 1 TO WS-CONSULTA
+               PERFORM 000-CIERRE-PEDIDOS
+           END-IF.
+           MOVE WS-CONTADOR TO WS-PEDIDOS-NUMERO
+           DISPLAY " ".
+           DISPLAY "NRO. DE PEDIDO ASIGNADO.: " WS-PEDIDOS-NUMERO.
+           DISPLAY " ".
+           IF WS-CONSULTA = 1
+               DISPLAY " "
+               DISPLAY "+++ADVERTENCIA: REGISTRO DEL "
+                   "PEDIDO YA EXISTE, "
+                   "LOS DATOS QUE INTRODUZCA A CONTINUACIÓN "
+                   "ACTUALIZARAN LOS YA EXISTENTE+++"
+               DISPLAY " "
+               MOVE ZERO TO WS-CONSULTA
+           END-IF.
+           
+       *>  ENTRADA DE DATOS
+           PERFORM 000-INICIA-MESAS.
+               PERFORM 003-MOSTRAR-MESAS.
 
-       VALIDAR-EXISTENCIA-MESA.
-          SET WS-MESA-ENCONTRADA TO FALSE
-          PERFORM VINCULAR-MESAS-MESEROS
-          PERFORM BUSCAR-MESA
-          IF WS-MESA-ENCONTRADA
-              PERFORM BUSCAR-MESERO
-          END-IF.
+               DISPLAY "INTRODUZCA NÚMERO DE MESA SEGÚN LA LISTA: "
+                   WITH NO ADVANCING.
+               ACCEPT WS-PEDIDOS-MESA.
+               MOVE WS-PEDIDOS-MESA TO RME-NUMERO.
 
-       VINCULAR-MESAS-MESEROS.
-          PERFORM LEER-ARCHIVO "mesas.csv"
-          PERFORM LEER-ARCHIVO "meseros.csv"
-          PERFORM VINCULAR-MESA-MESERO UNTIL EOF = 0.
+               READ F-ARCHIVO-MESAS RECORD
+                   KEY RME-NUMERO
+                   INVALID KEY MOVE 1 TO WS-CONSULTA
+                   NOT INVALID KEY MOVE 0 TO WS-CONSULTA
+               END-READ.
+           PERFORM 000-CIERRE-MESAS
+           IF WS-CONSULTA = 0 THEN
+               PERFORM 003-MESERO-POR-MESA
+               IF WS-CONSULTA = 0 THEN
+                   DISPLAY "DESCRIPCIÓN DEL PEDIDO: "
+                       WITH NO ADVANCING
+                   ACCEPT WS-PEDIDOS-DESCRIPCION
+                   DISPLAY "CANTIDAD DEL PEDIDO: "
+                       WITH NO ADVANCING
+                   ACCEPT WS-PEDIDOS-CANTIDAD
+                   DISPLAY "PRECIO UNITARIO (EJ. 22.33): "
+                       WITH NO ADVANCING
+                   ACCEPT WS-PEDIDOS-PRECIO-UNITARIO
+                   DISPLAY "TIPO DE PAGO "
+                       "(EJ. PAGO MOVIL, TARJETA,...): "
+                       WITH NO ADVANCING
+                   ACCEPT WS-PEDIDOS-TIPO-PAGO
+                   DISPLAY "IMPORTE (EJ. 1.35): "
+                       WITH NO ADVANCING
+                   ACCEPT WS-PEDIDOS-IMPORTE
+                   DISPLAY "PROPINA (EJ. 1.35): "
+                       WITH NO ADVANCING
+                   ACCEPT WS-PEDIDOS-PROPINA
+                   DISPLAY "ENVIADO (EJ. S = SI o N = NO): "
+                       WITH NO ADVANCING
+                   ACCEPT WS-PEDIDOS-ENVIADO
+                   DISPLAY "FECHA DEL PEDIDO: "
+                   DISPLAY "DIA (EJ. 13): "
+                       WITH NO ADVANCING
+                   ACCEPT WS-PEDIDOS-DIA
+                    DISPLAY "MES (EJ. 02): "
+                       WITH NO ADVANCING
+                   ACCEPT WS-PEDIDOS-MES
+                    DISPLAY "AÑO (EJ. 2023): "
+                       WITH NO ADVANCING
+                   ACCEPT WS-PEDIDOS-ANNO
+       *>  REGISTRO DE LOS DATOS EN EL ARCHIVO
+                   PERFORM 000-INICIA-PEDIDOS
+                   WRITE REG-PEDIDOS FROM WS-ENT-PEDIDOS
+                        INVALID KEY
+                            REWRITE REG-PEDIDOS FROM WS-ENT-PEDIDOS
+                            END-REWRITE
+                   END-WRITE
+                   PERFORM 000-CIERRE-PEDIDOS
+                   DISPLAY "PEDIDO REGISTRADO EXITOSAMENTE... " 
+                       WITH NO ADVANCING
+                   STOP "ENTER PARA CONTINUAR"
+               ELSE
+                   DISPLAY "NO HAY MESEROS ASIGNADOS A ESTA MESA,"
+                   "O LA MESA NO EXISTE, POR FAVOR INTENTE DE NUEVO"
+                   MOVE ZERO TO WS-CONSULTA
+                   PERFORM 001-PEDIDOS
+               END-IF
+           ELSE
+               DISPLAY "MESA NO EXISTE, INTENTE DE NUEVO "
+                   "Y ASEGURESE DE VER LAS MESAS EN LA LISTA"
+               MOVE ZERO TO WS-CONSULTA
+               PERFORM 001-PEDIDOS
+           END-IF.
+       *>  -------------------------------------------------------------
+       *>  SUBMENU CONSULTAS
+       *>  -------------------------------------------------------------
+       002-SUBMENU-CONSULTAS.
+       *>  -------------------------------------------------------------
+           DISPLAY " ".
+           DISPLAY "SUBMENÚ CONSULTAS  ".
+           DISPLAY "--------------------------------------".
+           DISPLAY "1 - PLATILLOS DISPONIBLES POR TIPO.".
+           DISPLAY "2 - MESAS ATENDIDAS POR MESERO Y FECHA.".
+           DISPLAY "3 - PEDIDOS ENVIADOS Y/O ANULADOS.".
+           DISPLAY "4 - PEDIDOS REALIZADOS POR FECHA.".
+           DISPLAY "5 - IMPORTE POR PEDIDOS Y TOTAL.".
+           DISPLAY "--------------------------------------".
+           DISPLAY "9 - SALIR DEL SUBMENU.".
+           DISPLAY " ".
+           DISPLAY "OPCIÓN: " WITH NO ADVANCING.
 
-       VINCULAR-MESA-MESERO.
-          IF WS-ID-MESA = WS-MESA(ID-MESA)
-          AND WS-MESA(ID-MESERO) = WS-MESERO(ID-MESERO)
-              SET WS-MESA-ENCONTRADA TO TRUE
-              SET WS-ID-MESERO TO WS-MESERO(ID-MESERO)
-          END-IF
-          IF EOF = 0
-              SET WS-MESA-ENCONTRADA TO FALSE
-          END-IF
-          PERFORM LEER-SIGUIENTE-REGISTRO.
+           ACCEPT WS-OPCION-SUBMENU.
 
-       BUSCAR-MESA.
-          PERFORM LEER-ARCHIVO "pedidos.csv"
-          PERFORM BUSCAR-MESA-EN-PEDIDOS UNTIL EOF = 0.
+           EVALUATE WS-OPCION-SUBMENU
+               WHEN 1
+                   PERFORM 000-INICIA-PLATILLOS
+                   PERFORM 003-MOSTRAR-PLATILLOS-POR-TIPO
+                   PERFORM 000-CIERRE-PLATILLOS
+               WHEN 2
+                   PERFORM 000-INICIA-PEDIDOS
+                   PERFORM 003-MOSTRAR-MESAS-POR-FECHA-MESERO
+                   PERFORM 000-CIERRE-PEDIDOS
+               WHEN 3
+                   PERFORM 000-INICIA-PEDIDOS
+                   PERFORM 003-MOSTRAR-PEDIDOS-ENVIADOS
+                   PERFORM 000-CIERRE-PEDIDOS
+               WHEN 4     
+                   PERFORM 000-INICIA-PEDIDOS
+                   PERFORM 003-MOSTRAR-PEDIDOS-POR-FECHA
+                   PERFORM 000-CIERRE-PEDIDOS
+               WHEN 5
+                   PERFORM 003-MOSTRAR-IMPORTE-POR-PEDIDOS
+               WHEN 9 MOVE 1 TO WS-FIN-SUBMENU
+               WHEN OTHER
+                   DISPLAY " "
+                   DISPLAY "OPCION INVÁLIDA"
+           END-EVALUATE.
+       *>  -------------------------------------------------------------
+       
+       *>  -------------------------------------------------------------
+       *>  APERTURA O CREACIÓN DE NO EXISTIR DEL ARCHIVO CARTA
+       *>  -------------------------------------------------------------
+       000-INICIA-CARTA.
+           MOVE ZERO TO FS-STATUS-CARTA.
 
-       BUSCAR-MESA-EN-PEDIDOS.
-          IF WS-ID-MESA = WS-PEDIDO(ID-MESA) AND WS-PEDIDO(ENVIADO) = "n"
-              SET WS-MESA-ENCONTRADA TO TRUE
-              EXIT PERFORM
-          END-IF
-          IF EOF = 0
-              SET WS-MESA-ENCONTRADA TO FALSE
-          END-IF
-          PERFORM LEER-SIGUIENTE-REGISTRO.
+           OPEN I-O F-ARCHIVO-CARTA.
+           IF FS-STATUS-CARTA = '10' OR FS-STATUS-CARTA = '00'
+               THEN
+               EXIT
+           ELSE
+               IF FS-STATUS-CARTA = '35' THEN
+                   OPEN OUTPUT F-ARCHIVO-CARTA
+                   IF FS-STATUS-CARTA = '10' OR 
+                   FS-STATUS-CARTA = '00' THEN
+                       EXIT
+                   ELSE
+                       DISPLAY "ERROR AL CREAR EL ARCHIVO, ERROR: "
+                       FS-STATUS-CARTA
+                   END-IF
+               ELSE
+                   DISPLAY 'ERROR AL ABRIR O CREAR EL ARCHIVO, ERROR: '
+                       FS-STATUS-CARTA
+                   MOVE 1 TO WS-FIN
+               END-IF
+           END-IF.
+       *>  -------------------------------------------------------------
+       *>  CIERRE DEL ARCHIVO CARTA
+       *>  -------------------------------------------------------------
+       000-CIERRE-CARTA.
+           CLOSE F-ARCHIVO-CARTA.
+       *>  -------------------------------------------------------------
+       *>  APERTURA O CREACIÓN DE NO EXISTIR DEL ARCHIVO PLATILLOS
+       *>  -------------------------------------------------------------
+       000-INICIA-PLATILLOS.
+           MOVE ZERO TO FS-STATUS-PLATILLOS.
 
-       BUSCAR-MESERO.
-          PERFORM LEER-ARCHIVO "meseros.csv"
-          PERFORM BUSCAR-MESERO-POR-ID UNTIL EOF = 0.
+           OPEN I-O F-ARCHIVO-PLATILLOS.
+           IF FS-STATUS-PLATILLOS = '10' OR FS-STATUS-PLATILLOS = '00'
+               THEN
+               EXIT
+           ELSE
+               IF FS-STATUS-PLATILLOS = '35' THEN
+                   OPEN OUTPUT F-ARCHIVO-PLATILLOS
+                   IF FS-STATUS-PLATILLOS = '10' OR 
+                   FS-STATUS-PLATILLOS = '00' THEN
+                       EXIT
+                   ELSE
+                       DISPLAY "ERROR AL CREAR EL ARCHIVO, ERROR: "
+                       FS-STATUS-PLATILLOS
+                   END-IF
+               ELSE
+                   DISPLAY 'ERROR AL ABRIR O CREAR EL ARCHIVO, ERROR: '
+                       FS-STATUS-PLATILLOS
+                   MOVE 1 TO WS-FIN
+               END-IF
+           END-IF.
+       *>  -------------------------------------------------------------
+       *>  CIERRE DEL ARCHIVO PLATILLOS
+       *>  -------------------------------------------------------------
+       000-CIERRE-PLATILLOS.
+           CLOSE F-ARCHIVO-PLATILLOS.
+       *>  -------------------------------------------------------------
+       *>  APERTURA O CREACIÓN DE NO EXISTIR DEL ARCHIVO MESEROS
+       *>  -------------------------------------------------------------
+       000-INICIA-MESEROS.
+           MOVE ZERO TO FS-STATUS-MESEROS.
 
-       BUSCAR-MESERO-POR-ID.
-          IF WS-ID-MESERO = WS-MESERO(ID-MESERO)
-              EXIT PERFORM
+           OPEN I-O F-ARCHIVO-MESEROS.
+           IF FS-STATUS-MESEROS = '10' OR FS-STATUS-MESEROS = '00'
+               THEN
+               EXIT
+           ELSE
+               IF FS-STATUS-MESEROS = '35' THEN
+                   OPEN OUTPUT F-ARCHIVO-MESEROS
+                   IF FS-STATUS-MESEROS = '10' OR 
+                   FS-STATUS-MESEROS = '00' THEN
+                       EXIT
+                   ELSE
+                       DISPLAY "ERROR AL CREAR EL ARCHIVO: "
+                       FS-STATUS-MESEROS
+                   END-IF
+               ELSE
+                   DISPLAY 'ERROR AL ABRIR O CREAR EL ARCHIVO: '
+                       FS-STATUS-MESEROS
+                   MOVE 1 TO WS-FIN
+               END-IF
+           END-IF.
+       *>  -------------------------------------------------------------
+       *>  CIERRE DEL ARCHIVO MESEROS
+       *>  -------------------------------------------------------------
+       000-CIERRE-MESEROS.
+           CLOSE F-ARCHIVO-MESEROS.
+       *>  -------------------------------------------------------------
+       *>  APERTURA O CREACIÓN DE NO EXISTIR DEL ARCHIVO MESAS
+       *>  -------------------------------------------------------------
+       000-INICIA-MESAS.
+           MOVE ZERO TO FS-STATUS-MESAS.
+
+           OPEN I-O F-ARCHIVO-MESAS.
+           IF FS-STATUS-MESAS = '10' OR FS-STATUS-MESAS = '00'
+               THEN
+               EXIT
+           ELSE
+               IF FS-STATUS-MESAS = '35' THEN
+                   OPEN OUTPUT F-ARCHIVO-MESAS
+                   IF FS-STATUS-MESAS = '10' OR 
+                   FS-STATUS-MESAS = '00' THEN
+                       EXIT
+                   ELSE
+                       DISPLAY "ERROR AL CREAR EL ARCHIVO: "
+                       FS-STATUS-MESAS
+                   END-IF
+               ELSE
+                   DISPLAY 'ERROR AL ABRIR O CREAR EL ARCHIVO: '
+                       FS-STATUS-MESAS
+                   MOVE 1 TO WS-FIN
+               END-IF
+           END-IF.
+       *>  -------------------------------------------------------------
+       *>  CIERRE DEL ARCHIVO MESAS
+       *>  -------------------------------------------------------------
+       000-CIERRE-MESAS.
+           CLOSE F-ARCHIVO-MESAS.
+       *>  -------------------------------------------------------------
+       *>  APERTURA O CREACIÓN DE NO EXISTIR DEL ARCHIVO PEDIDOS
+       *>  -------------------------------------------------------------
+       000-INICIA-PEDIDOS.
+           MOVE ZERO TO FS-STATUS-PEDIDOS.
+           MOVE ZERO TO WS-PEDIDOS-CREADO
+
+           OPEN I-O F-ARCHIVO-PEDIDOS.
+           IF FS-STATUS-PEDIDOS = '10' OR FS-STATUS-PEDIDOS = '00'
+               THEN
+               MOVE ZERO TO WS-PEDIDOS-CREADO
+           ELSE
+               IF FS-STATUS-PEDIDOS = '35' THEN
+                   OPEN OUTPUT F-ARCHIVO-PEDIDOS
+                   IF FS-STATUS-PEDIDOS = '10' OR 
+                   FS-STATUS-PEDIDOS = '00' THEN
+                       MOVE 1 TO WS-PEDIDOS-CREADO
+                   ELSE
+                       DISPLAY "ERROR AL CREAR EL ARCHIVO: "
+                       FS-STATUS-PEDIDOS
+                   END-IF
+               ELSE
+                   DISPLAY 'ERROR AL ABRIR O CREAR EL ARCHIVO: '
+                       FS-STATUS-PEDIDOS
+                   MOVE 1 TO WS-FIN
+               END-IF
+           END-IF.
+       *>  -------------------------------------------------------------
+       *>  CIERRE DEL ARCHIVO PEDIDOS
+       *>  -------------------------------------------------------------
+       000-CIERRE-PEDIDOS.
+           CLOSE F-ARCHIVO-PEDIDOS.
+       *>  -------------------------------------------------------------
+       *>  CONSULTAS AUXILIARES
+       *>  -------------------------------------------------------------
+       *>  -------------------------------------------------------------
+       *>  MOSTRAR MESEROS
+       *>  -------------------------------------------------------------
+       003-MOSTRAR-MESEROS.
+           MOVE 0 TO WS-FIN-ARCHIVO.
+           PERFORM 004-LEE-SIG-MESERO.
+
+           DISPLAY "LISTA DE MESEROS REGISTRADOS: "
+           PERFORM 004-IMPRIME-MESERO UNTIL WS-FIN-ARCHIVO = 1.
+
+       004-LEE-SIG-MESERO.
+            READ F-ARCHIVO-MESEROS NEXT RECORD
+                AT END
+            MOVE 1 TO WS-FIN-ARCHIVO.
+
+       004-IMPRIME-MESERO.
+           DISPLAY " - " RM-CEDULA " " RM-NOMBRE-APELLIDO.
+           PERFORM 004-LEE-SIG-MESERO.
+       *>  -------------------------------------------------------------
+       *>  MOSTRAR Y SELECCIONAR MESERO POR MESA
+       *>  -------------------------------------------------------------
+       003-MESERO-POR-MESA.
+           MOVE 0 TO WS-FIN-ARCHIVO.
+           move 1 to WS-CONSULTA.
+
+           PERFORM 000-INICIA-MESAS.
+           PERFORM 004-LEE-SIG-MESA.
+
+           DISPLAY "LA CÉDULA DEL MESERO ASIGNADO A ESTA MESA ES: " 
+               WITH NO ADVANCING.
+           PERFORM 004-IMPRIME-MESERO-POR-MESA UNTIL WS-FIN-ARCHIVO = 1.
+           PERFORM 000-CIERRE-MESAS.
+
+       004-IMPRIME-MESERO-POR-MESA.
+           IF WS-PEDIDOS-MESA = RME-NUMERO THEN
+               DISPLAY RME-MESERO
+               MOVE RME-MESERO TO WS-PEDIDOS-MESERO
+               MOVE ZERO TO WS-CONSULTA
+           END-IF.
+           PERFORM 004-LEE-SIG-MESA.
+       *>  -------------------------------------------------------------
+       *>  MOSTRAR MESAS
+       *>  -------------------------------------------------------------
+       003-MOSTRAR-MESAS.
+           MOVE 0 TO WS-FIN-ARCHIVO.
+           PERFORM 004-LEE-SIG-MESA.
+
+           DISPLAY "LISTA DE MESAS REGISTRADAS: ".
+           PERFORM 004-IMPRIME-MESA UNTIL WS-FIN-ARCHIVO = 1.
+
+       004-LEE-SIG-MESA.
+            READ F-ARCHIVO-MESAS NEXT RECORD
+                AT END MOVE 1 TO WS-FIN-ARCHIVO.
+
+       004-IMPRIME-MESA.
+           DISPLAY " -> " RME-NUMERO.
+           PERFORM 004-LEE-SIG-MESA.
+       *>  -------------------------------------------------------------
+       *>  MOSTRAR PEDIDOS
+       *>  -------------------------------------------------------------
+       003-MOSTRAR-PEDIDOS.
+           MOVE 0 TO WS-FIN-ARCHIVO.
+           PERFORM 004-LEE-SIG-PEDIDO.
+
+           DISPLAY "LISTA PEDIDOS: ".
+           PERFORM 004-IMPRIME-PEDIDO UNTIL WS-FIN-ARCHIVO = 1.
+       
+       004-LEE-SIG-PEDIDO.
+           READ F-ARCHIVO-PEDIDOS NEXT RECORD
+               AT END MOVE 1 TO WS-FIN-ARCHIVO.
+
+       004-IMPRIME-PEDIDO.
+           DISPLAY "NRO. DE PEDIDO: " RPE-NUMERO.
+           PERFORM 004-LEE-SIG-PEDIDO.
+       *>  -------------------------------------------------------------
+       *>  CONSULTAS SOLICITADAS POR LAS EXIGENCIAS DEL SISTEMA
+       *>  -------------------------------------------------------------
+       *>  -------------------------------------------------------------
+       *>  MOSTRAR PLATILLOS POR TIPO
+       *>  -------------------------------------------------------------
+       003-MOSTRAR-PLATILLOS-POR-TIPO.
+           DISPLAY " ".
+           DISPLAY "********************************".
+           DISPLAY "LISTA DE PLATILLOS POR TIPO: ".
+           DISPLAY "********************************".
+           DISPLAY "INTRODUZCA EL TIPO: " WITH NO ADVANCING.
+           ACCEPT WS-PLATILLOS-TIPO.
+
+           MOVE 0 TO WS-FIN-ARCHIVO.
+           PERFORM 004-LEE-SIG-PLATILLO.
+
+           MOVE 0 TO WS-ENCONTRADO
+           DISPLAY " "
+           DISPLAY "PLATILLOS PARA EL TIPO: " WS-PLATILLOS-TIPO
+
+           PERFORM 004-IMPRIME-PLATILLO-POR-TIPO
+               UNTIL WS-FIN-ARCHIVO = 1.
+        
+           IF WS-ENCONTRADO = 0 THEN
+               DISPLAY " "
+               DISPLAY "*** NO HAY PLATILLOS PARA ESTE TIPO ***"
+               DISPLAY " "
+               STOP "ENTER PARA CONTINUAR"
+           ELSE
+               DISPLAY " "
+               STOP "ENTER PARA CONTINUAR"
+           END-IF.
+
+       004-LEE-SIG-PLATILLO.
+           READ F-ARCHIVO-PLATILLOS NEXT RECORD
+               AT END MOVE 1 TO WS-FIN-ARCHIVO.
+
+       004-IMPRIME-PLATILLO-POR-TIPO.
+           IF  WS-PLATILLOS-TIPO = RP-TIPO THEN  
+               DISPLAY "------------------------------------------"
+               DISPLAY " -> CODIGO DE PLATILLO: " RP-CODIGO
+               DISPLAY "  - DESCRIPCIÓN: " RP-DESCRIPCION
+               MOVE 1 TO WS-ENCONTRADO
+           END-IF.
+
+           PERFORM 004-LEE-SIG-PLATILLO.
+       *>  -------------------------------------------------------------
+       *>  MOSTRAR PEDIDOS POR FECHA
+       *>  -------------------------------------------------------------
+       003-MOSTRAR-PEDIDOS-POR-FECHA.
+           DISPLAY " "
+           DISPLAY "********************************"
+           DISPLAY "LISTA DE PEDIDOS POR FECHA: "
+           DISPLAY "********************************"
+           DISPLAY "INTRODUZCA LA FECHA"
+           DISPLAY "DÍA: " WITH NO ADVANCING.
+           ACCEPT WS-PEDIDOS-DIA.
+           DISPLAY "MES: " WITH NO ADVANCING.
+           ACCEPT WS-PEDIDOS-MES.
+           DISPLAY "AÑO: " WITH NO ADVANCING.
+           ACCEPT WS-PEDIDOS-ANNO.
+
+           MOVE 0 TO WS-FIN-ARCHIVO.
+           PERFORM 004-LEE-SIG-PEDIDO.
+
+           MOVE 0 TO WS-ENCONTRADO
+           DISPLAY " "
+           DISPLAY "PEDIDOS PARA LA FECHA: " WS-PEDIDOS-DIA "/"
+               WS-PEDIDOS-MES "/" WS-PEDIDOS-ANNO
+
+           PERFORM 004-IMPRIME-PEDIDO-POR-FECHA UNTIL WS-FIN-ARCHIVO = 1.
+
+           IF WS-ENCONTRADO = 0 THEN
+               DISPLAY " "
+               DISPLAY "*** NO HAY PEDIDOS PARA LA "
+               "FECHA INTRODUCIDA ***"
+               DISPLAY " "
+               STOP "ENTER PARA CONTINUAR"
+           END-IF.
+
+           DISPLAY " ".
+           STOP "ENTER PARA CONTINUAR".
+
+       004-IMPRIME-PEDIDO-POR-FECHA.
+           IF  WS-PEDIDOS-DIA = RPE-DIA AND
+               WS-PEDIDOS-MES = RPE-MES AND
+               WS-PEDIDOS-ANNO = RPE-ANNO
+               THEN
+                   DISPLAY "------------------------------------------"
+                   DISPLAY "-> PEDIDO NRO. " RPE-NUMERO
+                   DISPLAY " - MESA: " RPE-MESA
+                   DISPLAY " - CÉDULA DEL MESERO: " RPE-MESERO
+                   DISPLAY " - DESCRIPCIÓN: " RPE-DESCRIPCION
+                   DISPLAY " - CANTIDAD: " RPE-CANTIDAD
+                   DISPLAY " - PRECIO UNITARIO: " RPE-PRECIO-UNITARIO
+                   DISPLAY " - TIPO DE PAGO: " RPE-TIPO-PAGO
+                   DISPLAY " - IMPORTE: " RPE-IMPORTE
+                   DISPLAY " - PROPINA: " RPE-PROPINA
+                   DISPLAY " - ENVIADO: " RPE-ENVIADO
+                   DISPLAY " - FECHA: " RPE-DIA 
+                       "/" RPE-MES "/" RPE-ANNO
+                   MOVE 1 TO WS-ENCONTRADO
            END-IF
-          IF EOF = 0
-              DISPLAY "No se encontró al mesero asignado a la mesa."
-          END-IF
-          PERFORM LEER-SIGUIENTE-REGISTRO.
-      *Fin Consultas (Sub-Rutinas 6-1)
 
-       STOP RUN.
+           PERFORM 004-LEE-SIG-PEDIDO.
+       *>  -------------------------------------------------------------
+       *>  MOSTRAR MESAS POR FECHA Y MESERO
+       *>  -------------------------------------------------------------
+       003-MOSTRAR-MESAS-POR-FECHA-MESERO.
+           DISPLAY " ".
+           DISPLAY "***********************************".
+           DISPLAY "MESAS ATENDIDAS POR FECHA Y MESERO: ".
+           DISPLAY "***********************************".
+           DISPLAY "INTRODUZCA LA FECHA".
+           DISPLAY "DÍA: " WITH NO ADVANCING.
+           ACCEPT WS-PEDIDOS-DIA.
+           DISPLAY "MES: " WITH NO ADVANCING.
+           ACCEPT WS-PEDIDOS-MES.
+           DISPLAY "AÑO: " WITH NO ADVANCING.
+           ACCEPT WS-PEDIDOS-ANNO.
+
+           PERFORM 000-INICIA-MESEROS.
+           PERFORM 003-MOSTRAR-MESEROS.
+           PERFORM 000-CIERRE-MESEROS.
+
+           DISPLAY "INTRODUZCA LA CEDULA DEL MESERO: "
+               WITH NO ADVANCING.
+           ACCEPT WS-PEDIDOS-MESERO.
+
+           MOVE 0 TO WS-FIN-ARCHIVO.
+           PERFORM 004-LEE-SIG-PEDIDO.
+
+           MOVE 0 TO WS-ENCONTRADO
+           DISPLAY " "
+           DISPLAY "MESAS ATENDIDAS POR EL MESERO: " WS-PEDIDOS-MESERO
+           DISPLAY "PARA LA FECHA: " WS-PEDIDOS-DIA "/"
+               WS-PEDIDOS-MES "/" WS-PEDIDOS-ANNO
+
+           PERFORM 004-IMPRIME-MESAS-POR-FECHA-MESERO
+               UNTIL WS-FIN-ARCHIVO = 1.
+
+           IF WS-ENCONTRADO = 0 THEN
+               DISPLAY " "
+               DISPLAY "*** NO HAY MESAS PARA EL MESERO Y LA "
+               "FECHA INTRODUCIDA ***"
+               DISPLAY " "
+               STOP "ENTER PARA CONTINUAR"
+           ELSE 
+               DISPLAY " "
+               STOP "ENTER PARA CONTINUAR"
+           END-IF.
+
+       004-IMPRIME-MESAS-POR-FECHA-MESERO.
+           IF  WS-PEDIDOS-DIA = RPE-DIA AND
+               WS-PEDIDOS-MES = RPE-MES AND
+               WS-PEDIDOS-ANNO = RPE-ANNO AND
+               WS-PEDIDOS-MESERO = RPE-MESERO
+               THEN
+                   DISPLAY "------------------------------------------"
+                   DISPLAY " - NRO. DE MESA: " RPE-MESA
+                   MOVE 1 TO WS-ENCONTRADO
+           END-IF
+
+           PERFORM 004-LEE-SIG-PEDIDO.
+       *>  -------------------------------------------------------------
+       *>  MOSTRAR PEDIDOS ENVIADO Y/O ANULADOS
+       *>  -------------------------------------------------------------
+       003-MOSTRAR-PEDIDOS-ENVIADOS.
+           DISPLAY " ".
+           DISPLAY "**************************************".
+           DISPLAY "MOSTRAR PEDIDOS ENVIADOS O ANULADOS: ".
+           DISPLAY "**************************************".
+
+           DISPLAY "1. PEDIDOS ENVIADOS.".
+           DISPLAY "2. PEDIDOS ANULADOS.".
+           DISPLAY "----------------------"
+           DISPLAY "INTRODUZCA CUALQUIER NÚMERO PARA CANCELAR".
+           DISPLAY " ".
+
+           DISPLAY "QUE TIPO DE PEDIDOS DESEA MOSTRAR (1 o 2)?: "
+               WITH NO ADVANCING.
+           ACCEPT WS-TIPO-PEDIDO.
+
+           MOVE 0 TO WS-FIN-ARCHIVO.
+           PERFORM 004-LEE-SIG-PEDIDO.
+
+           MOVE 0 TO WS-ENCONTRADO
+           DISPLAY " "
+           IF WS-TIPO-PEDIDO = 1 THEN
+               DISPLAY "LISTA DE PEDIDOS ENVIADOS: "
+           ELSE
+               IF WS-TIPO-PEDIDO = 2 THEN
+                   DISPLAY "LISTA DE PEDIDOS CANCELADOS: "
+               ELSE
+                   EXIT
+               END-IF
+           END-IF.
+
+           PERFORM 004-IMPRIME-PEDIDOS-ENVIADOS
+               UNTIL WS-FIN-ARCHIVO = 1.
+
+           IF WS-ENCONTRADO = 0 THEN
+               DISPLAY " "
+               DISPLAY "*** NO HAY NINGÚN PEDIDO ***"
+               DISPLAY " "
+               STOP "ENTER PARA CONTINUAR"
+           ELSE 
+               DISPLAY " "
+               STOP "ENTER PARA CONTINUAR"
+           END-IF.
+
+       004-IMPRIME-PEDIDOS-ENVIADOS.
+           IF  RPE-ENVIADO = 'S' AND WS-TIPO-PEDIDO = 1
+               THEN
+                   DISPLAY "------------------------------------------"
+                   DISPLAY "-> PEDIDO NRO. " RPE-NUMERO
+                   DISPLAY " - MESA: " RPE-MESA
+                   DISPLAY " - CÉDULA DEL MESERO: " RPE-MESERO
+                   DISPLAY " - DESCRIPCIÓN: " RPE-DESCRIPCION
+                   DISPLAY " - CANTIDAD: " RPE-CANTIDAD
+                   DISPLAY " - PRECIO UNITARIO: " RPE-PRECIO-UNITARIO
+                   DISPLAY " - TIPO DE PAGO: " RPE-TIPO-PAGO
+                   DISPLAY " - IMPORTE: " RPE-IMPORTE
+                   DISPLAY " - PROPINA: " RPE-PROPINA
+                   DISPLAY " - ENVIADO: " RPE-ENVIADO
+                   DISPLAY " - FECHA: " RPE-DIA 
+                       "/" RPE-MES "/" RPE-ANNO
+                   MOVE 1 TO WS-ENCONTRADO
+                   MOVE 1 TO WS-ENCONTRADO
+           ELSE 
+               IF RPE-ENVIADO = 'N' AND WS-TIPO-PEDIDO = 2 THEN
+                   DISPLAY "------------------------------------------"
+                   DISPLAY "-> PEDIDO NRO. " RPE-NUMERO
+                   DISPLAY " - MESA: " RPE-MESA
+                   DISPLAY " - CÉDULA DEL MESERO: " RPE-MESERO
+                   DISPLAY " - DESCRIPCIÓN: " RPE-DESCRIPCION
+                   DISPLAY " - CANTIDAD: " RPE-CANTIDAD
+                   DISPLAY " - PRECIO UNITARIO: " RPE-PRECIO-UNITARIO
+                   DISPLAY " - TIPO DE PAGO: " RPE-TIPO-PAGO
+                   DISPLAY " - IMPORTE: " RPE-IMPORTE
+                   DISPLAY " - PROPINA: " RPE-PROPINA
+                   DISPLAY " - ENVIADO: " RPE-ENVIADO
+                   DISPLAY " - FECHA: " RPE-DIA 
+                       "/" RPE-MES "/" RPE-ANNO
+                   MOVE 1 TO WS-ENCONTRADO
+                   MOVE 1 TO WS-ENCONTRADO
+                ELSE
+                    EXIT
+                END-IF
+           END-IF
+
+           PERFORM 004-LEE-SIG-PEDIDO.
+       *>  -------------------------------------------------------------
+       *>  MOSTRAR IMPORTE POR PEDIDOS
+       *>  -------------------------------------------------------------
+       003-MOSTRAR-IMPORTE-POR-PEDIDOS.
+           DISPLAY " ".
+           DISPLAY "********************************".
+           DISPLAY "MOSTRAR IMPORTE POR PEDIDOS: ".
+           DISPLAY "********************************".
+
+           PERFORM 000-INICIA-PEDIDOS.
+           PERFORM 003-MOSTRAR-PEDIDOS.
+           PERFORM 000-CIERRE-PEDIDOS.
+
+           MOVE 0 TO WS-FIN-ARCHIVO.
+
+           PERFORM 000-INICIA-PEDIDOS.
+           PERFORM 004-LEE-SIG-PEDIDO.
+
+           MOVE 0 TO WS-ENCONTRADO.
+
+           DISPLAY "INTRODUZCA EL NÚMERO DE PEDIDO: "
+               WITH NO ADVANCING.
+           ACCEPT WS-PEDIDOS-NUMERO.
+           
+
+           PERFORM 004-IMPRIME-IMPORTE-POR-PEDIDO
+               UNTIL WS-FIN-ARCHIVO = 1.
+
+           IF WS-ENCONTRADO = 0 THEN
+               DISPLAY " "
+               DISPLAY "*** NADA QUE MOSTRAR ***"
+               DISPLAY " "
+               STOP "ENTER PARA CONTINUAR"
+           END-IF.
+
+           PERFORM 000-CIERRE-PEDIDOS.
+           DISPLAY " ".
+           STOP "ENTER PARA CONTINUAR".
+
+       004-IMPRIME-IMPORTE-POR-PEDIDO.
+           IF WS-PEDIDOS-NUMERO = RPE-NUMERO THEN
+               DISPLAY " "
+               DISPLAY "IMPORTE, DETALLE Y TOTAL A PAGAR:"
+               DISPLAY "------------------------------------------"
+               DISPLAY " + NUMERO DE PEDIDO: " RPE-NUMERO
+               DISPLAY " + PRECIO UNITARIO: " RPE-PRECIO-UNITARIO
+               DISPLAY " + CANTIDAD: " RPE-CANTIDAD
+               DISPLAY " + IMPORTE: " RPE-IMPORTE
+               DISPLAY " + PROPINA: " RPE-PROPINA
+               COMPUTE WS-TOTAL-PAGO = RPE-PRECIO-UNITARIO 
+               * RPE-CANTIDAD + RPE-IMPORTE + RPE-PROPINA
+               DISPLAY ">> TOTAL A PAGAR: " WS-TOTAL-PAGO
+               MOVE 1 TO WS-ENCONTRADO
+           END-IF
+
+           PERFORM 004-LEE-SIG-PEDIDO.
+       *>  -------------------------------------------------------------
+       END PROGRAM RESTAURANTE.
+       *>  -------------------------------------------------------------

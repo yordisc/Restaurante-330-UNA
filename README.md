@@ -112,13 +112,16 @@ Esta opción permite ingresar, modificar o eliminar un pedido. Su clave será el
 <summary><b>Requisitos:</b></summary>
 
 El programa deberá controlar la integridad de los datos, realizando validaciones como:
----
+
 - No permitirá registrar el mismo pedido por dos meseros
 diferentes.
 - No permitirá que una mesa sea atendida por un mesero diferente al asignado. Sin embargo, en caso de su ausencia deberá la gerencia tener la opción de reasignar la mesa. (Validación especial).
 
-De acuerdo a las especificaciones dadas, aplique los conocimientos sobre la organización de archivos y elabore un programa en COBOL que satisfaga los requerimientos planteados y a su vez entregue un informe que contenga lo siguiente:
+De acuerdo a las especificaciones dadas:
 
+- Aplicar los conocimientos sobre la organización de archivos.
+- Elaborar un programa en COBOL que satisfaga los requerimientos planteados.
+- Entregar informe que contenga lo siguiente:
 * Algoritmo del programa en pseudolenguaje Listado documentado del programa (FUENTE): en el encabezado de cada procedimiento, función o sección debe incluir un breve comentario del proceso que se realiza.
 * Definición de las estructuras de datos utilizadas.
 * Listado de los reportes (código fuente y salida de cada reporte).
@@ -128,27 +131,24 @@ De acuerdo a las especificaciones dadas, aplique los conocimientos sobre la orga
 <summary><b>Realización:</b></summary>
 
 ### Planteamiento
-Dadas la situación, se planeó la realización del proyecto estructurando en SQL en un principio pero se consideró la realización usando archivos CSV considerando que un establecimiento de restaurante necesita mantener un registro más cómodo y que fuera de más fácil uso, dado que CSV puede ser fácilmente manipulado en Excel o alguna otra herramienta de cálculo se eligió esta opción, siendo más realista y si se llega a precisar, se puede migrar a SQL dependiendo la necesidad del establecimiento.
+Dadas la situación, se planeó la realización del proyecto estructurando en SQL en un principio pero se consideró la realización usando archivos CSV considerando que un establecimiento de restaurante necesita mantener un registro más cómodo y que fuera de más fácil uso, dado que TXT puede ser fácilmente manipulado por cualquier sistema de procesamiento de texto se eligió esta opción, siendo más realista y si se llega a precisar, se puede migrar a SQL dependiendo la necesidad del establecimiento.
 
 ### Entorno
-Se realizó el programa en un entorno linux Debian - Sid usando de compilador GNUCobol4.
+Se realizó el programa en un entorno linux Fedora 37 usando de compilador GNUCobol versión 3.
   ![entorno](https://raw.githubusercontent.com/yordisc/Restaurante-330-UNA/main/imagenes/entorno.png)
 
 ### Creación
-Se crearon 8 archivos CSV para poder guardar la información de la misma, todos estos fueron pensados para ser usados para CRUD y para ser trabajados en hoja de cálculo si fuese necesario:
+Se crearon 5 archivos TXT para poder guardar la información de la misma, todos estos fueron pensados para ser usados para CRUD y para ser trabajados en hoja de cálculo si fuese necesario:
 
-* _clientes.csv_: guarda los datos de los clientes.
-* _carta.csv_: guarda los datos del menú.
-* _mesas.csv_: guarda los datos de mas mesas a usar.
-* _meseros.csv_: guarda los datos de los meseros.
-* _pedidos.csv_: guarda los pedidos realizados.
-* _platillo_pedido.csv_: guarda los platillos pedidos mencionados en __pedidos.csv__.
+* _carta.txt_: guarda los datos del menú.
 * _platillos.csv_: guarda la lista tipos de platillos(lista).
-* _pago.csv_: guarda la lista de tipos de pagos que se pueden realizar(lista).
+* _meseros.txt_: guarda los datos de los meseros.
+* _mesas.txt_: guarda los datos de mas mesas a usar.
+* _pedidos.txt_: guarda los pedidos realizados.
 
 Para el programa se creo el archivo __restaurante.cbl__ el cual tiene las definiciones y lógica para hacer funcional el programa.
 
-Este contiene 6 Rutinas las cuales cuentan con multiples sub-rutinas necesarias para completar el sistema programado.
+Este contiene las rutinas necesarias, las cuales cuentan con multiples sub-rutinas necesarias para completar el sistema programado.
 </details>
 
 ## :triangular_flag_on_post: Descarga el proyecto
@@ -168,6 +168,24 @@ _Universal:_
 ```bash
 cobc -x restaurante.cbl -o restaurante.o
 ```
+
+### Ejecución
+```bash
+git clone https://github.com/yordisc/Restaurante-330-UNA.git
+cd Restaurante-330-UNA
+./restaurante.exe
+```
+<details>
+  <summary><b>Imagenes de ejecución (has click aqui)</b></summary>
+  ![01](https://raw.githubusercontent.com/yordisc/Restaurante-330-UNA/main/imagenes/01.png)
+  ![02](https://raw.githubusercontent.com/yordisc/Restaurante-330-UNA/main/imagenes/02.png)
+  ![03](https://raw.githubusercontent.com/yordisc/Restaurante-330-UNA/main/imagenes/03.png)
+  ![04](https://raw.githubusercontent.com/yordisc/Restaurante-330-UNA/main/imagenes/04.png)
+  ![05](https://raw.githubusercontent.com/yordisc/Restaurante-330-UNA/main/imagenes/05.png)
+  ![06](https://raw.githubusercontent.com/yordisc/Restaurante-330-UNA/main/imagenes/06.png)
+  ![07](https://raw.githubusercontent.com/yordisc/Restaurante-330-UNA/main/imagenes/07.png)
+  ![08](https://raw.githubusercontent.com/yordisc/Restaurante-330-UNA/main/imagenes/08.png)
+</details>
 
 ## :100: Resources used / Credits 
 
